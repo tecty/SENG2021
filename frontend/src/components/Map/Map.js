@@ -24,7 +24,7 @@ export default class Map extends Component {
  
   render() {
     const {lat, lng} = this.state;
-    const places = [<PlaceMarker lat={lat} lng={lng} price={20} />];
+    const places = [<PlaceMarker lat={lat} lng={lng} tags={"#tag1"} name={"Event"} description={"Description"}/>];
  
     return(
       <div style={{width: `100%`, height: `750px`}}>
