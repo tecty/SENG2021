@@ -26,17 +26,6 @@ A shell to run django's httpd.
 sudo python manage.py runserver 0:80
 ```
 
-Another shell to run the runtime react.
-
-```shell
-# go to fronend code area
-cd frontend
-# install dependencies for react
-npm install
-# run in node js for react
-node server.js
-```
-
 ## URLs
 
 URL | Detail
