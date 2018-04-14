@@ -1,6 +1,6 @@
 {
-  "short_name": "Siround",
-  "name": "Siround - SENG2021 18s1 Project",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",

@@ -10,7 +10,13 @@ export default class PlaceInfoWindow extends Component {
         <div>
           <h1>{name}</h1>
           <p>{description}</p>
-          <span>{tags}</span>
+          <div className="tags">
+            {tags.map(tag => {
+              return (
+                <span key={tag}>{tag}</span>
+              )
+            })}
+          </div>
         </div>
       </InfoWindow>
     );
