@@ -108,7 +108,6 @@ node_modules
 .grunt
 _SpecRunner.html
 __benchmarks__
-build/
 remote-repo/
 coverage/
 flow-coverage/
@@ -126,5 +125,4 @@ chrome-user-data
 *.swp
 *.swo
 
-*.pyc
 db.sqlite3
