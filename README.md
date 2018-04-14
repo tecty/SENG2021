@@ -9,7 +9,12 @@ Using django(python3), Bootstrap, React, GraphQL,sqlite3
 ```shell
 # Create Virtual environment
 virtualenv venv -p `where python3` --no-site-packages
+
+# Getting into virtual environement
+source venv/bin/activative
+# install all the dependencies
 pip install -r requirements.txt
+
 # setup the database
 ./manage.py migrate
 ```
@@ -19,6 +24,9 @@ pip install -r requirements.txt
 A shell to run django's httpd.
 
 ```shell
+# Getting into virtual environement
+source venv/bin/activative
+
 # Run in local
 ./manage.py runserver
 
