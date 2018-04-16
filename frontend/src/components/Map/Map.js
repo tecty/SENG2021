@@ -1,21 +1,47 @@
 import React, { Component } from 'react';
-import './Map.css'
-import GoogleMapReact from 'google-map-react';
+import { withGoogleMap, GoogleMap } from 'react-google-maps';
+import PlaceMarker from '../PlaceMarker/PlaceMarker';
  
+const SiroundMap = withGoogleMap(props => (
+  <GoogleMap
+    defaultCenter={props.center}
+    defaultZoom={props.zoom}>
+    {props.places}
+  </GoogleMap>
+));
+
 export default class Map extends Component {
-  static defaultProps = {
-    center: {lat: -33.92, lng: 151.23},
-    zoom: 15
-  };
+  constructor(props) {
+    super(props)
+ 
+    this.zoom = 7
+ 
+    this.state = {
+      lat: -33.9182861,
+      lng: 151.2307079
+    };
+  }
  
   render() {
-    return (
-      <div className="Map" >
-        <GoogleMapReact
-        bootstrapURLKeys={{ key: 'AIzaSyDhCTfzOuoPtFNvCc75_x_lOXFHANYSCiI' }}
-        defaultCenter={this.props.center}
-        defaultZoom={this.props.zoom} >
-        </GoogleMapReact>
+    const {lat, lng} = this.state;
+    const places = [<PlaceMarker lat={lat} lng={lng} tags={["#tag1", "#tag2"]} name={"Event"} description={"Description"} key={1}/>];
+ 
+    return(
+      <div style={{width: `100%`, height: `750px`}}>
+        <SiroundMap
+          center={{
+            lat: lat,
+            lng: lng
+          }}
+          zoom={this.zoom}
+          containerElement={
+            <div style={{ height: `100%` }} />
+          }
+          mapElement={
+            <div style={{ height: `100%` }} />
+          }
+          places={places}
+        />
       </div>
     );
   }

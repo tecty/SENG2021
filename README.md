@@ -32,3 +32,35 @@ URL | Detail
 :--- | :---
 127.0.0.1:8000/ | ReactJS index
 127.0.0.1:8000/admin | Django admin
+
+## TODO LIST
+Tick it when you complete!
+
+### Iteration 1
+Scheduled date of completion: 24/04/2018
+
+Goal: Complete the basic use for this web application. 
+* Search a place in the search bar
+* Display posts within the selected area in the posts list
+* Add pin on map and make a new post
+
+Things not include in this iteration:
+* Login is not required when creating a new post
+
+#### Backend
+- [ ] Database design
+- [ ] Database implementation
+
+#### Frontend
+- [x] Map component
+- [ ] PlaceMarker component
+- [ ] SearchBar component
+- [ ] PostsList component
+- [ ] PostDetail component
+- [ ] NewPost component
+- [ ] Art Design (css)
+- [ ] Logo Design
+
+#### APIs
+- [ ] Fetch events/posts in database (may be in the next iteration)
+- [ ] Search some useful APIs and reading their documentions (can start to implement)
