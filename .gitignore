@@ -9,7 +9,6 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
-build/
 develop-eggs/
 dist/
 downloads/
@@ -108,7 +107,6 @@ node_modules
 .grunt
 _SpecRunner.html
 __benchmarks__
-build/
 remote-repo/
 coverage/
 flow-coverage/
@@ -125,3 +123,5 @@ chrome-user-data
 .vscode
 *.swp
 *.swo
+
+db.sqlite3

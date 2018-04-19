@@ -2,36 +2,20 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "@types/googlemaps": "^3.30.8",
+    "@types/markerclustererplus": "^2.1.33",
+    "@types/react": "^15.6.15",
+    "ajv": "^6.4.0",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-google-maps": "^9.4.5",
+    "react-scripts": "1.1.4"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "babel": "babel",
-    "webpack-local": "webpack --config webpack/webpack.local.config.js",
-    "webpack-stage": "rm -rf ../backend/static/bundles/stage/* && webpack --config webpack/webpack.stage.config.js --progress --colors",
-    "webpack-prod": "rm -rf ../backend/static/bundles/prod/* && webpack --config webpack/webpack.prod.config.js"
-  },
-  "devDependencies": {
-    "babel": "^6.23.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.1.4",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "css-loader": "^0.28.11",
-    "eslint": "^4.19.1",
-    "image-webpack-loader": "^4.2.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-hot-loader": "^4.0.0",
-    "react-scripts": "^1.1.1",
-    "redux": "^3.7.2",
-    "webpack": "^3.11.0",
-    "webpack-bundle-tracker": "^0.3.0",
-    "webpack-dev-server": "^2.11.1"
+    "eject": "react-scripts eject"
   }
 }
