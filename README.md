@@ -7,11 +7,21 @@ Using django(python3), Bootstrap, React, GraphQL,sqlite3
 ### Setting Environment
 
 ```shell
-# Create Virtual environment
-virtualenv venv -p `where python3` --no-site-packages
-pip install -r requirements.txt
+# Create Virtual environment if you haven't
+$ virtualenv venv -p `which python3` --no-site-packages
+```
+
+```shell
+# activate the virtual envirnoment
+$ source venv/bin/activate
+```
+
+### Install dependencies and setup the database
+```shell
+(venv) $ pip install -r requirements.txt
+
 # setup the database
-./manage.py migrate
+(venv) $ ./manage.py migrate
 ```
 
 ### Run the Server
@@ -20,10 +30,10 @@ A shell to run django's httpd.
 
 ```shell
 # Run in local
-./manage.py runserver
+(venv) $ ./manage.py runserver
 
 # ALTERNATIVE: start the server to public
-sudo python manage.py runserver 0:80
+(venv) $ sudo python manage.py runserver 0:80
 ```
 
 ## URLs

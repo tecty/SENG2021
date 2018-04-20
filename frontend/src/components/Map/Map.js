@@ -32,7 +32,7 @@ export default class Map extends Component {
     this.yMapBounds = { min: null, max: null }
 
     this.mapFullyLoaded = false
-    this.zoom = 7
+    this.zoom = 13
  
     this.state = {
       places: [],
