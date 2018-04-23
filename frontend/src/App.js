@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Map from './components/Map/Map';
+import NewPostButton from './components/NewPostButton/NewPostButton';
 
 class App extends Component {
   render() {
@@ -12,6 +13,7 @@ class App extends Component {
             <h1 className="App-title">Welcome to Siround</h1>
         </header>
         <Map />
+        <NewPostButton />
       </div>
     );
   }

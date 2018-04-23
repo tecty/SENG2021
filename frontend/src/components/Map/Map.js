@@ -12,22 +12,28 @@ const SiroundMap = withGoogleMap(props => (
     onDragEnd={props.handleMapChange}
     onBoundsChanged={props.handleMapFullyLoaded}
     defaultCenter={props.center}
-    defaultZoom={props.zoom}>
-    {props.places.length > 0 && props
-      .places
-      .map(place => (<PlaceMarker
+    defaultZoom={props.zoom}
+    defaultOptions={{
+      mapTypeControlOptions: {
+        position: google.maps.ControlPosition.TOP_RIGHT
+      }
+    }}
+  >
+    {props.places.length > 0 && props.places.map(place => (
+      <PlaceMarker
         key={`place${place.id}`}
         id={place.id}
         lat={place.latitude}
         lng={place.longitude}
         name={'Event'}
         description={'Description'}
-        tags={['#tag1', '#tag2']}/>))}
+        tags={['#tag1', '#tag2']}
+      />))}
     <SearchBox
       ref={props.onSearchBoxMounted}
       bounds={props.bounds}
       controlPosition={google.maps.ControlPosition.TOP_LEFT}
-      onPlacesChanged={props.onPlacesChanged}>
+      onPlacesChanged={props.onPlacesChanged} >
       <input className="SearchBox-input"
         type="text"
         placeholder="Customized your placeholder"
@@ -162,7 +168,8 @@ export default class Map extends Component {
           places={places}
           onSearchBoxMounted={this.handleSearchBoxMounted}
           onPlacesChanged={this.handlePlacesChanged}
-          />
+        >
+        </SiroundMap>
       </div>
     );
   }
