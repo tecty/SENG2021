@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.28&libraries=places,geometry"></script>
+    <title>Siround</title>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+ 
+    <div id="root"></div>
+<!-- is html form below for login it might be useful
+    <div class="demo">
+      <button onclick="document.getElementById('modal-wrapper').style.display='block'" class = "Login-button"></button>
+        <div id="modal-wrapper" class="modal">
+          
+          <form class="modal-content animate" action="/action_page.php">
+                
+            <div class="imgcontainer">
+              <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp">&times;</span>
+              <img src= "/home/z5161462/Documents/SENG2021/frontend/src/avatar.png" className="avatar" alt="avatar" /> 
+                 
+                 //  problem: couldn't load the image of avatar.png
+  
+              <h1 style="text-align:center">Siround</h1>
+            </div>
+        
+            <div class="container">
+              <input type="text" placeholder="Enter Username" name="uname">
+              <input type="password" placeholder="Enter Password" name="psw">        
+              <button type="submit">Login</button>
+              <input type="checkbox" style="margin:26px 30px;"> Remember me 
+              <a href="#" style="text-decoration:none; float:right; margin-right:34px; margin-top:26px;">Sign up today</a>	  
+              <a href="##" style="text-decoration:none; float:right; margin-right:34px; margin-top:26px;">Forgot Password ?</a>
+               <!--
+                 link to the sign up page 
+                 link to the forget password page
+ 
+            </div>
+          <div class="containerS">
+            <div class="rowS">
+              <div class="column">
+             </h1 style= "margin:26px 30px;">Or login with: </h>
+                <a href="#" class="fb btn">
+                  <i class="fa fa-facebook fa-fw"></i> Facebook
+                 </a>
+                <a href="#" class="twitter btn">
+                  <i class="fa fa-twitter fa-fw">
+                </i> Twitter
+                </a>       
+            <a href="#" class="google btn"><i class="fa fa-google fa-fw">
+                  </i> Google+
+                </a>	
+            <a href="#" class="WeChat btn"><i class="fa fa-wechat fa-fw">
+                  </i> WeChat
+                </a>
+                 <!--
+                   link to the third party login page: fb,twitter,google,wechat 
+                
+                 </div>
+               </div>
+             </div>
+           </div>
+          </form>         
+        </div>
+        <script>
+        // If user clicks anywhere outside of the modal, Modal will close
+        
+        var modal = document.getElementById('modal-wrapper');
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        </script>
+        </div>
+-->
+        <div class = "footer">
+          <a href= "#">About</a> <a href="#"> Blog</a> <a href="#"> Support</a> <a href="#"> Terms</a>
+          <p style="color:#A8A8A8">Copyright © 2018 Siround</p>
+        </div>
+   </div>
+      <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>
