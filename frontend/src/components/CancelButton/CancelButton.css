@@ -1,7 +1,7 @@
-.NewPostButton {
+.CancelButton {
   position: absolute;
   /* left: 50%; */
-  right: 120px;
+  right: 190px;
   width: 0px;
   margin-left: -50px;
   bottom:10px;

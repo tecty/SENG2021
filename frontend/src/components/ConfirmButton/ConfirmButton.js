@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import AddIcon from '@material-ui/icons/Add';
+import CheckIcon from '@material-ui/icons/Check';
 import Button from 'material-ui/Button';
 import Tooltip from 'material-ui/Tooltip';
-import './NewPostButton.css';
+import './ConfirmButton.css';
 
 const styles = theme => ({
   fab: {
@@ -12,20 +12,20 @@ const styles = theme => ({
   },
 });
 
-class NewPostButton extends Component {
+class ConfirmButton extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className="NewPostButton">
-        <Tooltip id="tooltip-fab" title="Add">
+      <div className="ConfirmButton">
+        <Tooltip id="tooltip-fab" title="Confirm">
           <Button 
             variant="fab"
-            color="secondary"
-            aria-label="Add"
+            color="primary"
+            aria-label="Confirm"
             className={classes.fab}
             onClick={this.props.onClick}
           >
-            <AddIcon />
+            <CheckIcon />
           </Button>
         </Tooltip>
       </div>
@@ -33,8 +33,8 @@ class NewPostButton extends Component {
   }
 }
 
-NewPostButton.propTypes = {
+ConfirmButton.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NewPostButton);
+export default withStyles(styles)(ConfirmButton);
