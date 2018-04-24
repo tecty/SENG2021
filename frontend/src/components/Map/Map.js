@@ -7,6 +7,7 @@ import {SearchBox} from 'react-google-maps/lib/components/places/SearchBox';
 import NewPostButton from '../NewPostButton/NewPostButton';
 import ConfirmButton from '../ConfirmButton/ConfirmButton';
 import CancelButton from '../CancelButton/CancelButton';
+import NewPostForm from '../NewPostForm/NewPostForm';
 
 const SiroundMap = withGoogleMap(props => (
   <GoogleMap
@@ -71,6 +72,7 @@ export default class Map extends Component {
       pinPosition: null,
       pinMode: false,
       postMode: false,
+      postSubmitting: false,
     };
     this.handleMapMounted = this.handleMapMounted.bind(this);
     this.handleMapChange = this.handleMapChange.bind(this);
@@ -86,6 +88,8 @@ export default class Map extends Component {
     this.handleNewPostButtonClick = this.handleNewPostButtonClick.bind(this);
     this.handlePinConfirmButtonClick = this.handlePinConfirmButtonClick.bind(this);
     this.handlePinCancelButtonClick = this.handlePinCancelButtonClick.bind(this);
+    this.handleCloseNewPostForm = this.handleCloseNewPostForm.bind(this);
+    this.handlePostSubmit = this.handlePostSubmit.bind(this);
   }
 
   handleMapChange() {
@@ -202,6 +206,25 @@ export default class Map extends Component {
     });
   }
 
+  handlePostSubmit() {
+    this.setState({
+      postSubmitting: true 
+    });
+    setTimeout(() =>{
+      this.setState({
+        postSubmitting: false,
+        postMode: false
+      });
+    }, 3000);
+  }
+
+  handleCloseNewPostForm() {
+    this.setState({
+      pinMode: false,
+      postMode: false
+    })
+  }
+
   setMapBounds() {
     this.setState({
       bounds: this.map.getBounds(),
@@ -218,14 +241,7 @@ export default class Map extends Component {
   }
 
   render() {
-    const {center, places, pinPosition, pinMode, postMode} = this.state;
-  const Button = (pinMode) ? 
-      (<div>
-        <CancelButton onClick={this.handlePinCancelButtonClick} />
-        <ConfirmButton onClick={this.handlePinConfirmButtonClick} />
-      </div>) :
-      (postMode) ? null : 
-      <NewPostButton onClick={this.handleNewPostButtonClick} />;
+    const {center, places, pinPosition, pinMode, postMode, postSubmitting} = this.state;
 
     return (
       <div className="Map">
@@ -247,7 +263,21 @@ export default class Map extends Component {
           handlePinPositionChanged={this.handlePinPositionChanged}
           onPinPositionClick={this.handlePinPositionClick}
         />
-        {Button}
+        {(!pinMode && !postMode) &&
+          <NewPostButton onClick={this.handleNewPostButtonClick} />
+        }
+        {pinMode &&
+          (<div>
+            <CancelButton onClick={this.handlePinCancelButtonClick} />
+            <ConfirmButton onClick={this.handlePinConfirmButtonClick} />
+          </div>)
+        }
+        <NewPostForm
+          visible={postMode}
+          loading={postSubmitting}
+          onClose={this.handleCloseNewPostForm}
+          onSubmit={this.handlePostSubmit}
+        />
       </div>
     );
   }
