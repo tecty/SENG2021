@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 .App {
   text-align: center;
 }
@@ -11,17 +13,12 @@
   background-color: #222;
   height: 150px;
   padding: 20px;
-  color: white;
 }
 
 .App-title {
   font-size: 1.5em;
   display: inline;
-}
-
-.App-intro {
-  font-size: large;
-  display: inline;
+  color: white;
 }
 
 @keyframes App-logo-spin {
