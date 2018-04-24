@@ -17,3 +17,9 @@
   top: 0;
   text-align: left;
 }
+
+.post-tags {
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+}
