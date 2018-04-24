@@ -1,0 +1,19 @@
+.NewPostForm-modal {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.NewPostForm-modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
+}
+
+.NewPostForm-modal .ant-modal {
+  display: inline-block;
+  vertical-align: middle;
+  top: 0;
+  text-align: left;
+}
