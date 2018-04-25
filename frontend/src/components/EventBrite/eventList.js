@@ -1,9 +1,13 @@
+var token = '4D7C5LFTZTL4ZV4BKBJ2'; //this is the token for using Eventbrite API
+var $events = $(document.getElementById("events"));
+
+//NOTICE
+//the json file used for testing is only available when opening the html with Firefox
+//Chrome cannot open the file
+
 //This function shall take in a list of json data (specified range for locations) 
 //and return a list of events happened in the area (also in json format)
 function searchEventsByLocation(callback) {
-        
-    var token = '4D7C5LFTZTL4ZV4BKBJ2'; //this is the token for using Eventbrite API
-    var $events = $(document.getElementById("events"));
 
     //Here we use a json file as the data input, for testing
      $.getJSON("test_jsonData.json",function(data){ 
