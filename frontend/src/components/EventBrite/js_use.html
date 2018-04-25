@@ -5,10 +5,14 @@
 <body>
 <script src="eventList.js"></script>
 <script>
+    //This is the testing html file of using searchEventsByLocation() function
+    //Notice that we use a callback function to return the json-format result
+    //result : a list of events that satisfy the area range
     $(document).ready(function(){
-        $(document.getElementById('events')).html(
-            searchEventsByLocation()
-        )
+        searchEventsByLocation(function f_res(result){
+            $(document.getElementById('events')).html(result);
+        });
+        // $(document.getElementById('events')).html(result);
     });
 </script>
 <h2>Upcoming Events!</h2>

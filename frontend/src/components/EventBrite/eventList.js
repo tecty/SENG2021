@@ -1,10 +1,9 @@
 //This function shall take in a list of json data (specified range for locations) 
 //and return a list of events happened in the area (also in json format)
-function searchEventsByLocation() {
+function searchEventsByLocation(callback) {
         
     var token = '4D7C5LFTZTL4ZV4BKBJ2'; //this is the token for using Eventbrite API
     var $events = $(document.getElementById("events"));
-    var result = null;
 
     //Here we use a json file as the data input, for testing
      $.getJSON("test_jsonData.json",function(data){ 
@@ -25,6 +24,7 @@ function searchEventsByLocation() {
                 'expand':'venue,category' //add additional data requests here
             }, 
             function(list) {
+                var result = null;
                 var s = []; //for generating a event list
                 if(list.events.length) {
                     for(var i=0;i<list.events.length;i++) {
@@ -64,13 +64,11 @@ function searchEventsByLocation() {
                 }
                //result contains all the searching events in json format
                 var res = JSON.stringify(s);
-                console.log(res);
+                // console.log(res);
                 result = res;
-                $events.html(result);
+                callback(result);
             }
         );
      });
-     console.log(result);
-     return result;
 }
     
