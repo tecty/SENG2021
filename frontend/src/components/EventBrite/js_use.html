@@ -6,7 +6,9 @@
 <script src="eventList.js"></script>
 <script>
     $(document).ready(function(){
-        searchEventsByLocation();
+        $(document.getElementById('events')).html(
+            searchEventsByLocation()
+        )
     });
 </script>
 <h2>Upcoming Events!</h2>
