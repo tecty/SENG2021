@@ -7,13 +7,13 @@ class Tag(models.Model):
     # name of the hash tag
     name = models.CharField(max_length = 32)
 
-class Location(object):
+class Location(models.Model):
     # the exact name for that location
     name = models.CharField(max_length = 512)
     # record the precise location of that location
-    # has number before point is 15-12 = 3, after the point is 12
-    lat = models.DecimalField(max_digits=15, decimal_places= 12)
-    lng = models.DecimalField(max_digits=15, decimal_places= 12)
+    # has number before point is 15-12 = 3, after the point is 20
+    lat = models.DecimalField(max_digits=24, decimal_places= 20)
+    lng = models.DecimalField(max_digits=24, decimal_places= 20)
 
 
 class Post(models.Model):
@@ -29,3 +29,38 @@ class Post(models.Model):
     # location of this post, if a post is deleted, then this post wont 
     #   be deleted
     location =  models.ForeignKey(Location,models.PROTECT)
+
+def create_post(title, detail, location , tags = None ):
+    """
+    create post by providing the its title details, location 
+    User may also want to provide some tags to this post
+    """
+    the_post = Post(
+        title = title,
+        detail = detail,
+        location = location,
+        create_time = timezone.now(),
+    )
+    the_post.save()
+
+    if tags:
+        # add associated tag in to this post
+        for t in tags:
+            the_post.tags = t 
+    
+    return the_post
+
+
+def create_location(name, lat, lng ):
+    the_location = Location(
+        name = name,
+        lat = lat, 
+        lng = lng
+    )
+    the_location.save()
+    return the_location
+
+def create_tag(name):
+    the_tag = Tag(name = name )
+    the_tag.save()
+    return the_tag
