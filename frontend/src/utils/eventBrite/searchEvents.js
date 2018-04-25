@@ -71,7 +71,7 @@ function searchEventsByLocation(callback, data) {
                     }
                     //Location
                     //Latitude and Longitude are separately recorded
-                    var position = {latitude: event.venue.latitude, longitude: event.venue.longitude};
+                    var position = {lat: event.venue.latitude, lng: event.venue.longitude};
                     detail.Position = position;
 
                     s.push(detail);
