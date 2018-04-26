@@ -29,9 +29,9 @@ const SiroundMap = withGoogleMap(props => (
       <PlaceMarker
         key={`place${place.id}`}
         position={place.position}
-        name={'Event'}
-        description={'Description'}
-        tags={['#tag1', '#tag2']}
+        name={place.name}
+        description={place.description}
+        tags={place.tags}
       />))}
     <SearchBox
       ref={props.onSearchBoxMounted}
@@ -119,17 +119,7 @@ export default class Map extends Component {
   }
 
   fetchPlacesFromApi() {
-    const place1 = {
-      id: 1,
-      position: {
-        lat: -33.9182861,
-        lng: 151.2307079,
-      },
-      name: "Event",
-      description: "Description",
-      tags: ["#tag1", "#tag2"]
-    };
-    this.setState({places: [place1]});
+    // console.log(this.state.places);
   }
 
   handleSearchBoxMounted(searchBox) {
@@ -206,14 +196,21 @@ export default class Map extends Component {
     });
   }
 
-  handlePostSubmit() {
+  handlePostSubmit(newPost) {
     this.setState({
       postSubmitting: true 
     });
+    const post = {
+      ...newPost,
+      position: this.state.pinPosition,
+      id: this.state.places.length
+    }
+    // console.log(post);
     setTimeout(() =>{
       this.setState({
         postSubmitting: false,
-        postMode: false
+        postMode: false,
+        places: [...this.state.places, post]
       });
     }, 3000);
   }

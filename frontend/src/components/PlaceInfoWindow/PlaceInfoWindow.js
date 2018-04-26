@@ -13,7 +13,7 @@ export default class PlaceInfoWindow extends Component {
           <div className="tags">
             {tags.length >0 && tags.map(tag => {
               return (
-                <span key={tag}>{tag}</span>
+                <span key={tag}>#{tag}</span>
               )
             })}
           </div>
