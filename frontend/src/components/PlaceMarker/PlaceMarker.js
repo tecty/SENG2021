@@ -23,14 +23,11 @@ export default class PlaceMarker extends Component {
 
   render() {
     const {showTooltip} = this.state;
-    const {lat, lng, name, tags, description} = this.props
+    const {position, name, tags, description} = this.props
  
     return(
       <Marker
-        position={{
-          lat: parseFloat(lat),
-          lng: parseFloat(lng)
-        }}
+        position={position}
         onClick={this.clickTooltip}>
         {showTooltip && (<PlaceInfoWindow 
           description={description}
