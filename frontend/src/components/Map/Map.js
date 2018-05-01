@@ -3,11 +3,14 @@ import React, {Component} from 'react';
 import {withGoogleMap, GoogleMap, Marker} from 'react-google-maps';
 import './Map.css';
 import PlaceMarker from '../PlaceMarker/PlaceMarker';
-import {SearchBox} from 'react-google-maps/lib/components/places/SearchBox';
+import { SearchBox } from 'react-google-maps/lib/components/places/SearchBox';
 import NewPostButton from '../NewPostButton/NewPostButton';
 import ConfirmButton from '../ConfirmButton/ConfirmButton';
 import CancelButton from '../CancelButton/CancelButton';
 import NewPostForm from '../NewPostForm/NewPostForm';
+import eventBrite from '../../utils/eventBrite';
+import AreaSearchButton from '../AreaSearchButton/AreaSearchButton';
+import { MarkerClusterer } from 'react-google-maps/lib/components/addons/MarkerClusterer';
 
 const SiroundMap = withGoogleMap(props => (
   <GoogleMap
@@ -25,14 +28,20 @@ const SiroundMap = withGoogleMap(props => (
     }}
     onClick={props.onPinPositionClick}
   >
-    {props.places.length > 0 && props.places.map(place => (
-      <PlaceMarker
-        key={`place${place.id}`}
-        position={place.position}
-        name={place.name}
-        description={place.description}
-        tags={place.tags}
-      />))}
+    <MarkerClusterer
+      averageCenter
+      enableRetinaIcons
+      gridSize={60}
+    >
+      {props.places.length > 0 && props.places.map(place => (
+        <PlaceMarker
+          key={`place${place.id}`}
+          position={place.position}
+          name={place.name}
+          description={place.description}
+          tags={place.tags}
+        />))}
+    </MarkerClusterer>
     <SearchBox
       ref={props.onSearchBoxMounted}
       bounds={props.bounds}
@@ -64,6 +73,7 @@ export default class Map extends Component {
 
     this.state = {
       places: [],
+      posts:[],
       bounds: null,
       center: {
         lat: -33.9182861,
@@ -73,10 +83,12 @@ export default class Map extends Component {
       pinMode: false,
       postMode: false,
       postSubmitting: false,
+      placesLoaded: false,
     };
     this.handleMapMounted = this.handleMapMounted.bind(this);
     this.handleMapChange = this.handleMapChange.bind(this);
     this.handleMapFullyLoaded = this.handleMapFullyLoaded.bind(this);
+    this.fetchPlacesFromApi = this.fetchPlacesFromApi.bind(this);
 
     this.handleSearchBoxMounted = this.handleSearchBoxMounted.bind(this);
     this.handlePlacesChanged = this.handlePlacesChanged.bind(this);
@@ -95,7 +107,10 @@ export default class Map extends Component {
   handleMapChange() {
     this.setMapBounds();
     this.setMapCenterPoint();
-    this.fetchPlacesFromApi();
+    //this.fetchPlacesFromApi();
+    this.setState({
+      placesLoaded: false
+    })
   }
 
   handleMapMounted(map) {
@@ -119,7 +134,25 @@ export default class Map extends Component {
   }
 
   fetchPlacesFromApi() {
-    // console.log(this.state.places);
+    console.log(this.state.bounds);
+    const bounds = this.state.bounds;
+    eventBrite.searchEventsByLocation([
+      {
+        "Latitude": `${bounds.f.f}`,
+        "Longitude": `${bounds.b.f}`
+      },
+      {
+        "Latitude": `${bounds.f.b}`,
+        "Longitude": `${bounds.b.b}`
+      }
+    ]).then(events => {
+      console.log(events);
+      
+      this.setState({
+        places: this.state.posts.concat(events),
+        placesLoaded: true
+      })
+    })
   }
 
   handleSearchBoxMounted(searchBox) {
@@ -210,9 +243,10 @@ export default class Map extends Component {
       this.setState({
         postSubmitting: false,
         postMode: false,
-        places: [...this.state.places, post]
+        places: [...this.state.places, post],
+        posts: [...this.state.posts, post],
       });
-    }, 3000);
+    }, 1000);
   }
 
   handleCloseNewPostForm() {
@@ -226,6 +260,7 @@ export default class Map extends Component {
     this.setState({
       bounds: this.map.getBounds(),
     });
+    // console.log(this.state.bounds);
     // var mapBounds = this.map.getBounds()
     // var xMapBounds = mapBounds.b
     // var yMapBounds = mapBounds.f
@@ -238,7 +273,7 @@ export default class Map extends Component {
   }
 
   render() {
-    const {center, places, pinPosition, pinMode, postMode, postSubmitting} = this.state;
+    const {center, places, pinPosition, pinMode, postMode, postSubmitting, placesLoaded} = this.state;
 
     return (
       <div className="Map">
@@ -275,6 +310,9 @@ export default class Map extends Component {
           onClose={this.handleCloseNewPostForm}
           onSubmit={this.handlePostSubmit}
         />
+        {!placesLoaded &&
+          <AreaSearchButton onClick={this.fetchPlacesFromApi}/>
+        }
       </div>
     );
   }
