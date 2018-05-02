@@ -11,6 +11,7 @@ import NewPostForm from '../NewPostForm/NewPostForm';
 import eventBrite from '../../utils/eventBrite';
 import AreaSearchButton from '../AreaSearchButton/AreaSearchButton';
 import { MarkerClusterer } from 'react-google-maps/lib/components/addons/MarkerClusterer';
+import EventsList from '../EventsList/EventsList';
 
 const SiroundMap = withGoogleMap(props => (
   <GoogleMap
@@ -310,9 +311,8 @@ export default class Map extends Component {
           onClose={this.handleCloseNewPostForm}
           onSubmit={this.handlePostSubmit}
         />
-        {!placesLoaded &&
-          <AreaSearchButton onClick={this.fetchPlacesFromApi}/>
-        }
+        {!placesLoaded && <AreaSearchButton onClick={this.fetchPlacesFromApi}/>}
+        {(places.length > 0) && <EventsList listData={places}/>}
       </div>
     );
   }
