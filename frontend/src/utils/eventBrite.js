@@ -14,7 +14,6 @@ const eventBrite = {
         }, networkError => console.log(networkError.message)).then(jsonResponse => {
             if (jsonResponse == null) return {};
             return jsonResponse.events.map(event => {
-                console.log(event.category);
                 const tags = event.category != null ? event.category.name.split(/[ ,&]+/) : [];
                 return {
                     id: event.id,

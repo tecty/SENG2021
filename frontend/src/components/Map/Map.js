@@ -12,6 +12,7 @@ import eventBrite from '../../utils/eventBrite';
 import AreaSearchButton from '../AreaSearchButton/AreaSearchButton';
 import { MarkerClusterer } from 'react-google-maps/lib/components/addons/MarkerClusterer';
 import EventsList from '../EventsList/EventsList';
+import EventDetail from '../EventDetail/EventDetail';
 
 const SiroundMap = withGoogleMap(props => (
   <GoogleMap
@@ -85,6 +86,8 @@ export default class Map extends Component {
       postMode: false,
       postSubmitting: false,
       placesLoaded: false,
+      showEventDetail: false,
+      eventDetail: {},
     };
     this.handleMapMounted = this.handleMapMounted.bind(this);
     this.handleMapChange = this.handleMapChange.bind(this);
@@ -103,6 +106,9 @@ export default class Map extends Component {
     this.handlePinCancelButtonClick = this.handlePinCancelButtonClick.bind(this);
     this.handleCloseNewPostForm = this.handleCloseNewPostForm.bind(this);
     this.handlePostSubmit = this.handlePostSubmit.bind(this);
+
+    this.handleEventDetailClick = this.handleEventDetailClick.bind(this);
+    this.handleEventDetailBackClick = this.handleEventDetailBackClick.bind(this);
   }
 
   handleMapChange() {
@@ -149,8 +155,15 @@ export default class Map extends Component {
     ]).then(events => {
       console.log(events);
       
+      const posts = this.state.posts.filter(post => {
+        return (post.position.lat <= bounds.f.f && 
+        post.position.lat >= bounds.f.b &&
+        post.position.lng <= bounds.b.f &&
+        post.position.lng >= bounds.b.b)
+      })
+
       this.setState({
-        places: this.state.posts.concat(events),
+        places: posts.concat(events),
         placesLoaded: true
       })
     })
@@ -244,7 +257,7 @@ export default class Map extends Component {
       this.setState({
         postSubmitting: false,
         postMode: false,
-        places: [...this.state.places, post],
+        places: [post, ...this.state.places],
         posts: [...this.state.posts, post],
       });
     }, 1000);
@@ -273,8 +286,24 @@ export default class Map extends Component {
     // this.yMapBounds.max = yMapBounds.b
   }
 
+  handleEventDetailClick(eventDetail) {
+    this.setState({
+      showEventDetail: true,
+      eventDetail: eventDetail,
+    });
+    let bounds = new google.maps.LatLngBounds();
+    bounds.extend(eventDetail.position);
+    this.map.fitBounds(bounds);
+  }
+
+  handleEventDetailBackClick() {
+    this.setState({
+      showEventDetail: false,
+    });
+  }
+
   render() {
-    const {center, places, pinPosition, pinMode, postMode, postSubmitting, placesLoaded} = this.state;
+    const {center, places, pinPosition, pinMode, postMode, postSubmitting, placesLoaded, showEventDetail, eventDetail} = this.state;
 
     return (
       <div className="Map">
@@ -312,7 +341,18 @@ export default class Map extends Component {
           onSubmit={this.handlePostSubmit}
         />
         {!placesLoaded && <AreaSearchButton onClick={this.fetchPlacesFromApi}/>}
-        {(places.length > 0) && <EventsList listData={places}/>}
+        {(places.length > 0) && 
+          <EventsList 
+            listData={places}
+            onEventDetailClick={this.handleEventDetailClick}
+          />
+        }
+        {showEventDetail &&
+          <EventDetail 
+            onBackButtonClick={this.handleEventDetailBackClick}
+            event={eventDetail}
+          />
+        }
       </div>
     );
   }
