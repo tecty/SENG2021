@@ -3,11 +3,17 @@ import React, {Component} from 'react';
 import {withGoogleMap, GoogleMap, Marker} from 'react-google-maps';
 import './Map.css';
 import PlaceMarker from '../PlaceMarker/PlaceMarker';
-import {SearchBox} from 'react-google-maps/lib/components/places/SearchBox';
+import { SearchBox } from 'react-google-maps/lib/components/places/SearchBox';
 import NewPostButton from '../NewPostButton/NewPostButton';
 import ConfirmButton from '../ConfirmButton/ConfirmButton';
 import CancelButton from '../CancelButton/CancelButton';
 import NewPostForm from '../NewPostForm/NewPostForm';
+import eventBrite from '../../utils/eventBrite';
+import AreaSearchButton from '../AreaSearchButton/AreaSearchButton';
+import { MarkerClusterer } from 'react-google-maps/lib/components/addons/MarkerClusterer';
+import EventsList from '../EventsList/EventsList';
+import EventDetail from '../EventDetail/EventDetail';
+import EventsListButton from '../EventsListButton/EventsListButton';
 
 const SiroundMap = withGoogleMap(props => (
   <GoogleMap
@@ -19,20 +25,34 @@ const SiroundMap = withGoogleMap(props => (
     defaultCenter={props.center}
     defaultZoom={props.zoom}
     defaultOptions={{
+      mapTypeControl: false,
+      fullscreenControl: false,
       mapTypeControlOptions: {
         position: google.maps.ControlPosition.TOP_RIGHT
       }
     }}
     onClick={props.onPinPositionClick}
   >
-    {props.places.length > 0 && props.places.map(place => (
+    <MarkerClusterer
+      averageCenter
+      enableRetinaIcons
+      gridSize={60}
+    >
+      {props.places.length > 0 && !props.showEventDetail && props.places.map(place => (
+        <PlaceMarker
+          key={`place${place.id}`}
+          place={place}
+          onClick={props.onPinClick}
+        />))
+      }
+    </MarkerClusterer>
+    {props.showEventDetail && !(props.pinMode || props.postMode) &&
       <PlaceMarker
-        key={`place${place.id}`}
-        position={place.position}
-        name={place.name}
-        description={place.description}
-        tags={place.tags}
-      />))}
+        key={`eventDetail${props.eventDetail.id}`}
+        place={props.eventDetail}
+        onClick={props.onPinClick}
+      />
+    }
     <SearchBox
       ref={props.onSearchBoxMounted}
       bounds={props.bounds}
@@ -41,7 +61,7 @@ const SiroundMap = withGoogleMap(props => (
     >
       <input className="SearchBox-input"
         type="text"
-        placeholder="Customized your placeholder"
+        placeholder="Enter place"
       />
     </SearchBox>
     {(props.pinMode || props.postMode) && 
@@ -64,6 +84,7 @@ export default class Map extends Component {
 
     this.state = {
       places: [],
+      posts:[],
       bounds: null,
       center: {
         lat: -33.9182861,
@@ -73,10 +94,15 @@ export default class Map extends Component {
       pinMode: false,
       postMode: false,
       postSubmitting: false,
+      placesLoaded: false,
+      showList: false,
+      showEventDetail: false,
+      eventDetail: {},
     };
     this.handleMapMounted = this.handleMapMounted.bind(this);
     this.handleMapChange = this.handleMapChange.bind(this);
     this.handleMapFullyLoaded = this.handleMapFullyLoaded.bind(this);
+    this.fetchPlacesFromApi = this.fetchPlacesFromApi.bind(this);
 
     this.handleSearchBoxMounted = this.handleSearchBoxMounted.bind(this);
     this.handlePlacesChanged = this.handlePlacesChanged.bind(this);
@@ -90,15 +116,24 @@ export default class Map extends Component {
     this.handlePinCancelButtonClick = this.handlePinCancelButtonClick.bind(this);
     this.handleCloseNewPostForm = this.handleCloseNewPostForm.bind(this);
     this.handlePostSubmit = this.handlePostSubmit.bind(this);
+
+    this.handleEventDetailClick = this.handleEventDetailClick.bind(this);
+    this.handleEventDetailBackClick = this.handleEventDetailBackClick.bind(this);
+    this.handlePinClick = this.handlePinClick.bind(this);
+    this.handleEventListButtonClick = this.handleEventListButtonClick.bind(this);
   }
 
   handleMapChange() {
     this.setMapBounds();
     this.setMapCenterPoint();
-    this.fetchPlacesFromApi();
+    //this.fetchPlacesFromApi();
+    this.setState({
+      placesLoaded: false
+    })
   }
 
   handleMapMounted(map) {
+    console.log(map);
     this.map = map;
   }
 
@@ -119,7 +154,34 @@ export default class Map extends Component {
   }
 
   fetchPlacesFromApi() {
-    // console.log(this.state.places);
+    console.log(this.state.bounds);
+    const bounds = this.state.bounds;
+    eventBrite.searchEventsByLocation([
+      {
+        "Latitude": `${bounds.f.f}`,
+        "Longitude": `${bounds.b.f}`
+      },
+      {
+        "Latitude": `${bounds.f.b}`,
+        "Longitude": `${bounds.b.b}`
+      }
+    ]).then(events => {
+      console.log(events);
+      
+      const posts = this.state.posts.filter(post => {
+        return (post.position.lat <= bounds.f.f && 
+        post.position.lat >= bounds.f.b &&
+        post.position.lng <= bounds.b.f &&
+        post.position.lng >= bounds.b.b)
+      })
+
+      this.setState({
+        places: posts.concat(events),
+        placesLoaded: true,
+        showEventDetail: false,
+        showList: true,
+      })
+    })
   }
 
   handleSearchBoxMounted(searchBox) {
@@ -210,9 +272,14 @@ export default class Map extends Component {
       this.setState({
         postSubmitting: false,
         postMode: false,
-        places: [...this.state.places, post]
+        places: [post, ...this.state.places],
+        posts: [...this.state.posts, post],
+        placesLoaded: true,
+        showEventDetail: true,
+        showList: true,
+        eventDetail: post,
       });
-    }, 3000);
+    }, 1000);
   }
 
   handleCloseNewPostForm() {
@@ -226,6 +293,7 @@ export default class Map extends Component {
     this.setState({
       bounds: this.map.getBounds(),
     });
+    // console.log(this.state.bounds);
     // var mapBounds = this.map.getBounds()
     // var xMapBounds = mapBounds.b
     // var yMapBounds = mapBounds.f
@@ -237,8 +305,37 @@ export default class Map extends Component {
     // this.yMapBounds.max = yMapBounds.b
   }
 
+  handleEventDetailClick(eventDetail) {
+    this.handlePinClick(eventDetail);
+    let bounds = new google.maps.LatLngBounds();
+    bounds.extend(eventDetail.position);
+    console.log(this.map);
+    this.map.fitBounds(bounds);
+    this.map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.setZoom(17);
+  }
+
+  handlePinClick(place) {
+    this.setState({
+      showEventDetail: true,
+      showList: true,
+      eventDetail: place,
+    })
+  }
+
+  handleEventDetailBackClick() {
+    this.setState({
+      showEventDetail: false,
+    });
+  }
+
+  handleEventListButtonClick() {
+    this.setState({
+      showList: !this.state.showList,
+    })
+  }
+
   render() {
-    const {center, places, pinPosition, pinMode, postMode, postSubmitting} = this.state;
+    const {center, places, pinPosition, pinMode, postMode, postSubmitting, placesLoaded, showEventDetail, eventDetail, showList} = this.state;
 
     return (
       <div className="Map">
@@ -259,6 +356,9 @@ export default class Map extends Component {
           onPinMounted={this.handlePinMounted}
           handlePinPositionChanged={this.handlePinPositionChanged}
           onPinPositionClick={this.handlePinPositionClick}
+          showEventDetail={showEventDetail}
+          eventDetail={eventDetail}
+          onPinClick={this.handlePinClick}
         />
         {(!pinMode && !postMode) &&
           <NewPostButton onClick={this.handleNewPostButtonClick} />
@@ -274,6 +374,23 @@ export default class Map extends Component {
           loading={postSubmitting}
           onClose={this.handleCloseNewPostForm}
           onSubmit={this.handlePostSubmit}
+        />
+        {!placesLoaded && <AreaSearchButton onClick={this.fetchPlacesFromApi}/>}
+        {(places.length > 0) && !(pinMode || postMode) && showList &&
+          <EventsList 
+            listData={places}
+            onEventDetailClick={this.handleEventDetailClick}
+          />
+        }
+        {showEventDetail && !(pinMode || postMode) && showList &&
+          <EventDetail 
+            onBackButtonClick={this.handleEventDetailBackClick}
+            event={eventDetail}
+          />
+        }
+        <EventsListButton
+          onClick={this.handleEventListButtonClick}
+          show={(showList)}
         />
       </div>
     );

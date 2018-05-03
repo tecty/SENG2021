@@ -1,0 +1,14 @@
+.EventDetail {
+  position: absolute;
+  top: 100px;
+  left: 10px;
+  width: 350px;
+  bottom: 100px;
+  z-index: 4;
+  background: whitesmoke;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  overflow: auto;
+  padding: 8px 24px;
+  /* height: 300px; */
+}

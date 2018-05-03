@@ -8,12 +8,12 @@ Using django(python3), Bootstrap, React, GraphQL,sqlite3
 
 ```shell
 # create to your branch and working there
-git checkout -b YOUR_BRANCH_NAME
+$ git checkout -b YOUR_BRANCH_NAME
 
 # when you finshish, push the commits
-git add && git commmit && git push
+$ git add && git commmit && git push
 # IF you are push this branch FIRST TIME, you may use this line
-git push --set-upstream origin master
+$ git push --set-upstream origin master
 ```
 
 ### Setting Environment
@@ -28,7 +28,16 @@ $ virtualenv venv -p `which python3` --no-site-packages
 $ source venv/bin/activate
 ```
 
+### Install frontend dependencies and build production
+
+```shell
+$ cd frontend
+./frontend $ npm install
+./frontend $ npm run build
+```
+
 ### Install dependencies and setup the database
+
 ```shell
 (venv) $ pip install -r requirements.txt
 
