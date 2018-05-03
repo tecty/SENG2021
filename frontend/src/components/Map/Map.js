@@ -13,6 +13,7 @@ import AreaSearchButton from '../AreaSearchButton/AreaSearchButton';
 import { MarkerClusterer } from 'react-google-maps/lib/components/addons/MarkerClusterer';
 import EventsList from '../EventsList/EventsList';
 import EventDetail from '../EventDetail/EventDetail';
+import EventsListButton from '../EventsListButton/EventsListButton';
 
 const SiroundMap = withGoogleMap(props => (
   <GoogleMap
@@ -24,6 +25,8 @@ const SiroundMap = withGoogleMap(props => (
     defaultCenter={props.center}
     defaultZoom={props.zoom}
     defaultOptions={{
+      mapTypeControl: false,
+      fullscreenControl: false,
       mapTypeControlOptions: {
         position: google.maps.ControlPosition.TOP_RIGHT
       }
@@ -43,7 +46,7 @@ const SiroundMap = withGoogleMap(props => (
         />))
       }
     </MarkerClusterer>
-    {props.showEventDetail &&
+    {props.showEventDetail && !(props.pinMode || props.postMode) &&
       <PlaceMarker
         key={`eventDetail${props.eventDetail.id}`}
         place={props.eventDetail}
@@ -58,7 +61,7 @@ const SiroundMap = withGoogleMap(props => (
     >
       <input className="SearchBox-input"
         type="text"
-        placeholder="Customized your placeholder"
+        placeholder="Enter place"
       />
     </SearchBox>
     {(props.pinMode || props.postMode) && 
@@ -92,6 +95,7 @@ export default class Map extends Component {
       postMode: false,
       postSubmitting: false,
       placesLoaded: false,
+      showList: false,
       showEventDetail: false,
       eventDetail: {},
     };
@@ -116,6 +120,7 @@ export default class Map extends Component {
     this.handleEventDetailClick = this.handleEventDetailClick.bind(this);
     this.handleEventDetailBackClick = this.handleEventDetailBackClick.bind(this);
     this.handlePinClick = this.handlePinClick.bind(this);
+    this.handleEventListButtonClick = this.handleEventListButtonClick.bind(this);
   }
 
   handleMapChange() {
@@ -128,6 +133,7 @@ export default class Map extends Component {
   }
 
   handleMapMounted(map) {
+    console.log(map);
     this.map = map;
   }
 
@@ -171,7 +177,9 @@ export default class Map extends Component {
 
       this.setState({
         places: posts.concat(events),
-        placesLoaded: true
+        placesLoaded: true,
+        showEventDetail: false,
+        showList: true,
       })
     })
   }
@@ -266,6 +274,10 @@ export default class Map extends Component {
         postMode: false,
         places: [post, ...this.state.places],
         posts: [...this.state.posts, post],
+        placesLoaded: true,
+        showEventDetail: true,
+        showList: true,
+        eventDetail: post,
       });
     }, 1000);
   }
@@ -305,6 +317,7 @@ export default class Map extends Component {
   handlePinClick(place) {
     this.setState({
       showEventDetail: true,
+      showList: true,
       eventDetail: place,
     })
   }
@@ -315,8 +328,14 @@ export default class Map extends Component {
     });
   }
 
+  handleEventListButtonClick() {
+    this.setState({
+      showList: !this.state.showList,
+    })
+  }
+
   render() {
-    const {center, places, pinPosition, pinMode, postMode, postSubmitting, placesLoaded, showEventDetail, eventDetail} = this.state;
+    const {center, places, pinPosition, pinMode, postMode, postSubmitting, placesLoaded, showEventDetail, eventDetail, showList} = this.state;
 
     return (
       <div className="Map">
@@ -357,18 +376,22 @@ export default class Map extends Component {
           onSubmit={this.handlePostSubmit}
         />
         {!placesLoaded && <AreaSearchButton onClick={this.fetchPlacesFromApi}/>}
-        {(places.length > 0) && 
+        {(places.length > 0) && !(pinMode || postMode) && showList &&
           <EventsList 
             listData={places}
             onEventDetailClick={this.handleEventDetailClick}
           />
         }
-        {showEventDetail &&
+        {showEventDetail && !(pinMode || postMode) && showList &&
           <EventDetail 
             onBackButtonClick={this.handleEventDetailBackClick}
             event={eventDetail}
           />
         }
+        <EventsListButton
+          onClick={this.handleEventListButtonClick}
+          show={(showList)}
+        />
       </div>
     );
   }

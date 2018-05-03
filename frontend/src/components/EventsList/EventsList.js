@@ -9,6 +9,13 @@ export default class InfiniteListExample extends Component {
     this.props.onEventDetailClick(eventDetatil);
   }
 
+  partalDescription(description) {
+    if (description == null) return;
+    const isLong = description.length > 30;
+    const desc = isLong ? `${description.slice(0, 30)} ... ` : `${description} `;
+    return (<a className="EventsList-description">{desc}</a>);
+  }
+
   render() {
     return (
       <div className="EventsList">
@@ -18,7 +25,7 @@ export default class InfiniteListExample extends Component {
             renderItem={item => (
               <List.Item
                 key={item.id}
-                actions={[<a onClick={this.handleMoreClick.bind(this, item)}>more</a>]}
+                actions={[]}
                 // onClick={this.props.onClick}
               >
                 <List.Item.Meta
@@ -27,9 +34,15 @@ export default class InfiniteListExample extends Component {
                   title={item.name}
                   description={
                     <div>
-                      {item.tags.length > 0 && item.tags.map(tag => {
-                        return (<Tag color="#2db7f5" key={`${item.id}${tag}`}>#{tag}</Tag>)
-                      })}
+                      <div>
+                        {item.tags.length > 0 && item.tags.map(tag => {
+                          return (<Tag color="#2db7f5" key={`${item.id}${tag}`}>#{tag}</Tag>)
+                        })}
+                      </div>
+                      <div>
+                        {this.partalDescription(item.description)}
+                        <a onClick={this.handleMoreClick.bind(this, item)}>more</a>
+                      </div>
                     </div>
                   }
                 />

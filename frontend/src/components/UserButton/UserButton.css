@@ -1,0 +1,19 @@
+.UserButton {
+  position: absolute;
+  /* left: 50%; */
+  right: 60px;
+  width: 0px;
+  margin-left: -50px;
+  top: 5px;
+  z-index: 4;
+}
+
+.UserButton-avatar {
+  position: absolute;
+  /* left: 50%; */
+  right: 39px;
+  width: 0px;
+  margin-left: -50px;
+  top: -1px;
+  z-index: 5;
+}

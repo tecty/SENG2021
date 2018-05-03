@@ -23,7 +23,8 @@ export default class AreaSearchButton extends Component {
     return(
       <div className="AreaSearchButton">
         <Button
-          icon="search"
+          type="primary"
+          icon="sync"
           size="large"
           onClick={this.handleClick}
           loading={this.state.loading}

@@ -18,3 +18,10 @@
   width: 100%;
   text-align: center;
 }
+
+.EventsList-description {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+  color: grey;
+}
