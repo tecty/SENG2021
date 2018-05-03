@@ -15,6 +15,7 @@ const eventBrite = {
             if (jsonResponse == null) return {};
             return jsonResponse.events.map(event => {
                 const tags = event.category != null ? event.category.name.split(/[ ,&]+/) : [];
+
                 return {
                     id: event.id,
                     position: {
