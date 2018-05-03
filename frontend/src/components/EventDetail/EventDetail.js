@@ -19,6 +19,7 @@ export default class EventDetail extends Component {
           // cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
           // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
           title={event.name}
+          bordered={false}
         >
           <Meta
             // avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}

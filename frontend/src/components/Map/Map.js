@@ -35,15 +35,21 @@ const SiroundMap = withGoogleMap(props => (
       enableRetinaIcons
       gridSize={60}
     >
-      {props.places.length > 0 && props.places.map(place => (
+      {props.places.length > 0 && !props.showEventDetail && props.places.map(place => (
         <PlaceMarker
           key={`place${place.id}`}
-          position={place.position}
-          name={place.name}
-          description={place.description}
-          tags={place.tags}
-        />))}
+          place={place}
+          onClick={props.onPinClick}
+        />))
+      }
     </MarkerClusterer>
+    {props.showEventDetail &&
+      <PlaceMarker
+        key={`eventDetail${props.eventDetail.id}`}
+        place={props.eventDetail}
+        onClick={props.onPinClick}
+      />
+    }
     <SearchBox
       ref={props.onSearchBoxMounted}
       bounds={props.bounds}
@@ -109,6 +115,7 @@ export default class Map extends Component {
 
     this.handleEventDetailClick = this.handleEventDetailClick.bind(this);
     this.handleEventDetailBackClick = this.handleEventDetailBackClick.bind(this);
+    this.handlePinClick = this.handlePinClick.bind(this);
   }
 
   handleMapChange() {
@@ -287,13 +294,19 @@ export default class Map extends Component {
   }
 
   handleEventDetailClick(eventDetail) {
-    this.setState({
-      showEventDetail: true,
-      eventDetail: eventDetail,
-    });
+    this.handlePinClick(eventDetail);
     let bounds = new google.maps.LatLngBounds();
     bounds.extend(eventDetail.position);
+    console.log(this.map);
     this.map.fitBounds(bounds);
+    this.map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.setZoom(17);
+  }
+
+  handlePinClick(place) {
+    this.setState({
+      showEventDetail: true,
+      eventDetail: place,
+    })
   }
 
   handleEventDetailBackClick() {
@@ -324,6 +337,9 @@ export default class Map extends Component {
           onPinMounted={this.handlePinMounted}
           handlePinPositionChanged={this.handlePinPositionChanged}
           onPinPositionClick={this.handlePinPositionClick}
+          showEventDetail={showEventDetail}
+          eventDetail={eventDetail}
+          onPinClick={this.handlePinClick}
         />
         {(!pinMode && !postMode) &&
           <NewPostButton onClick={this.handleNewPostButtonClick} />
