@@ -14,7 +14,7 @@ export default class AppMenu extends Component {
         <Menu.Item>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title"> Siround</h1>
+          <h1 className="App-title"> SiRound</h1>
         </header>
         </Menu.Item>
         <Menu.Item key="home" disabled>
