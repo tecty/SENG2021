@@ -40,10 +40,17 @@ INSTALLED_APPS = [
     'rest_framework',
     'post',
 
+
+    # the app needed by allauth
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    # third party login 
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.weixin',
 ]
 
 MIDDLEWARE = [
@@ -132,7 +139,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/build/static')
+    os.path.join(BASE_DIR, 'frontend/build/static'),
+    os.path.join(BASE_DIR, 'root/static'),
 ]
 
 
@@ -152,3 +160,8 @@ AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
+# the site id needed to be referenced in db 
+SITE_ID = 1
+# disable the email verification to remove the error 
+# setup mailgun ? 

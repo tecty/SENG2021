@@ -36,6 +36,18 @@ $ source venv/bin/activate
 (venv) $ ./manage.py migrate
 ```
 
+### Update backend
+```shell
+(venv) $ pip install -r requirements.txt
+
+# setup the database
+(venv) $ ./manage.py migrate
+# create a  backend super user 
+(venv) $ ./manage.py createsuperuser 
+# follow the instruction to create super user.
+
+```
+
 ### Run the Server
 
 A shell to run django's httpd.
