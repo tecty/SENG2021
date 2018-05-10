@@ -33,5 +33,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^', include('root.urls')),
     url(r'^api/', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    # import all auth
+    # url(r'^accounts/', include('allauth.urls')),
 ]
