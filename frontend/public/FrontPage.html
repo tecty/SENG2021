@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <title>Siround</title>
+	<style>
+	#header{ position:fixed; margin-top:0; width:100%; z-index:9999; } 
+	.main{
+		border-radius: 20px;
+		width: 2000px;
+		height: 880px;
+		margin: auto;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+	.bg{
+		width:1800px;
+		height: 780px;
+		line-height: 100px;
+		text-align: center;
+	}
+	.bg:before{
+		background: url(background.jpg)fixed center center no-repeat;
+		background-size: cover;
+		width: 2000px;
+		height: 880px;
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: -1;
+		background-attachment: fixed;
+		-webkit-filter: blur(3px);
+		-moz-filter: blur(3px);
+		-ms-filter: blur(3px);
+		-o-filter: blur(3px);
+		filter: blur(3px);
+	}
+	a:link,a:visited{
+		text-decoration:none;
+		color: white;
+		font-weight:bold;
+		font-size:60pt;
+		font-family:Arial;
+	}
+	.center{ 
+		width:2000px; 
+		height:200px; 
+		text-align:center; 
+		line-height:500px;
+	}
+	#footer{  
+			position: absolute; 
+			bottom: 0; 
+			left:10;  
+			height: 60px; 
+	} 
+</style>
+<body>
+<div class = "main">
+<div class="bg" >
+<div class="center">
+<a href="#"><img src="logo.png" style="width:80px;height:90px;"></a>
+<a href="#">Pin Your Own World !</a>
+<a href="#"><img src="logo.png" style="width:80px;height:90px;"></a><br/>
+</div>
+</div>
+<footer>
+<div style="text-align:center;margin:5px;">
+	<a href="#" style="color:white;margin:5px;font-weight:bold;font-size:20pt;">About</a> <a href="#" style="color:white;margin:5px;font-weight:bold;font-size:20pt;">Blog</a> <a href="#" style="color:white;margin:5px;font-weight:bold;font-size:20pt;">Support</a> <a href="#" style="color:white;margin:5px;font-weight:bold;font-size:20pt;">Terms</a>
+	<h1 style="color:white;font-size:15px;" >Copyright &copy 2018 SiRound</h1>
+</div>
+</footer>
+</div>
+</body>
+</html>
