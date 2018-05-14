@@ -2,29 +2,37 @@ import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import './AppMenu.css'
 import logo from '../../logo.png';
+import { Link } from 'react-router-dom';
 
 export default class AppMenu extends Component {
+  handleClick = (e) => {
+    this.props.onPageChanged(e.key);
+  }
+
   render() {
     return (
       <div className="AppMenu">
         <Menu
-          selectedKeys={['map']}
+          selectedKeys={[this.props.page]}
           mode="horizontal"
         >
           <Menu.Item>
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title"> SiRound</h1>
-          </header>
+            <Link to='/'>
+              <img src={logo} className="App-logo" alt="logo" />
+            </Link>
           </Menu.Item>
           {/* <Menu.Item key="home" disabled>
             <Icon type="home" />Home
           </Menu.Item> */}
           <Menu.Item key="map">
-            <Icon type="environment-o" />Map
+            <Link to='/map'>
+              <Icon type="environment-o" />Map
+            </Link>
           </Menu.Item>
-          <Menu.Item key="about us" disabled>
-            <Icon type="info-circle-o" />About us
+          <Menu.Item key="about_us">
+            <Link to='/about_us'>
+              <Icon type="info-circle-o" />About us
+            </Link>
           </Menu.Item>
         </Menu>
       </div>

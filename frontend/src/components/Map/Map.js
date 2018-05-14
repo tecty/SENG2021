@@ -80,9 +80,9 @@ export default class Map extends Component {
     super(props);
 
     this.mapFullyLoaded = false
-    this.zoom = 13
 
     this.state = {
+      zoom: 13,
       places: [],
       posts:[],
       bounds: null,
@@ -98,6 +98,7 @@ export default class Map extends Component {
       showList: true,
       showEventDetail: false,
       eventDetail: {},
+      searchInput: '',
     };
     this.handleMapMounted = this.handleMapMounted.bind(this);
     this.handleMapChange = this.handleMapChange.bind(this);
@@ -128,12 +129,12 @@ export default class Map extends Component {
     this.setMapCenterPoint();
     //this.fetchPlacesFromApi();
     this.setState({
-      placesLoaded: false
+      placesLoaded: false,
+      zoom: this.map.getZoom(),
     })
   }
 
   handleMapMounted(map) {
-    console.log(map);
     this.map = map;
   }
 
@@ -309,9 +310,9 @@ export default class Map extends Component {
     this.handlePinClick(eventDetail);
     let bounds = new google.maps.LatLngBounds();
     bounds.extend(eventDetail.position);
-    console.log(this.map);
+    console.log(this.state.zoom);
     this.map.fitBounds(bounds);
-    this.map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.setZoom(17);
+    this.map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.setZoom(this.state.zoom);
   }
 
   handlePinClick(place) {
@@ -334,8 +335,27 @@ export default class Map extends Component {
     })
   }
 
+  handleSearchInputChanged = searchInput => {
+    this.setState({
+      searchInput: searchInput,
+    })
+  }
+
   render() {
-    const {center, places, pinPosition, pinMode, postMode, postSubmitting, placesLoaded, showEventDetail, eventDetail, showList} = this.state;
+    const {
+      zoom,
+      center, 
+      places, 
+      pinPosition, 
+      pinMode, 
+      postMode, 
+      postSubmitting, 
+      placesLoaded, 
+      showEventDetail, 
+      eventDetail, 
+      showList,
+      searchInput,
+    } = this.state;
 
     return (
       <div className="Map">
@@ -344,7 +364,7 @@ export default class Map extends Component {
           handleMapChange={this.handleMapChange}
           handleMapFullyLoaded={this.handleMapFullyLoaded}
           center={center}
-          zoom={this.zoom}
+          zoom={zoom}
           containerElement={< div className = "Map-containerElement" />}
           mapElement={< div className = "Map-mapElement" />}
           places={(postMode || pinMode) ? [] : places}
@@ -384,16 +404,19 @@ export default class Map extends Component {
         />}
         {showList && (places.length >0) && !(pinMode || postMode) && <EventsListBox 
           places={places}
-          pinMode={pinMode}
-          postMode={postMode}
-          showList={showList}
           showEventDetail={showEventDetail}
           eventDetail={eventDetail}
           handleEventDetailClick={this.handleEventDetailClick}
           handleEventDetailBackClick={this.handleEventDetailBackClick}
           handleEventsListButtonClick={this.handleEventsListButtonClick}
         />}
-        {showList && !(pinMode || postMode) && <SearchBar onPlacesChanged={this.handlePlacesChanged}/>}
+        {showList && !(pinMode || postMode) &&
+          <SearchBar 
+            onPlacesChanged={this.handlePlacesChanged}
+            onSearchInputChanged={this.handleSearchInputChanged}
+            searchInput={searchInput}
+          />
+        }
       </div>
     );
   }

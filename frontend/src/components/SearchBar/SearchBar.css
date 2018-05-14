@@ -7,42 +7,19 @@
   z-index: 4;
 }
 
-/* html {
-  background-color: #fff;
-  font-weight: 300;
-  -webkit-font-smoothing: antialiased;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  text-align: center;
-} */
-
-/* body, #root, .page-wrapper {
-  height: 100%;
-  background-color: #fcfcfc;
-} */
-
-.Demo__map-maker-icon {
-  color: #FD6C6C;
-}
-
-.Demo__suggestion-icon {
-  margin-right: 8px;
-}
-
-.Demo__search-bar-container {
+.SearchBar-container {
   width: 302px;
   /* max-width: 400px; */
   /* margin: 0px auto 0; */
 }
 
-.Demo__search-input-container {
+.SearchBar-input-container {
   position: relative;
 }
 
-.Demo__search-input,
-.Demo__search-input:focus,
-.Demo__search-input:active {
+.SearchBar-input,
+.SearchBar-input:focus,
+.SearchBar-input:active {
   box-shadow: 0 1px 1px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
   border: honeydew;
   display: block;
@@ -53,9 +30,9 @@
   outline: none;
 }
 
-.Demo__clear-button,
-.Demo__clear-button:active,
-.Demo__clear-button:focus {
+.SearchBar-clear-button,
+.SearchBar-clear-button:active,
+.SearchBar-clear-button:focus {
   position: absolute;
   right: 16px;
   top: 50%;
@@ -67,7 +44,7 @@
   color: #999;
 }
 
-.Demo__autocomplete-container {
+.SearchBar-autocomplete-container {
   border-bottom: honeydew;
   border-left: honeydew;
   border-right: honeydew;
@@ -76,30 +53,30 @@
   border-radius: 0 0 2px 2px;
 }
 
-.Demo__suggestion-item {
+.SearchBar-suggestion-item {
   padding: 8px;
   text-align: left;
   background-color: #fff;
   cursor: pointer;
 }
 
-.Demo__suggestion-item--active {
+.SearchBar-suggestion-item--active {
   background-color: #fafafa;
 }
 
-.Demo__dropdown-footer {
+.SearchBar-dropdown-footer {
   background: whitesmoke;
   display: flex;
   justify-content: flex-end;
   padding: 4px;
 }
 
-.Demo__dropdown-footer-image {
+.SearchBar-dropdown-footer-image {
   display: inline-block;
   width: 150px;
 }
 
-.Demo__spinner {
+/* .Demo__spinner {
   color: #18bc9c;
   font-size: 30px;
 }
@@ -111,7 +88,7 @@
 .Demo__geocode-result-header {
   font-size: 20px;
   color: #222222;
-}
+} */
 
 @media (max-width: 480px) {
   .autocomplete-container {

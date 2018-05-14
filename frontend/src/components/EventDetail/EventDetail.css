@@ -12,3 +12,7 @@
   padding: 4px 8px;
   /* height: 300px; */
 }
+
+.EventDetail-description img{
+  width: 100%;
+}

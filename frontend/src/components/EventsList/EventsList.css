@@ -25,3 +25,10 @@
   text-decoration: none;
   color: grey;
 }
+
+.EventsList-picture {
+  max-width: 70px;
+}
+.EventsList-picture img{
+  width: 100%;
+}

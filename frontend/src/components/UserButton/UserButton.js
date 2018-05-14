@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { Avatar, Button } from 'antd';
+import { Avatar, Dropdown } from 'antd';
 import './UserButton.css';
+import UnauthorizedMenu from '../UnauthorizedMenu/UnauthorizedMenu';
+import AuthorizedMenu from '../AuthorizedMenu/AuthorizedMenu';
 
 export default class UserButton extends Component {
   render () {
+    const menu = this.props.authorized ? AuthorizedMenu : UnauthorizedMenu; 
     return (
       <div className="UserButton">
-      <Button shape="circle" size="large">
-        <div className="UserButton-avatar">
-        <Avatar size="large" icon="user" />
-        </div>
-      </Button>
+        <Dropdown overlay={menu}>
+          <a role="button">
+            <Avatar size="large" icon="user" />
+          </a>
+        </Dropdown>
       </div>
     );
   }

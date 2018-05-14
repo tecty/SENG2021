@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Button, Input, Tag, Icon, Tooltip } from 'antd';
 import './NewPostForm.css';
+import PicturesWall from '../PicturesWall/PicturesWall';
 
 export default class NewPostForm extends Component {
   constructor(props) {
@@ -9,7 +10,9 @@ export default class NewPostForm extends Component {
     this.state = {
       name: "",
       description: "",
+      description_html: null,
       tags: [],
+      pictures: [],
       inputVisible: false,
       inputValue: '',
     }
@@ -21,6 +24,7 @@ export default class NewPostForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleTitleInput = this.handleTitleInput.bind(this);
     this.handleDescriptionInput = this.handleDescriptionInput.bind(this);
+    this.handlePicturesChanged = this.handlePicturesChanged.bind(this);
   }
 
   handleClose(removedTag) {
@@ -53,11 +57,13 @@ export default class NewPostForm extends Component {
   }
 
   handleSubmit() {
-    const { name, description, tags } = this.state;
+    const { name, description, description_html, tags, pictures } = this.state;
     this.props.onSubmit({
       name: name,
       description: description,
-      tags: tags
+      description_html: description_html,
+      tags: tags,
+      pictures: pictures,
     })
   }
 
@@ -75,6 +81,12 @@ export default class NewPostForm extends Component {
 
   saveInputRef(input) {
     this.input = input
+  }
+
+  handlePicturesChanged(pictures) {
+    this.setState({
+      pictures: pictures,
+    });
   }
 
   render() {
@@ -108,6 +120,8 @@ export default class NewPostForm extends Component {
             onChange={this.handleDescriptionInput}
           />
           <br/>
+          <br/>
+          <PicturesWall onPicturesChanged={this.handlePicturesChanged} />
           <br/>
           <div className="post-tags">
             {tags.length > 0 && tags.map((tag, index) => {

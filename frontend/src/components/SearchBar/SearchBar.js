@@ -1,108 +1,69 @@
 import React, { Component } from 'react'
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import PlacesAutocomplete, { geocodeByAddress } from 'react-places-autocomplete'
+import { Icon } from 'antd';
 import { classnames } from './helpers';
 import './SearchBar.css';
 
 export default class SearchBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      address: '',
-      errorMessage: '',
-      latitude: null,
-      longitude: null,
-      isGeocoding: false,
-    };
-  }
-
   handleChange = address => {
-    this.setState({
-      address,
-      latitude: null,
-      longitude: null,
-      errorMessage: '',
-    });
+    this.props.onSearchInputChanged(address);
   };
 
   handleSelect = selected => {
-    this.setState({ isGeocoding: true });
     geocodeByAddress(selected)
       .then(res => {
         this.props.onPlacesChanged(res);
-        return getLatLng(res[0])
-      })
-      .then(({ lat, lng, geometry}) => {
-        console.log(geometry);
-        this.setState({
-          latitude: lat,
-          longitude: lng,
-          isGeocoding: false,
-        });
       })
       .catch(error => {
-        this.setState({ isGeocoding: false });
         console.log('error', error); // eslint-disable-line no-console
       });
   };
 
   handleCloseClick = () => {
-    this.setState({
-      address: '',
-      latitude: null,
-      longitude: null,
-    });
+    this.props.onSearchInputChanged('');
   };
 
   handleError = (status, clearSuggestions) => {
     console.log('Error from Google Maps API', status); // eslint-disable-line no-console
-    this.setState({ errorMessage: status }, () => {
-      clearSuggestions();
-    });
+    clearSuggestions();
   };
 
   render() {
-    const {
-      address,
-      errorMessage,
-      latitude,
-      longitude,
-      isGeocoding,
-    } = this.state;
+    const { searchInput } = this.props;
 
     return (
       <div className="SearchBar">
         <PlacesAutocomplete
           onChange={this.handleChange}
-          value={address}
+          value={searchInput}
           onSelect={this.handleSelect}
           onError={this.handleError}
-          shouldFetchSuggestions={address.length > 2}
-          autoFocus={false}
+          shouldFetchSuggestions={searchInput.length > 2}
         >
           {({ getInputProps, suggestions, getSuggestionItemProps }) => {
             return (
-              <div className="Demo__search-bar-container">
-                <div className="Demo__search-input-container">
+              <div className="SearchBar-container">
+                <div className="SearchBar-input-container">
                   <input
                     {...getInputProps({
                       placeholder: 'Search Places...',
-                      className: 'Demo__search-input',
+                      className: 'SearchBar-input',
                     })}
                   />
-                  {this.state.address.length > 0 && (
+                  {searchInput.length > 0 && (
                     <button
-                      className="Demo__clear-button"
+                      className="SearchBar-clear-button"
                       onClick={this.handleCloseClick}
                     >
-                      x
+                      <Icon type="close" />
                     </button>
                   )}
                 </div>
                 {suggestions.length > 0 && (
-                  <div className="Demo__autocomplete-container">
+                  <div className="SearchBar-autocomplete-container">
                     {suggestions.map(suggestion => {
-                      const className = classnames('Demo__suggestion-item', {
-                        'Demo__suggestion-item--active': suggestion.active,
+                      const className = classnames('SearchBar-suggestion-item', {
+                        'SearchBar-suggestion-item--active': suggestion.active,
                       });
 
                       return (
@@ -120,11 +81,11 @@ export default class SearchBar extends Component {
                       );
                       /* eslint-enable react/jsx-key */
                     })}
-                    <div className="Demo__dropdown-footer">
+                    <div className="SearchBar-dropdown-footer">
                       <div>
                         <img
                           src={require('./powered_by_google_default.png')}
-                          className="Demo__dropdown-footer-image"
+                          className="SearchBar-dropdown-footer-image"
                           alt="powered by google"
                         />
                       </div>
@@ -135,31 +96,6 @@ export default class SearchBar extends Component {
             );
           }}
         </PlacesAutocomplete>
-        {/* {errorMessage.length > 0 && (
-          <div className="Demo__error-message">{this.state.errorMessage}</div>
-        )}
-
-        {((latitude && longitude) || isGeocoding) && (
-          <div>
-            <h3 className="Demo__geocode-result-header">Geocode result</h3>
-            {isGeocoding ? (
-              <div>
-                <i className="fa fa-spinner fa-pulse fa-3x fa-fw Demo__spinner" />
-              </div>
-            ) : (
-              <div>
-                <div className="Demo__geocode-result-item--lat">
-                  <label>Latitude:</label>
-                  <span>{latitude}</span>
-                </div>
-                <div className="Demo__geocode-result-item--lng">
-                  <label>Longitude:</label>
-                  <span>{longitude}</span>
-                </div>
-              </div>
-            )}
-          </div>
-        )} */}
       </div>
     );
   }
