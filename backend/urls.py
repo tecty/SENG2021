@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^', include('root.urls')),
     # the port for the rest api 
     url(r'^api/', include(router.urls)),
+    url(r'^api/', include('post.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # import all auth
     url(r'^accounts/', include('allauth.urls')),

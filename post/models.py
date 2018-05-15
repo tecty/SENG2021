@@ -29,6 +29,9 @@ class Post(models.Model):
     # location of this post, if a post is deleted, then this post wont 
     #   be deleted
     location =  models.ForeignKey(Location,models.PROTECT)
+    # the user who write this 
+    author = models.ForeignKey(User,on_delete=models.CASCADE)
+    
 
 def create_post(title, detail, location , tags = None ):
     """
