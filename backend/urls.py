@@ -16,9 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views import generic
-from django.conf.urls import url
+from django.conf.urls import url, include
+
+api_urlpatterns = [
+    path('accounts/', include('rest_registration.api.urls')),
+]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', generic.TemplateView.as_view(template_name='index.html')),
+    url(r'^map/$', generic.TemplateView.as_view(template_name='index.html')),
+    url(r'^about_us/$', generic.TemplateView.as_view(template_name='index.html')),
+    path('api/v1/', include(api_urlpatterns)),
 ]

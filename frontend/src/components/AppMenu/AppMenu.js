@@ -5,10 +5,6 @@ import logo from '../../logo.png';
 import { Link } from 'react-router-dom';
 
 export default class AppMenu extends Component {
-  handleClick = (e) => {
-    this.props.onPageChanged(e.key);
-  }
-
   render() {
     return (
       <div className="AppMenu">
