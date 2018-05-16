@@ -25,7 +25,10 @@ SECRET_KEY = 'wumu9g(ml2y_f5*!5(x6$hj6eih3qo3$e-)h$-uq+temb9x69s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['siround.com']
+ALLOWED_HOSTS = [
+    'siround.com',
+    'localhost',
+]
 
 
 # Application definition
