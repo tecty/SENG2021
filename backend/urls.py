@@ -20,6 +20,8 @@ from django.conf.urls import url, include
 from django.contrib.auth.models import User
 from rest_framework import routers
 from .views import UserViewSet,GroupViewSet
+from post.views import TagViewSet,LocationViewSet,\
+                        CategoryViewSet,PostViewSet
 from django.views import generic
 
 
@@ -27,6 +29,11 @@ from django.views import generic
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'groups', GroupViewSet)
+router.register(r'tags',TagViewSet)
+router.register(r'locations', LocationViewSet)
+router.register(r'categories', CategoryViewSet)
+router.register(r'posts',PostViewSet)
+
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -36,7 +43,6 @@ urlpatterns = [
     url(r'^', include('root.urls')),
     # the port for the rest api 
     url(r'^api/', include(router.urls)),
-    url(r'^api/', include('post.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # import all auth
     url(r'^accounts/', include('allauth.urls')),
