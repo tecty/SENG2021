@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Button, Icon, Tag, Affix } from 'antd';
+import { Card, Button, Icon, Tag, Affix, Carousel } from 'antd';
+import ReactHtmlParser from 'react-html-parser';
 import './EventDetail.css';
 
 const { Meta } = Card;
@@ -20,6 +21,20 @@ export default class EventDetail extends Component {
           // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
           title={event.name}
         >
+          { event.pictures.length > 0 &&
+            <div>
+              <Carousel autoplay>
+                {event.pictures.map(picture => {
+                  return (<img 
+                    src={picture} 
+                    alt={`${event.id}picture_${event.pictures.indexOf(picture)}`} 
+                    key={`${event.id}picture_${event.pictures.indexOf(picture)}`}
+                  />);
+                })}
+              </Carousel>
+              <br />
+            </div>
+          }
           <Meta
             // avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
             title={
@@ -29,7 +44,13 @@ export default class EventDetail extends Component {
                 })}
               </div>
             }
-            description={event.description}
+            description={
+              event.description_html == null ? event.description : 
+              <div className="EventDetail-description">
+                {ReactHtmlParser(event.description_html)}
+              </div>
+            }
+            // description={event.description}
           />
         </Card>
       </div>

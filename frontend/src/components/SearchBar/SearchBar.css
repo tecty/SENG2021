@@ -1,0 +1,122 @@
+.SearchBar {
+  position: absolute;
+  top: 65px;
+  left: 58px;
+  /* width: 303px; */
+  /* position: relative; */
+  z-index: 4;
+}
+
+.SearchBar-container {
+  width: 302px;
+  /* max-width: 400px; */
+  /* margin: 0px auto 0; */
+}
+
+.SearchBar-input-container {
+  position: relative;
+}
+
+.SearchBar-input,
+.SearchBar-input:focus,
+.SearchBar-input:active {
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+  border: honeydew;
+  display: block;
+  width: 100%;
+  padding: 10.5px;
+  font-size: 13px;
+  border-radius: 2px;
+  outline: none;
+}
+
+.SearchBar-clear-button,
+.SearchBar-clear-button:active,
+.SearchBar-clear-button:focus {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  outline: none;
+  font-weight: 600;
+  color: #999;
+}
+
+.SearchBar-autocomplete-container {
+  border-bottom: honeydew;
+  border-left: honeydew;
+  border-right: honeydew;
+  border-top: 1px solid #e6e6e6;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border-radius: 0 0 2px 2px;
+}
+
+.SearchBar-suggestion-item {
+  padding: 8px;
+  text-align: left;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.SearchBar-suggestion-item--active {
+  background-color: #fafafa;
+}
+
+.SearchBar-dropdown-footer {
+  background: whitesmoke;
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px;
+}
+
+.SearchBar-dropdown-footer-image {
+  display: inline-block;
+  width: 150px;
+}
+
+/* .Demo__spinner {
+  color: #18bc9c;
+  font-size: 30px;
+}
+
+.Demo__error-message {
+  color: red;
+}
+
+.Demo__geocode-result-header {
+  font-size: 20px;
+  color: #222222;
+} */
+
+@media (max-width: 480px) {
+  .autocomplete-container {
+    text-align: left;
+  }
+}
+
+@media (min-width: 768px) {
+  .alert {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    -webkit-animation: fadein .75s;
+    -moz-animation: fadein .75s;
+    -ms-animation: fadein .75s;
+    -o-animation: fadein .75s;
+    animation: fadein .75s;
+  }
+
+  .btn {
+    margin-top: 1.5rem;
+  }
+
+  .form-group {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5rem;
+    width: 50%;
+  }
+}

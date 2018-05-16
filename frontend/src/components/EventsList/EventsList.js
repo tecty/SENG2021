@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import { List, Avatar, Tag } from 'antd';
 import { List, Tag } from 'antd';
+// import { List } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 import './EventsList.css'
 
@@ -33,7 +34,7 @@ export default class InfiniteListExample extends Component {
                   // title={<a href="https://ant.design">{item.name}</a>}
                   title={item.name}
                   description={
-                    <div>
+                    <div className="EventsList-desctiption">
                       <div>
                         {item.tags.length > 0 && item.tags.map(tag => {
                           return (<Tag color="#2db7f5" key={`${item.id}${tag}`}>#{tag}</Tag>)
@@ -45,6 +46,11 @@ export default class InfiniteListExample extends Component {
                       </div>
                     </div>
                   }
+                  // avatar={ item.pictures.length <= 0 ? null :
+                  //   <div className="EventsList-picture">
+                  //     <img src={item.pictures[0]} alt={`${item.id}_logo`} key={`${item.id}_logo`} />
+                  //   </div>
+                  // }
                 />
               </List.Item>
             )}

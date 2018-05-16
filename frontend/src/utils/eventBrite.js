@@ -15,7 +15,8 @@ const eventBrite = {
             if (jsonResponse == null) return {};
             return jsonResponse.events.map(event => {
                 const tags = event.category != null ? event.category.name.split(/[ ,&]+/) : [];
-
+                const pictures = event.logo != null ? [event.logo.url] : [];
+                // console.log(event);
                 return {
                     id: event.id,
                     position: {
@@ -24,7 +25,9 @@ const eventBrite = {
                     },
                     name: event.name.text,
                     description: event.description.text,
-                    tags: tags
+                    description_html: event.description.html,
+                    tags: tags,
+                    pictures: pictures,
                 }
             })
         })
