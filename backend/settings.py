@@ -25,12 +25,13 @@ SECRET_KEY = 'wumu9g(ml2y_f5*!5(x6$hj6eih3qo3$e-)h$-uq+temb9x69s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['siround.com']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "sslserver",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

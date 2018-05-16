@@ -7,8 +7,7 @@ from . import views
 # handle all the missing page in the root file
 urlpatterns = [
     # account profile page
-    # path('accounts/profile/',  rviews.profile,name = "accounts/profile" ),
-
+    path('accounts/profile/',  views.profile,name = "accounts/profile" ),
     # the whole site index
     path('',views.index,name = 'index'),
 ]
