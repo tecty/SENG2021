@@ -25,7 +25,7 @@ SECRET_KEY = 'wumu9g(ml2y_f5*!5(x6$hj6eih3qo3$e-)h$-uq+temb9x69s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
 
 # Application definition
@@ -37,12 +37,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'rest_framework_swagger',
-    'rest_registration',
+    'rest_framework_swagger',
+    'rest_auth',
+    'rest_auth.registration',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.twitter',
+
 ]
 
 MIDDLEWARE = [
@@ -130,15 +139,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend/build/static')
 ]
 
-def get_url(uri):
-    return 'http://localhost:3000{uri}'.format(uri=uri)
-    # return 'http://localhost:8000{uri}'.format(uri=uri)
-
-REST_REGISTRATION = {
-    'REGISTER_VERIFICATION_ENABLED': False,
-    'RESET_PASSWORD_VERIFICATION_URL': get_url('/reset-password/'),
-    'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
-    'VERIFICATION_FROM_EMAIL': 'no-reply@example.com',
-}
-
 CORS_ORIGIN_ALLOW_ALL = True
+
+SITE_ID = 1
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 

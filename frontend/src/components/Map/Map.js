@@ -380,10 +380,10 @@ export default class Map extends Component {
           eventDetail={eventDetail}
           onPinClick={this.handlePinClick}
         />
-        {(!pinMode && !postMode) &&
+        {this.props.authorized && (!pinMode && !postMode) &&
           <NewPostButton onClick={this.handleNewPostButtonClick} />
         }
-        {pinMode &&
+        {this.props.authorized && pinMode &&
           (<div>
             <CancelButton onClick={this.handlePinCancelButtonClick} />
             <ConfirmButton onClick={this.handlePinConfirmButtonClick} />

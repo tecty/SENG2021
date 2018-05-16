@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Avatar, Dropdown, Menu } from 'antd';
 import './UserButton.css';
 import UserRegisterForm from '../UserRegisterForm/UserRegisterForm';
-// import UserAuthorizedMenu from '../UserAuthorizedMenu/UserAuthorizedMenu';
-// import UserUnauthorizedMenu from '../UserUnauthorizedMenu/UserUnauthorizedMenu';
+import UserLoginForm from '../UserLoginForm/UserLoginForm';
 
 export default class UserButtoon extends Component {
   constructor(props) {
@@ -11,16 +10,35 @@ export default class UserButtoon extends Component {
     
     this.state = {
       register: false,
+      login: false,
     }
   }
 
   onUnauthorizedMenuClick = ({ key }) => {
     switch(key) {
+      case "sign_in":
+        this.onLoginChanged(true);
+        break;
       case "sign_up":
         this.onRegisterChanged(true);
         break;
       default:
     }
+  }
+
+  onAuthorizedMenuClick = ({ key }) => {
+    switch(key) {
+      case "sign_out":
+        this.props.handleAuthorizedChanged(false);
+        break;
+      default:
+    }
+  }
+
+  onLoginChanged = (visible) => {
+    this.setState({
+      login: visible,
+    })
   }
 
   onRegisterChanged = (visible) => {
@@ -29,11 +47,12 @@ export default class UserButtoon extends Component {
     })
   }
 
+
   render () {
     const UserAuthorizedMenu = (
-      <Menu>
+      <Menu onClick={this.onAuthorizedMenuClick}>
         <Menu.Item key="sign_out">Sign out</Menu.Item>
-        <Menu.Item key="change_password">Change password</Menu.Item>
+        {/* <Menu.Item key="change_password">Change password</Menu.Item> */}
       </Menu>
     );
 
@@ -45,19 +64,31 @@ export default class UserButtoon extends Component {
     );
 
     const menu = this.props.authorized ? UserAuthorizedMenu : UserUnauthorizedMenu; 
-    const { register } = this.state;
+    const { login, register } = this.state;
+    const userAvatar = (this.props.authorized) ? 
+      <Avatar style={{ backgroundColor: '#87d068' }} size="large" icon="user" /> :
+      <Avatar size="large" icon="user" />;
 
     return (
       <div className="UserButton">
         <Dropdown overlay={menu}>
           <a role="button">
-            <Avatar size="large" icon="user" />
+            {userAvatar}
           </a>
         </Dropdown>
-        <UserRegisterForm 
-          visible={register} 
-          onRegisterChanged={this.onRegisterChanged}
-        />
+        { register &&
+          <UserRegisterForm 
+            visible={register} 
+            onRegisterChanged={this.onRegisterChanged}
+          />
+        }
+        { login && 
+          <UserLoginForm
+            visible={login}
+            onLoginChanged={this.onLoginChanged}
+            onAuthorizedChanged={this.props.handleAuthorizedChanged}
+          />
+        }
       </div>
     );
   }

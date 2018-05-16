@@ -19,11 +19,13 @@ class App extends Component {
       authorized: false,
     }
   }
-  // const handlePageChanged = page => {
-  //   state = ({
-  //     page: page,
-  //   })
-  // }
+
+  handleAuthorizedChanged = (authorized) => {
+    this.setState({
+      authorized: authorized,
+    })
+  }
+
   render() {
     const path = this.props.location.pathname.split('/');
     const { authorized } = this.state;
@@ -34,6 +36,7 @@ class App extends Component {
         />
         <UserButton 
           authorized={authorized}
+          handleAuthorizedChanged={this.handleAuthorizedChanged}
         />
         {/* <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
@@ -43,7 +46,9 @@ class App extends Component {
         {/* <Map/> */}
         <Switch>
           <Route exact path='/'/>
-          <Route path='/map' component={Map}/>
+          <Route path='/map'>
+            <Map authorized={authorized}/>
+          </Route>
         </Switch>
       </div>
     );
