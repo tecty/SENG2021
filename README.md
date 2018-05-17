@@ -1,6 +1,6 @@
 # SENG2021
 
-Using django(python3), Bootstrap, React, GraphQL,sqlite3
+Using django, Reactjs
 
 ## Getting involve
 
@@ -28,14 +28,6 @@ $ virtualenv venv -p `which python3` --no-site-packages
 $ source venv/bin/activate
 ```
 
-### Install frontend dependencies and build production
-
-```shell
-$ cd frontend
-./frontend $ npm install
-./frontend $ npm run build
-```
-
 ### Install dependencies and setup the database
 
 ```shell
@@ -57,9 +49,29 @@ A shell to run django's httpd.
 (venv) $ sudo python manage.py runserver 0:80
 ```
 
+### Install frontend dependencies and run the Web
+
+```shell
+# in another shell
+$ cd frontend
+./frontend $ npm install
+./frontend $ HTTPS=true npm start
+```
+
 ## URLs
+
+### Frontend
 
 URL | Detail
 :--- | :---
-127.0.0.1:8000/ | ReactJS index
-127.0.0.1:8000/admin | Django admin
+https://localhost:3000/ | Home
+https://localhost:3000/map | Map
+https://localhost:3000/about_us | About us
+
+### Backend
+
+URL | Detail
+:--- | :---
+http://127.0.0.1:8000/admin | Django admin
+http://127.0.0.1:8000/docs | API docs
+http://127.0.0.1:8000/api/v1/ | APIs
