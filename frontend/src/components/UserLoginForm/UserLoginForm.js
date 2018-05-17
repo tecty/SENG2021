@@ -3,6 +3,7 @@ import { Modal, Button, Input, Alert } from 'antd';
 import './UserLoginForm.css'
 import auth from '../../utils/auth';
 import FacebookLogin from 'react-facebook-login';
+import TiSocialFacebookCircular from 'react-icons/lib/ti/social-facebook-circular';
 
 export default class UserLoginForm extends Component {
   constructor(props) {
@@ -146,9 +147,12 @@ export default class UserLoginForm extends Component {
           <br />
           <FacebookLogin
             appId="193434881281521"
-            autoLoad={true}
+            autoLoad={false}
             fields="name,email,picture"
             callback={this.responseFacebook}
+            icon={<TiSocialFacebookCircular/>}
+            size="small"
+            tag="button"
           />
         </Modal>
       </div>

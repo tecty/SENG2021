@@ -15,7 +15,7 @@ export default class AppMenu extends Component {
         >
           <Menu.Item>
             <Link to='/'>
-              <img src={logo} className="App-logo" alt="logo" />
+              <img src={logo} className="AppMenu-logo" alt="logo" />
             </Link>
           </Menu.Item>
           {/* <Menu.Item key="home" disabled>
