@@ -25,32 +25,51 @@ SECRET_KEY = 'wumu9g(ml2y_f5*!5(x6$hj6eih3qo3$e-)h$-uq+temb9x69s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+
+ALLOWED_HOSTS = [
+    'siround.com',
+    'localhost',
+    '127.0.0.1', 
+    '[::1]'
+]
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "sslserver",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
-
+  
+    #rest framework
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
     'rest_auth',
     'rest_auth.registration',
+  
+    #users' backend
+    'post',
 
+
+    # the app needed by allauth
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    # third party login 
     'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.weixin',
+    
+
 
 ]
 
@@ -70,7 +89,10 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend/build')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'frontend/build'),
+            os.path.join(BASE_DIR, 'root/templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,6 +100,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # `allauth` needs this from django
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -136,11 +160,32 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/build/static')
+    os.path.join(BASE_DIR, 'frontend/build/static'),
+    os.path.join(BASE_DIR, 'root/static'),
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
 
+# restful framwork setting  
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        # 'rest_framework.permissions.AllowAny'
+    ]
+}
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# the site id needed to be referenced in db 
 SITE_ID = 1
-
+# disable the email verification to remove the error 
+# setup mailgun ? 
+CORS_ORIGIN_ALLOW_ALL = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 

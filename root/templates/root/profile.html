@@ -1,0 +1,13 @@
+{% extends 'base.html'%}
+{% block head_title %}{{user}} Profile{%endblock%}
+
+{%block content %}
+
+  <h3>
+    {{user}}
+  </h3>
+  <ul class="collection">
+      <a href="/map/"><button class="btn">Go To Map </button></a>
+    </ul>
+
+{% endblock%}

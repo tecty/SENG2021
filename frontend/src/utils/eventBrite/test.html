@@ -1,0 +1,58 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+<script src="searchEvents.js"></script>
+<script>
+    /**
+     * 
+     * This is the testing html file of using searchEventsByLocation() function
+     * 
+     * Notice that we use a callback function to return the json-format result
+     * from searchEventsByLocation() function, because we need to ensure other jquery
+     * process will wait ajax finishes
+     * 
+     * Check out how f_res(), which is the function that calls searchEventsByLocation(),
+     * is input as a parameter of searchEventsByLocation(), so that f_res() will wait
+     * the ajax in searchEventsByLocation() to finish
+     * 
+     * result : a list of events that satisfy the area range
+     * 
+     **/
+    $(document).ready(function(){
+        searchEventsByLocation(function f_res(result){
+            //this is the callback function which calls searchEventsByLocation()
+            $(document.getElementById('events')).html(result);
+        },
+            //this is the json data passed into the function
+            [
+                {
+                    "Latitude": "-33.910388", 
+                    "Longitude": "151.241950"
+                },
+                {
+                    "Latitude": "-33.920822", 
+                    "Longitude": "151.219763"
+                }
+            ]
+
+        );
+    });
+    $(document).ready(function(){
+        searchEventsByLocation(function (){}, [
+                {
+                    "Latitude": "-33.910388", 
+                    "Longitude": "151.241950"
+                },
+                {
+                    "Latitude": "-33.920822", 
+                    "Longitude": "151.219763"
+                }
+            ])
+    });
+</script>
+<h2>Upcoming Events!</h2>
+<div id="events"></div>
+</body>
+</html>
