@@ -29,7 +29,7 @@ class CategorySerializer(serializers.ModelSerializer):
         model  = Category
         fields = ('id','name')
 
-class PostSerializer(serializers.HyperlinkedModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = Post
@@ -48,7 +48,51 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     # auto generate information.
     author = serializers.ReadOnlyField(source= 'author.username')
     create_time = serializers.ReadOnlyField()
-    # remap tag to char 
+    # tags ,locations and category as a nested field
+    tag = TagSerializer(many = True)
+    location = LocationSerializer()
+    category = CategorySerializer()
+
+    def create(self, validated_data):
+        """
+        Create a post by checking tag and location 
+        Then add the related object to this post
+        """
+        """ Create post with a location """
+        location_data = validated_data.pop('location')
+        print(location_data)
+
+        # create a new one or get a old for reference
+        this_location = Location.objects.get_or_create(
+            **location_data
+        )
+
+        """
+        Find the Category for create this post
+        """
+        category_data = validated_data.pop("category")
+        this_category = Category.objects.get(
+            **category_data
+        )
+        
+        # must pop the tags data before it would used to create a post 
+        tags_data = validated_data.pop('tag')
+
+        # create a instance of this post
+        this_post = Post.objects.create(
+            location = this_location[0],
+            category = this_category,
+             **validated_data)
+
+        """Associate tag's informatiion to post"""
+      
+        for tag in tags_data:
+            this_tag = Tag.objects.get_or_create(name = tag.name)
+            # attach this tag to this post 
+            this_post.tag = this_tag
+
+        # return the created post 
+        return this_post
 
 
     # not acquire tags

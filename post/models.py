@@ -7,6 +7,11 @@ class Tag(models.Model):
     # name of the hash tag
     name = models.CharField(max_length = 32)
 
+    def __unicode__(self):
+        # support string related field 
+        return name
+
+
 class Location(models.Model):
     # the exact name for that location
     name = models.CharField(max_length = 512)
@@ -18,7 +23,8 @@ class Location(models.Model):
 class Category(models.Model):
     # name of the category
     name = models.CharField(max_length = 255)
-
+    def __unicode__(self):
+        return name
 
 class Post(models.Model):
     # basic information of the post
@@ -27,7 +33,7 @@ class Post(models.Model):
     # main corse of the post
     detail = models.CharField(max_length = 2047)
     # tag is a many to many relationship 
-    tag = models.ManyToManyField(Tag,null = True)
+    tag = models.ManyToManyField(Tag,blank = True)
     # the create time of this post
     create_time = models.DateTimeField('Create Time')
     # location of this post, if a post is deleted, then this post wont 
