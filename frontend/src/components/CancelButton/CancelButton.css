@@ -1,0 +1,9 @@
+.CancelButton {
+  position: absolute;
+  /* left: 50%; */
+  right: 190px;
+  width: 0px;
+  margin-left: -50px;
+  bottom:10px;
+  z-index: 4;
+}

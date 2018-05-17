@@ -24,6 +24,10 @@ from post.views import TagViewSet,LocationViewSet,\
                         CategoryViewSet,PostViewSet
 from django.views import generic
 
+from rest_framework_swagger.views import get_swagger_view
+
+
+
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
@@ -47,5 +51,11 @@ urlpatterns = [
     # import all auth
     url(r'^accounts/', include('allauth.urls')),
     # import the map 
-     url(r'^map/$', generic.TemplateView.as_view(template_name='index.html')),
+    url(r'^map/$', generic.TemplateView.as_view(template_name='index.html')),
+  
+  
+    url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls'))
+    url(r'^docs/$', get_swagger_view(title='API Docs'), name='api_docs'),
+  
 ]

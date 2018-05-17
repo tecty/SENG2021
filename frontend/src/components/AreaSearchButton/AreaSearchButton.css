@@ -1,0 +1,9 @@
+.AreaSearchButton {
+  position: absolute;
+  left: 45%;
+  /* right: 200px; */
+  /* width: 0px; */
+  /* margin-left: -50px; */
+  top:10px;
+  z-index: 3;
+}

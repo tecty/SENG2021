@@ -1,0 +1,9 @@
+.EventsListBox {
+  position: absolute;
+  top: 65px;
+  left: 10px;
+  width: 350px;
+  bottom: 100px;
+  z-index: 3;
+  background: whitesmoke;
+}
