@@ -8,7 +8,9 @@ from django.utils import timezone
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+        IsAdminOrReadOnly,)
 
 
 class LocationViewSet  (viewsets.ModelViewSet):
@@ -20,7 +22,9 @@ class LocationViewSet  (viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+        IsAdminOrReadOnly,)
 
 
 class PostViewSet(viewsets.ModelViewSet):

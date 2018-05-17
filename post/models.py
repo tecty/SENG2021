@@ -27,7 +27,7 @@ class Post(models.Model):
     # main corse of the post
     detail = models.CharField(max_length = 2047)
     # tag is a many to many relationship 
-    tag = models.ManyToManyField(Tag)
+    tag = models.ManyToManyField(Tag,null = True)
     # the create time of this post
     create_time = models.DateTimeField('Create Time')
     # location of this post, if a post is deleted, then this post wont 
@@ -38,9 +38,9 @@ class Post(models.Model):
     # the category of this post
     # if a category is deleted, the post won't be deleted 
     category = models.ForeignKey(Category,
-                    on_delete=models.PROTECT,
-                    null = True
-                    )
+            on_delete=models.PROTECT,
+            null = True
+        )
     
 
 

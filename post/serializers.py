@@ -29,13 +29,14 @@ class CategorySerializer(serializers.ModelSerializer):
         model  = Category
         fields = ('id','name')
 
-class PostSerializer(serializers.ModelSerializer):
+class PostSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model  = Post
         fields = (
             'id',
             'title',
+            'detail',
             'tag',
             'create_time',
             'location',
@@ -47,4 +48,9 @@ class PostSerializer(serializers.ModelSerializer):
     # auto generate information.
     author = serializers.ReadOnlyField(source= 'author.username')
     create_time = serializers.ReadOnlyField()
+    # remap tag to char 
+
+
+    # not acquire tags
+    # tag = serializers.ManyRelatedField()
 
