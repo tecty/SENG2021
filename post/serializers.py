@@ -60,7 +60,6 @@ class PostSerializer(serializers.ModelSerializer):
         """
         """ Create post with a location """
         location_data = validated_data.pop('location')
-        print(location_data)
 
         # create a new one or get a old for reference
         this_location = Location.objects.get_or_create(
@@ -70,22 +69,28 @@ class PostSerializer(serializers.ModelSerializer):
         """
         Find the Category for create this post
         """
-        category_data = validated_data.pop("category")
-        this_category = Category.objects.get(
-            **category_data
-        )
-        
+        try:
+            category_data = validated_data.pop("category")
+            this_category = Category.objects.get(
+                **category_data
+            )
+        except Exception as e:
+            raise serializers.ValidationError(
+                    {'category':{
+                        'name':"This field must be in the category."
+                        }
+                    }
+                )
+
         # must pop the tags data before it would used to create a post 
         tags_data = validated_data.pop('tag')
-
         # create a instance of this post
         this_post = Post.objects.create(
             location = this_location[0],
             category = this_category,
-             **validated_data)
+            **validated_data)
 
         """Associate tag's informatiion to post"""
-      
         for tag in tags_data:
             this_tag = Tag.objects.get_or_create(name = tag.name)
             # attach this tag to this post 
