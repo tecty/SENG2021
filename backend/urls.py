@@ -18,10 +18,13 @@ from django.urls import path
 from django.views import generic
 from django.conf.urls import url, include
 from rest_framework_swagger.views import get_swagger_view
+from backend.social_auth.views import FacebookLogin
+admin.autodiscover()
 
 api_urlpatterns = [
     url(r'^rest-auth/', include('rest_auth.urls')),
-    url(r'^rest-auth/registration/', include('rest_auth.registration.urls'))
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^rest-auth/facebook/$', FacebookLogin.as_view(), name='fb_login'),
 ]
 
 urlpatterns = [

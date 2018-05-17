@@ -75,14 +75,7 @@ export default class UserRegisterForm extends Component {
           successAlert: "Successfully registered.", 
         })
         setTimeout(() => {
-          this.setState({
-            username: '',
-            email: '',
-            password: '',
-            passwordConfirm: '',
-            successAlert: null,
-          });
-          this.handleFormClose();
+          this.props.handleTokenChanged();
         }, 1000);
       }
       else {

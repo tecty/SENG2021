@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 export default class AppMenu extends Component {
   render() {
+    // const { token } = this.props;
     return (
       <div className="AppMenu">
         <Menu

@@ -6,6 +6,8 @@ import AppMenu from './components/AppMenu/AppMenu';
 import UserButton from './components/UserButton/UserButton';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import auth from './utils/auth';
+import url from './utils/url';
 
 class App extends Component {
   static propTypes = {
@@ -14,29 +16,35 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-
+    // const key = window.location.href.match(/token=([^&]*)/);
+    // const token = key ? key[1] : null;
+    auth.getUserStatus().then(detail =>{
+      this.setState({ authorized: detail.authorized });
+    })
+  //  // auth.getUserStatus(this.state.key[1]).then
     this.state = {
-      authorized: false,
+  //     token: token,
     }
   }
 
-  handleAuthorizedChanged = (authorized) => {
-    this.setState({
-      authorized: authorized,
-    })
+  handleTokenChanged = () => {
+    window.location = `${url.get()}${this.props.location.pathname}`;
   }
 
   render() {
     const path = this.props.location.pathname.split('/');
+    // const token = (this.state.token) ? `?token=${this.state.token}`: "";
     const { authorized } = this.state;
     return (
       <div className="App">
         <AppMenu 
           page={path[1] ? path[1] : 'home'}
+          // token={token}
         />
         <UserButton 
+          handleTokenChanged={this.handleTokenChanged}
           authorized={authorized}
-          handleAuthorizedChanged={this.handleAuthorizedChanged}
+          // authorized={this.state.authorized}
         />
         {/* <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
@@ -49,6 +57,7 @@ class App extends Component {
           <Route path='/map'>
             <Map authorized={authorized}/>
           </Route>
+          <Route path='/about_us' />
         </Switch>
       </div>
     );

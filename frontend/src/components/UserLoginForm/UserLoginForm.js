@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Button, Input, Alert } from 'antd';
 import './UserLoginForm.css'
 import auth from '../../utils/auth';
+import FacebookLogin from 'react-facebook-login';
 
 export default class UserLoginForm extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ export default class UserLoginForm extends Component {
 
   handleSubmit = () => {
     const { username, password } = this.state;
+    auth.getUserStatus().then(a => console.log(a))
     auth.login(username, password).then(detail => {
       console.log(detail);
       if (!detail) {
@@ -50,13 +52,7 @@ export default class UserLoginForm extends Component {
           successAlert: "Successfully login.", 
         })
         setTimeout(() => {
-          this.setState({
-            username: '',
-            password: '',
-            successAlert: null,
-          });
-          this.handleFormClose();
-          this.props.onAuthorizedChanged(true);
+          this.props.handleTokenChanged();
         }, 1000);
       }
       else {
@@ -72,6 +68,30 @@ export default class UserLoginForm extends Component {
  
   handleFormClose = () => {
     this.props.onLoginChanged(false);
+  }
+  
+  responseFacebook = (response) => {
+    if (response.accessToken) {
+      auth.facebookLogin(response.accessToken).then(success => {
+        this.setState({
+          usernameAlert: null,
+          passwordAlert: null,
+          otherAlert: null,
+          successAlert: "Successfully login.", 
+        })
+        setTimeout(() => {
+          this.props.handleTokenChanged();
+        }, 1000); 
+      })
+    } else {
+      this.setState({
+        usernameAlert: null,
+        passwordAlert: null,
+        otherAlert: "Unable login with Facebook.",
+        successAlert: null, 
+      }); 
+    }
+    console.log(response);
   }
 
   render() {
@@ -122,6 +142,14 @@ export default class UserLoginForm extends Component {
           {(successAlert) &&
             <div><br/><Alert message={successAlert} type="success" showIcon /></div>
           }
+          <br />
+          <br />
+          <FacebookLogin
+            appId="193434881281521"
+            autoLoad={true}
+            fields="name,email,picture"
+            callback={this.responseFacebook}
+          />
         </Modal>
       </div>
     );

@@ -3,6 +3,7 @@ import { Avatar, Dropdown, Menu } from 'antd';
 import './UserButton.css';
 import UserRegisterForm from '../UserRegisterForm/UserRegisterForm';
 import UserLoginForm from '../UserLoginForm/UserLoginForm';
+import auth from '../../utils/auth';
 
 export default class UserButtoon extends Component {
   constructor(props) {
@@ -29,10 +30,16 @@ export default class UserButtoon extends Component {
   onAuthorizedMenuClick = ({ key }) => {
     switch(key) {
       case "sign_out":
-        this.props.handleAuthorizedChanged(false);
+        this.onLogoutClick();        
         break;
       default:
     }
+  }
+
+  onLogoutClick = () => {
+    auth.logout().then(detail => {
+      if (detail.success) this.props.handleTokenChanged();
+    })
   }
 
   onLoginChanged = (visible) => {
@@ -47,12 +54,11 @@ export default class UserButtoon extends Component {
     })
   }
 
-
   render () {
     const UserAuthorizedMenu = (
       <Menu onClick={this.onAuthorizedMenuClick}>
         <Menu.Item key="sign_out">Sign out</Menu.Item>
-        {/* <Menu.Item key="change_password">Change password</Menu.Item> */}
+        {/* <Menu.Item key="change_password">        </Menu.Item> */}
       </Menu>
     );
 
@@ -63,14 +69,18 @@ export default class UserButtoon extends Component {
       </Menu>
     );
 
-    const menu = this.props.authorized ? UserAuthorizedMenu : UserUnauthorizedMenu; 
+    const { authorized } = this.props;
+
+    const menu = authorized ? UserAuthorizedMenu : UserUnauthorizedMenu; 
     const { login, register } = this.state;
-    const userAvatar = (this.props.authorized) ? 
+    const userAvatar = (authorized) ? 
       <Avatar style={{ backgroundColor: '#87d068' }} size="large" icon="user" /> :
       <Avatar size="large" icon="user" />;
 
     return (
       <div className="UserButton">
+      {/* {console.log(this.props.token)} */}
+      {/* {console.log(authorized)} */}
         <Dropdown overlay={menu}>
           <a role="button">
             {userAvatar}
@@ -80,6 +90,7 @@ export default class UserButtoon extends Component {
           <UserRegisterForm 
             visible={register} 
             onRegisterChanged={this.onRegisterChanged}
+            handleTokenChanged={this.props.handleTokenChanged}
           />
         }
         { login && 
@@ -87,6 +98,7 @@ export default class UserButtoon extends Component {
             visible={login}
             onLoginChanged={this.onLoginChanged}
             onAuthorizedChanged={this.props.handleAuthorizedChanged}
+            handleTokenChanged={this.props.handleTokenChanged}
           />
         }
       </div>

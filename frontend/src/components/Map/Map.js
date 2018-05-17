@@ -310,7 +310,7 @@ export default class Map extends Component {
     this.handlePinClick(eventDetail);
     let bounds = new google.maps.LatLngBounds();
     bounds.extend(eventDetail.position);
-    console.log(this.state.zoom);
+    // console.log(this.state.zoom);
     this.map.fitBounds(bounds);
     this.map.context.__SECRET_MAP_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.setZoom(this.state.zoom);
   }
@@ -359,6 +359,7 @@ export default class Map extends Component {
 
     return (
       <div className="Map">
+        {/* {console.log(this.props.authorized)} */}
         <SiroundMap
           onMapMounted={this.handleMapMounted}
           handleMapChange={this.handleMapChange}
