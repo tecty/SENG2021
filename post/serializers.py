@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Post, Location,Category, Tag
 
+
+
 # class PostSerializer(serializers.Serializer):
 #     id = serializers.IntegerField(read_only = True)
 #     title = serializers.CharField(max_length = 255)
@@ -98,8 +100,3 @@ class PostSerializer(serializers.ModelSerializer):
 
         # return the created post 
         return this_post
-
-
-    # not acquire tags
-    # tag = serializers.ManyRelatedField()
-
