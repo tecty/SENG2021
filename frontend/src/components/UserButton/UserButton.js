@@ -81,7 +81,7 @@ export default class UserButtoon extends Component {
       <div className="UserButton">
       {/* {console.log(this.props.token)} */}
       {/* {console.log(authorized)} */}
-        <Dropdown overlay={menu}>
+        <Dropdown overlay={menu} trigger={['click']}>
           <a role="button">
             {userAvatar}
           </a>

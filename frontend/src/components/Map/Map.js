@@ -380,6 +380,7 @@ export default class Map extends Component {
             onPlacesChanged={this.handlePlacesChanged}
             onSearchInputChanged={this.handleSearchInputChanged}
             searchInput={searchInput}
+            autoLoadedChanged={this.autoLoadedChanged}
           />
         }
       </div>

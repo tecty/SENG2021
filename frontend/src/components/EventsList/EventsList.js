@@ -17,6 +17,10 @@ export default class InfiniteListExample extends Component {
     return (<a className="EventsList-description">{desc}</a>);
   }
 
+  onTagClick(tag) {
+    this.props.handleFilterValueChanged(`#${tag}`);
+  }
+
   render() {
     return (
       <div className="EventsList">
@@ -33,7 +37,7 @@ export default class InfiniteListExample extends Component {
                   description={
                     <div className="EventsList-tags">
                       {item.tags.length > 0 && item.tags.map(tag => {
-                        return (<Tag color="#2db7f5" key={`${item.id}${tag}`}>#{tag}</Tag>)
+                        return (<Tag color="#2db7f5" key={`${item.id}${tag}`} onClick={this.onTagClick.bind(this, tag)}>#{tag}</Tag>)
                       })}
                     </div>
                   }

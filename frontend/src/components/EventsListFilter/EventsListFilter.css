@@ -1,6 +1,6 @@
-.EventsList {
+.EventsListFilter {
   position: absolute;
-  top: 90px;
+  top: 40px;
   left: 0px;
   width: 350px;
   bottom: 0px;
@@ -11,17 +11,4 @@
   overflow: auto;
   padding: 8px 24px;
   /* height: 300px; */
-}
-.demo-loading-container {
-  position: absolute;
-  bottom: 40px;
-  width: 100%;
-  text-align: center;
-}
-
-.EventsList-picture {
-  max-width: 70px;
-}
-.EventsList-picture img{
-  width: 100%;
 }

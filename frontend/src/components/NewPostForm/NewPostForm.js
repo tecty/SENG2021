@@ -99,12 +99,13 @@ export default class NewPostForm extends Component {
           <Input
             placeholder="Title"
             onChange={this.handleTitleInput}
+            prefix={<Icon type="form" />}
           />
           <br/>
           <br/>
-          <TextEditor handleDescriptionChange={this.handleDescriptionChange}/>
-          <br/>
           <PicturesWall onPicturesChanged={this.handlePicturesChanged} />
+          <br/>
+          <TextEditor handleDescriptionChange={this.handleDescriptionChange}/>
           <br/>
           <div className="post-tags">
             {tags.length > 0 && tags.map((tag, index) => {

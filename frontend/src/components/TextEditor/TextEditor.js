@@ -4,6 +4,7 @@ import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
+import { Icon } from 'antd';
 
 
 export default class TextEditor extends Component {
@@ -26,6 +27,7 @@ export default class TextEditor extends Component {
     return (
       <div>
         <Editor
+          placeholder={<div><Icon type="form" /> Add Description</div>}
           editorState={editorState}
           wrapperClassName=".wrapper"
           editorClassName=".editor"
