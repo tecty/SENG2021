@@ -21,7 +21,7 @@ from django.contrib.auth.models import User
 from rest_framework import routers
 from .views import UserViewSet,GroupViewSet
 from post.views import TagViewSet,LocationViewSet,\
-                        CategoryViewSet,PostViewSet
+                        PostViewSet
 from django.views import generic
 
 from rest_framework_swagger.views import get_swagger_view
@@ -35,7 +35,6 @@ router.register(r'users', UserViewSet)
 router.register(r'groups', GroupViewSet)
 router.register(r'tags',TagViewSet)
 router.register(r'locations', LocationViewSet)
-router.register(r'categories', CategoryViewSet)
 router.register(r'posts',PostViewSet)
 
 

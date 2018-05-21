@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Location,Category, Tag
+from .models import Post, Location, Tag,Photo
 
 
 
@@ -21,15 +21,20 @@ class TagSerializer(serializers.ModelSerializer):
         model  = Tag
         fields = ('id','name')
 
+class PhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = Tag
+        fields = ('id','name')
+
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model  =  Location
         fields = ('id','name','lat','lng')
 
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model  = Category
-        fields = ('id','name')
+# class CategorySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model  = Category
+#         fields = ('id','name')
 
 class PostSerializer(serializers.ModelSerializer):
 
@@ -43,7 +48,7 @@ class PostSerializer(serializers.ModelSerializer):
             'create_time',
             'location',
             'author',
-            'category'
+            'photo'
         )
 
     # not require to given this fileds, overwite to support
@@ -53,7 +58,7 @@ class PostSerializer(serializers.ModelSerializer):
     # tags ,locations and category as a nested field
     tag = TagSerializer(many = True)
     location = LocationSerializer()
-    category = CategorySerializer()
+    photo = PhotoSerializer(many = True)
 
     def create(self, validated_data):
         """
@@ -68,35 +73,27 @@ class PostSerializer(serializers.ModelSerializer):
             **location_data
         )
 
-        """
-        Find the Category for create this post
-        """
-        try:
-            category_data = validated_data.pop("category")
-            this_category = Category.objects.get(
-                **category_data
-            )
-        except Exception as e:
-            raise serializers.ValidationError(
-                    {'category':{
-                        'name':"This field must be in the category."
-                        }
-                    }
-                )
+        # pop the photo url's data
+        photo_data = validated_data.pop('photo')
 
         # must pop the tags data before it would used to create a post 
         tags_data = validated_data.pop('tag')
         # create a instance of this post
         this_post = Post.objects.create(
             location = this_location[0],
-            category = this_category,
             **validated_data)
 
         """Associate tag's informatiion to post"""
         for tag in tags_data:
-            this_tag = Tag.objects.get_or_create(name = tag.name)
+            this_tag = Tag.objects.get_or_create(name = tag.get('name'))
+            print(tag.get('name'))
+            print(this_tag)
             # attach this tag to this post 
-            this_post.tag = this_tag
+            this_post.tag.add(this_tag[0])
 
+        """Associate the photo url """
+        for photo in photo_data:
+            this_post.photo.create(name = photo.get('name'))
         # return the created post 
+        this_post.save()
         return this_post

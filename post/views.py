@@ -1,6 +1,6 @@
-from .models import Tag, Location, Category,Post
+from .models import Tag, Location,Post
 from .serializers import TagSerializer,LocationSerializer,\
-                        CategorySerializer,PostSerializer
+                        PostSerializer
 from rest_framework import generics,permissions,viewsets
 from .permissions import IsAuthorOrReadOnly,IsAdminOrReadOnly
 from django.utils import timezone
@@ -21,12 +21,12 @@ class LocationViewSet  (viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = (
-        permissions.IsAuthenticatedOrReadOnly,
-        IsAdminOrReadOnly,)
+# class CategoryViewSet(viewsets.ModelViewSet):
+#     queryset = Category.objects.all()
+#     serializer_class = CategorySerializer
+#     permission_classes = (
+#         permissions.IsAuthenticatedOrReadOnly,
+#         IsAdminOrReadOnly,)
 
 
 class PostViewSet(viewsets.ModelViewSet):

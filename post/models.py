@@ -20,11 +20,17 @@ class Location(models.Model):
     lat = models.DecimalField(max_digits=24, decimal_places= 20)
     lng = models.DecimalField(max_digits=24, decimal_places= 20)
 
-class Category(models.Model):
-    # name of the category
-    name = models.CharField(max_length = 255)
+# class Category(models.Model):
+#     # name of the category
+#     name = models.CharField(max_length = 255)
+#     def __unicode__(self):
+#         return name
+
+
+class Photo(models.Model):
+    name = models.TextField()
     def __unicode__(self):
-        return name
+        return self.name
 
 class Post(models.Model):
     # basic information of the post
@@ -41,15 +47,23 @@ class Post(models.Model):
     location =  models.ForeignKey(Location,models.PROTECT)
     # the user who write this 
     author = models.ForeignKey(User,on_delete=models.CASCADE)
-    # the category of this post
-    # if a category is deleted, the post won't be deleted 
-    category = models.ForeignKey(Category,
-            on_delete=models.PROTECT,
-            null = True
-        )
-    
+    # the photo address use of this post
+    photo = models.ManyToManyField(Photo, blank =True)
 
 
+"""
+{
+    "title": "asdf",
+    "detail": "wer",
+    "tag": [{"name":"sth"}],
+    "location": {
+        "name": "asdf",
+        "lat": 45,
+        "lng": 45
+    },
+    "photo": []
+}
+"""
 
 
 def create_post(title, detail, location , tags = None ):
