@@ -7,12 +7,16 @@ export default class AreaSearchButton extends Component {
     super(props);
 
     this.state = {
-      loading: false
+      loading: !this.props.autoloaded,
     }
-    this.handleClick = this.handleClick.bind(this);
+
+    if (this.state.loading) {
+      this.handleClick();
+      this.props.autoLoadedChanged(true);
+    }
   }
 
-  handleClick() {
+  handleClick = () => {
     this.setState({
       loading: true
     });
@@ -24,7 +28,7 @@ export default class AreaSearchButton extends Component {
       <div className="AreaSearchButton">
         <Button
           type="primary"
-          icon="sync"
+          icon="search"
           size="large"
           onClick={this.handleClick}
           loading={this.state.loading}

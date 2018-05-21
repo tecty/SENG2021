@@ -1,6 +1,6 @@
 .EventsList {
   position: absolute;
-  top: 40px;
+  top: 100px;
   left: 0px;
   width: 350px;
   bottom: 0px;
@@ -17,13 +17,6 @@
   bottom: 40px;
   width: 100%;
   text-align: center;
-}
-
-.EventsList-description {
-  pointer-events: none;
-  cursor: default;
-  text-decoration: none;
-  color: grey;
 }
 
 .EventsList-picture {

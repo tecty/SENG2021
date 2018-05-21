@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Input, Alert } from 'antd';
+import { Modal, Button, Input, Alert, Icon } from 'antd';
 import './UserRegisterForm.css'
 import auth from '../../utils/auth';
 
@@ -121,6 +121,7 @@ export default class UserRegisterForm extends Component {
             placeholder="Username"
             onChange={this.handleUsernameInput}
             value={username}
+            prefix={<Icon type="user" />}
           />
           <br/>
           {(usernameAlert) && 
@@ -131,6 +132,7 @@ export default class UserRegisterForm extends Component {
             placeholder="Email"
             onChange={this.handleEmailInput}
             value={email}
+            prefix={<Icon type="mail" />}
           />
           <br/>
           {(emailAlert) && 
@@ -142,6 +144,7 @@ export default class UserRegisterForm extends Component {
             onChange={this.handlePasswordInput}
             type="password"
             value={password}
+            prefix={<Icon type="key" />}
           />
           <br/>
           {(passwordAlert) && 
@@ -153,6 +156,7 @@ export default class UserRegisterForm extends Component {
             onChange={this.handlePasswordConfirmInput}
             type="password"
             value={passwordConfirm}
+            prefix={<Icon type="key" />}
           />
           {(passwordConfirmAlert) && 
             <div><br/><Alert message={passwordConfirmAlert} type="error" showIcon /></div>

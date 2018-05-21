@@ -45,12 +45,10 @@ export default class EventDetail extends Component {
               </div>
             }
             description={
-              event.description_html == null ? event.description : 
               <div className="EventDetail-description">
-                {ReactHtmlParser(event.description_html)}
+                {ReactHtmlParser(event.description)}
               </div>
             }
-            // description={event.description}
           />
         </Card>
       </div>

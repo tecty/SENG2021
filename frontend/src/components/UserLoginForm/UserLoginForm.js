@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Input, Alert } from 'antd';
+import { Modal, Button, Input, Alert, Icon } from 'antd';
 import './UserLoginForm.css'
 import auth from '../../utils/auth';
 import FacebookLogin from 'react-facebook-login';
@@ -122,6 +122,7 @@ export default class UserLoginForm extends Component {
             placeholder="Username"
             onChange={this.handleUsernameInput}
             value={username}
+            prefix={<Icon type="user" />}
           />
           <br/>
           {usernameAlert &&
@@ -133,6 +134,7 @@ export default class UserLoginForm extends Component {
             onChange={this.handlePasswordInput}
             type="password"
             value={password}
+            prefix={<Icon type="key" />}
           />
           {passwordAlert &&
             <div><br/><Alert message={passwordAlert} type="error" showIcon /></div>

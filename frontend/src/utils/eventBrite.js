@@ -24,8 +24,7 @@ const eventBrite = {
                         lng: parseFloat(event.venue.longitude)
                     },
                     name: event.name.text,
-                    description: event.description.text,
-                    description_html: event.description.html,
+                    description: event.description.html,
                     tags: tags,
                     pictures: pictures,
                 }

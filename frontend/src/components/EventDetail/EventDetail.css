@@ -13,6 +13,10 @@
   /* height: 300px; */
 }
 
+.EventDetail-description {
+  word-wrap: break-word;
+}
+
 .EventDetail-description img{
   width: 100%;
   height: 100%;

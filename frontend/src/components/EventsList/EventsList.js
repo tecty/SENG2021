@@ -27,30 +27,21 @@ export default class InfiniteListExample extends Component {
               <List.Item
                 key={item.id}
                 actions={[]}
-                // onClick={this.props.onClick}
               >
                 <List.Item.Meta
-                  // avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                  // title={<a href="https://ant.design">{item.name}</a>}
-                  title={item.name}
+                  title={<a role="button" style={{color:"black"}} onClick={this.handleMoreClick.bind(this, item)} >{item.name}</a>}
                   description={
-                    <div className="EventsList-desctiption">
-                      <div>
-                        {item.tags.length > 0 && item.tags.map(tag => {
-                          return (<Tag color="#2db7f5" key={`${item.id}${tag}`}>#{tag}</Tag>)
-                        })}
-                      </div>
-                      <div>
-                        {this.partalDescription(item.description)}
-                        <a onClick={this.handleMoreClick.bind(this, item)}>more</a>
-                      </div>
+                    <div className="EventsList-tags">
+                      {item.tags.length > 0 && item.tags.map(tag => {
+                        return (<Tag color="#2db7f5" key={`${item.id}${tag}`}>#{tag}</Tag>)
+                      })}
                     </div>
                   }
-                  // avatar={ item.pictures.length <= 0 ? null :
-                  //   <div className="EventsList-picture">
-                  //     <img src={item.pictures[0]} alt={`${item.id}_logo`} key={`${item.id}_logo`} />
-                  //   </div>
-                  // }
+                  avatar={ item.pictures.length <= 0 ? null :
+                    <div className="EventsList-picture">
+                      <img src={item.pictures[0]} alt={`${item.id}_logo`} key={`${item.id}_logo`} />
+                    </div>
+                  }
                 />
               </List.Item>
             )}

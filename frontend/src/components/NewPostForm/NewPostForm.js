@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Modal, Button, Input, Tag, Icon, Tooltip } from 'antd';
 import './NewPostForm.css';
 import PicturesWall from '../PicturesWall/PicturesWall';
+import TextEditor from '../TextEditor/TextEditor';
+
 
 export default class NewPostForm extends Component {
   constructor(props) {
@@ -10,39 +12,33 @@ export default class NewPostForm extends Component {
     this.state = {
       name: "",
       description: "",
-      description_html: null,
       tags: [],
       pictures: [],
       inputVisible: false,
       inputValue: '',
     }
-    this.handleClose = this.handleClose.bind(this);
-    this.showInput = this.showInput.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleInputConfirm = this.handleInputConfirm.bind(this);
-    this.saveInputRef = this.saveInputRef.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleTitleInput = this.handleTitleInput.bind(this);
-    this.handleDescriptionInput = this.handleDescriptionInput.bind(this);
-    this.handlePicturesChanged = this.handlePicturesChanged.bind(this);
   }
 
-  handleClose(removedTag) {
+  handleClose = (removedTag) => {
     const tags = this.state.tags.filter(tag => tag !== removedTag);
     this.setState({
       tags: tags
     })
   }
 
-  showInput() {
+  showInput = () => {
     this.setState({ inputVisible: true }, () => this.input.focus());
   }
 
-  handleInputChange(e) {
+  handleInputChange = (e) => {
     this.setState({ inputValue: e.target.value });
   }
 
-  handleInputConfirm() {
+  handleDescriptionChange = (description) => {
+    this.setState({ description: description});
+  }
+
+  handleInputConfirm = () => {
     const state = this.state;
     const inputValue = state.inputValue;
     let tags = state.tags;
@@ -56,34 +52,27 @@ export default class NewPostForm extends Component {
     });
   }
 
-  handleSubmit() {
-    const { name, description, description_html, tags, pictures } = this.state;
+  handleSubmit = () => {
+    const { name, description, tags, pictures } = this.state;
     this.props.onSubmit({
       name: name,
       description: description,
-      description_html: description_html,
       tags: tags,
       pictures: pictures,
     })
   }
 
-  handleTitleInput(e) {
+  handleTitleInput = (e) => {
     this.setState({
       name: e.target.value
     })
   }
 
-  handleDescriptionInput(e) {
-    this.setState({
-      description: e.target.value
-    })
-  }
-
-  saveInputRef(input) {
+  saveInputRef = (input) => {
     this.input = input
   }
 
-  handlePicturesChanged(pictures) {
+  handlePicturesChanged = (pictures) => {
     this.setState({
       pictures: pictures,
     });
@@ -92,7 +81,6 @@ export default class NewPostForm extends Component {
   render() {
     const { tags, inputVisible, inputValue } = this.state;
     const { visible, loading, onClose } = this.props;
-    const { TextArea } = Input;
     return (
       <div>
         <Modal
@@ -114,12 +102,7 @@ export default class NewPostForm extends Component {
           />
           <br/>
           <br/>
-          <TextArea
-            placeholder="Description"
-            rows={5}
-            onChange={this.handleDescriptionInput}
-          />
-          <br/>
+          <TextEditor handleDescriptionChange={this.handleDescriptionChange}/>
           <br/>
           <PicturesWall onPicturesChanged={this.handlePicturesChanged} />
           <br/>
