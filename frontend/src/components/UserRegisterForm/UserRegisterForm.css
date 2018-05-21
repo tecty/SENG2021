@@ -1,19 +1,13 @@
-.UserRegisterForm-modal {
-  text-align: center;
-  white-space: nowrap;
-}
-
-.UserRegisterForm-modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  width: 0;
-}
-
-.UserRegisterForm-modal .ant-modal {
-  display: inline-block;
-  vertical-align: middle;
-  top: 0;
+.UserRegisterForm {
+  max-width: 400px;
   text-align: left;
+  word-break:break-all;
+}
+
+.UserRegisterForm .register-form {
+  max-width: 400px;
+}
+
+.UserRegisterForm .register-button {
+  width: 100%;
 }

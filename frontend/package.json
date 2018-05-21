@@ -35,6 +35,7 @@
     "eslint-plugin-react": "^7.8.2",
     "react-html-parser": "^2.0.2",
     "react-infinite-scroller": "^1.1.4",
-    "react-places-autocomplete": "^7.1.1"
+    "react-places-autocomplete": "^7.1.1",
+    "react-social-icons": "^3.0.0"
   }
 }

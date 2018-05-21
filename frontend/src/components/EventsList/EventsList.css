@@ -25,3 +25,10 @@
 .EventsList-picture img{
   width: 100%;
 }
+
+.EventsList-author {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+  color: grey;
+}

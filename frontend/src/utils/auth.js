@@ -96,7 +96,7 @@ const auth = {
     }, networkError => console.log(networkError.message)).then(jsonResponse => {
       if (jsonResponse == null) return {};
       if (jsonResponse.detail === "Successfully logged out.") {
-        Cookies.set('token', null);
+        Cookies.remove('token');
         return { success: true }
       }
       return { success: false }

@@ -231,7 +231,8 @@ export default class Map extends Component {
     const post = {
       ...newPost,
       position: this.state.pinPosition,
-      id: this.state.places.length
+      id: this.state.places.length,
+      author: this.props.user.username,
     }
     // console.log(post);
     setTimeout(() =>{

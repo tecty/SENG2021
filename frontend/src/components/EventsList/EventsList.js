@@ -35,10 +35,17 @@ export default class InfiniteListExample extends Component {
                 <List.Item.Meta
                   title={<a role="button" style={{color:"black"}} onClick={this.handleMoreClick.bind(this, item)} >{item.name}</a>}
                   description={
-                    <div className="EventsList-tags">
-                      {item.tags.length > 0 && item.tags.map(tag => {
-                        return (<Tag color="#2db7f5" key={`${item.id}${tag}`} onClick={this.onTagClick.bind(this, tag)}>#{tag}</Tag>)
-                      })}
+                    <div>
+                      <div className="EventsList-tags">
+                        {item.tags.length > 0 && item.tags.map(tag => {
+                          return (<Tag color="#2db7f5" key={`${item.id}${tag}`} onClick={this.onTagClick.bind(this, tag)}>#{tag}</Tag>)
+                        })}
+                      </div>
+                      <div>
+                        <a className="EventsList-author">Post by </a>
+                        {item.url && <a href={item.url}>Eventbrite</a>}
+                        {item.author && <a>{item.author}</a>}
+                      </div>
                     </div>
                   }
                   avatar={ item.pictures.length <= 0 ? null :

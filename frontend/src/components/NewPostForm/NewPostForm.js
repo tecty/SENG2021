@@ -88,7 +88,8 @@ export default class NewPostForm extends Component {
           visible={visible}
           title="New Post"
           onOk={this.handleSubmit}
-          onCancel={onClose}
+          // onCancel={onClose}
+          closable={false}
           footer={[
             <Button key="back" onClick={onClose}>Return</Button>,
             <Button key="submit" type="primary" loading={loading} onClick={this.handleSubmit}>
@@ -112,7 +113,7 @@ export default class NewPostForm extends Component {
               const isLongTag = tag.length > 20;
               const tagElem = (
                 <Tag key={tag} closable={index >= 0} afterClose={() => this.handleClose(tag)}>
-                 {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+                 {isLongTag ? `#${tag.slice(0, 20)}...` : `#${tag}`}
                 </Tag>
               );
               return isLongTag ? <Tooltip title={tag} key={tag}>{tagElem}</Tooltip> : tagElem;
@@ -134,7 +135,7 @@ export default class NewPostForm extends Component {
                 onClick={this.showInput}
                 style={{ background: '#fff', borderStyle: 'dashed' }}
               >
-                <Icon type="plus" /> New Tag
+                <Icon type="tags-o" /> New Tag
               </Tag>
             )}
           </div>

@@ -18,13 +18,16 @@ class App extends Component {
     super(props);
     // const key = window.location.href.match(/token=([^&]*)/);
     // const token = key ? key[1] : null;
-    auth.getUserStatus().then(detail =>{
-      this.setState({ authorized: detail.authorized });
-    })
-  //  // auth.getUserStatus(this.state.key[1]).then
     this.state = {
   //     token: token,
     }
+    auth.getUserStatus().then(detail =>{
+      this.setState({ 
+        authorized: detail.authorized,
+        user: detail.user,
+      });
+    })
+  //  // auth.getUserStatus(this.state.key[1]).then
   }
 
   handleTokenChanged = () => {
@@ -34,7 +37,7 @@ class App extends Component {
   render() {
     const path = this.props.location.pathname.split('/');
     // const token = (this.state.token) ? `?token=${this.state.token}`: "";
-    const { authorized } = this.state;
+    const { authorized, user } = this.state;
     return (
       <div className="App">
         <AppMenu 
@@ -44,6 +47,7 @@ class App extends Component {
         <UserButton 
           handleTokenChanged={this.handleTokenChanged}
           authorized={authorized}
+          user={user}
           // authorized={this.state.authorized}
         />
         {/* <header className="App-header">
@@ -55,7 +59,7 @@ class App extends Component {
         <Switch>
           <Route exact path='/'/>
           <Route path='/map'>
-            <Map authorized={authorized}/>
+            <Map authorized={authorized} user={user}/>
           </Route>
           <Route path='/about_us' />
         </Switch>

@@ -27,6 +27,7 @@ const eventBrite = {
                     description: event.description.html,
                     tags: tags,
                     pictures: pictures,
+                    url: event.url,
                 }
             })
         })

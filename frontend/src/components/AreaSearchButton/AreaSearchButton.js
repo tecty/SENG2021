@@ -11,8 +11,8 @@ export default class AreaSearchButton extends Component {
     }
 
     if (this.state.loading) {
-      this.handleClick();
       this.props.autoLoadedChanged(true);
+      this.props.onClick();
     }
   }
 
