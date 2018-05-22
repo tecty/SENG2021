@@ -1,0 +1,57 @@
+.navbar{
+	background-color: white;
+	padding:1% 0;
+	font-size:1.2em;
+}
+.navbar-brand{
+	min-height:55px;
+	padding:0 15px 5px;
+}
+.navbar-default .navbar-nav li a{
+	color: red;
+}
+.navbar-default .navbar-nav li a:hover, .navbar-default .navbar-nav li a.a{
+	color:orange;
+}
+#home{
+	background:url(background.jpg) no-repeat center center fixed;
+	display:table;
+	height: 100vh;
+	position:relative;
+	width:100%;
+	background-size:cover;
+}
+
+figure {
+	position: relative;
+	width: 100%;
+	height: 60%;
+}
+
+.landing-text{
+	display:table-cell;
+	text-align:center;
+	vertical-align:middle;
+}
+.landing-text h1{
+	font-size:500%;
+	font-weight:700;
+}
+.padding{
+	padding:80px 0;
+}
+.padding img{
+	width:100%;
+}
+.fa{
+	padding:15px;
+	font-size:25px;
+	color:#FFF;
+}
+.fa:hover{
+	color:#D5D5D5;
+	text-decoration:none;
+}
+.icon{
+	max-width:200px;
+}
