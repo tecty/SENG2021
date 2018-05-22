@@ -10,13 +10,6 @@ export default class InfiniteListExample extends Component {
     this.props.onEventDetailClick(eventDetatil);
   }
 
-  partalDescription(description) {
-    if (description == null) return;
-    const isLong = description.length > 30;
-    const desc = isLong ? `${description.slice(0, 30)} ... ` : `${description} `;
-    return (<a className="EventsList-description">{desc}</a>);
-  }
-
   onTagClick(tag) {
     this.props.handleFilterValueChanged(`#${tag}`);
   }
@@ -44,7 +37,7 @@ export default class InfiniteListExample extends Component {
                       <div>
                         <a className="EventsList-author">Post by </a>
                         {item.url && <a href={item.url}>Eventbrite</a>}
-                        {item.author && <a>{item.author}</a>}
+                        {item.author && <a className="EventsList-author">{item.author}</a>}
                       </div>
                     </div>
                   }

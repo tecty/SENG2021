@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
+from django.contrib import admin, auth
 from django.urls import path
 from django.views import generic
 from django.conf.urls import url, include
@@ -34,4 +34,5 @@ urlpatterns = [
     url(r'^about_us/$', generic.TemplateView.as_view(template_name='index.html')),
     path('api/v1/', include(api_urlpatterns)),
     url(r'^docs/$', get_swagger_view(title='API Docs'), name='api_docs'),
+    url(r'^', include('django.contrib.auth.urls')),
 ]

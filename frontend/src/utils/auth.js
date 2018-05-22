@@ -103,6 +103,69 @@ const auth = {
     })
   },
 
+  changePassword(password1, password2) {
+    const token = Cookies.get('token');
+    return fetch(`${url}rest-auth/password/change/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json', 
+        Authorization: `Token ${token}`
+      },
+      body: JSON.stringify({
+        new_password1: password1,
+        new_password2: password2,
+      })
+    }).then(response => {
+      console.log(response);
+      return response.json();
+    }, networkError => console.log(networkError.message)).then(jsonResponse => {
+      console.log(jsonResponse);
+      const detail = jsonResponse.detail ? jsonResponse.detail : null;
+      const success = (detail && detail === "New password has been saved.") ? true : false;
+      
+      return {
+        success: success,
+        detail: detail,
+        password1: jsonResponse.new_password1,
+        password2: jsonResponse.new_password2,
+        non_field_errors: jsonResponse.non_field_errors,
+      }
+    })
+  },
+
+  changeUserInfo(username, first_name, last_name) {
+    const token = Cookies.get('token');
+    return fetch(`${url}rest-auth/user/`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json', 
+        Authorization: `Token ${token}`
+      },
+      body: JSON.stringify({
+        username: username,
+        first_name: first_name,
+        last_name: last_name,
+      })
+    }).then(response => {
+      console.log(response);
+      return response.json();
+    }, networkError => console.log(networkError.message)).then(jsonResponse => {
+      console.log(jsonResponse);
+      const success = (jsonResponse.pk) ? true : false;
+      
+      return {
+        success: success,
+        detail: jsonResponse.detail,
+        username: jsonResponse.username,
+        first_name: jsonResponse.first_name,
+        last_name: jsonResponse.last_name,
+        non_field_errors: jsonResponse.non_field_errors,
+      }
+    })
+  },
+
   facebookLogin(accessToken) {
     return fetch(`${url}rest-auth/facebook/`, {
       method: 'POST',

@@ -145,7 +145,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 SITE_ID = 1
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -160,3 +159,12 @@ AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'siround@gmail.com'
+DEFAULT_FROM_EMAIL = 'siround@gmail.com'
+SERVER_EMAIL = 'siround@gmail.com'
+EMAIL_HOST_PASSWORD = 'xxxxxxxx'

@@ -47,9 +47,6 @@ export default class UserUnauthorized extends Component {
           onCancel={this.handleCancel}
           destroyOnClose={true}
           footer={[
-            // <Button key="back" onClick={this.handleCancel}>Return</Button>,
-            // <Button key="Register" type="primary" onClick={this.handleSubmit}>Sign up</Button>,
-            // <Button key="login" type="primary" onClick={this.handleSubmit}>Sign in</Button>,
           ]}
         >
           <br/>

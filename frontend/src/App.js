@@ -18,15 +18,16 @@ class App extends Component {
     super(props);
     // const key = window.location.href.match(/token=([^&]*)/);
     // const token = key ? key[1] : null;
-    this.state = {
-  //     token: token,
-    }
+
     auth.getUserStatus().then(detail =>{
       this.setState({ 
         authorized: detail.authorized,
         user: detail.user,
       });
     })
+    this.state = {
+  //     token: token,
+    }
   //  // auth.getUserStatus(this.state.key[1]).then
   }
 

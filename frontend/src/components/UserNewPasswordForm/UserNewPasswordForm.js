@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import './UserRegisterForm.css'
+import './UserNewPasswordForm.css'
 import auth from '../../utils/auth';
 import { Form, Icon, Input, Button, Alert } from 'antd';
 const FormItem = Form.Item;
 
-class RegisterForm extends Component {
+class NewPasswordForm extends Component {
   constructor(props) {
     super(props)
 
@@ -42,29 +42,19 @@ class RegisterForm extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        auth.register(values.userName, values.email, values.password, values.confirm).then(detail => {
+        auth.changePassword(values.password, values.confirm).then(detail => {
           if (!detail) {
             this.setState({
               error: "Unknown error.",
               success: null,
             })
-          } else if (detail.key) {
+          } else if (detail.success) {
             this.setState({
               error: null,
-              success: "Successfully registered.",
+              success: detail.detail,
             })
             setTimeout(() => {
-              this.props.handleTokenChanged();
-            }, 1000);
-          } else if (detail.username) {
-            this.setState({
-              error: detail.username[0],
-              success: null,
-            })
-          } else if (detail.email) {
-            this.setState({
-              error: detail.email[0],
-              success: null,
+              this.props.onLogoutClick();
             })
           } else if (detail.password1) {
             this.setState({
@@ -81,9 +71,14 @@ class RegisterForm extends Component {
               error: detail.non_field_errors[0],
               success: null,
             })
+          } else if (detail.detail) {
+            this.setState({
+              error: detail.detail[0],
+              success: null,
+            })
           } else {
             this.setState({
-              error: "Unknown error.",
+              error: "Unknown Error.",
               success: null,
             })
           }
@@ -97,30 +92,12 @@ class RegisterForm extends Component {
     const { error, success } = this.state;
 
     return (
-      <div className="UserRegisterForm">
-        <Form onSubmit={this.handleSubmit} className="register-form">
-          <FormItem label="Username">
-            {getFieldDecorator('userName', {
-              rules: [{ required: true, message: 'Please input your username!' }],
-            })(
-              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}/>
-            )}
-          </FormItem>
-          <FormItem label="E-mail">
-            {getFieldDecorator('email', {
-              rules: [{
-                type: 'email', message: 'The input is not valid E-mail!',
-              }, {
-                required: true, message: 'Please input your E-mail!',
-              }],
-            })(
-              <Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }}/>}/>
-            )}
-          </FormItem>
-          <FormItem label="Password">
+      <div className="UserNewPasswordForm">
+        <Form onSubmit={this.handleSubmit} className="new-password-form">
+          <FormItem label="New Password">
             {getFieldDecorator('password', {
               rules: [{
-                required: true, message: 'Please input your password!',
+                required: true, message: 'Please input your new password!',
               }, {
                 validator: this.validateToNextPassword,
               }],
@@ -128,10 +105,10 @@ class RegisterForm extends Component {
               <Input type="password" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }}/>}/>
             )}
           </FormItem>
-          <FormItem label="Confirm Password">
+          <FormItem label="Confirm New Password">
             {getFieldDecorator('confirm', {
               rules: [{
-                required: true, message: 'Please confirm your password!',
+                required: true, message: 'Please confirm your new password!',
               }, {
                 validator: this.compareToFirstPassword,
               }],
@@ -140,15 +117,15 @@ class RegisterForm extends Component {
             )}
           </FormItem>
           <FormItem>
-            <Button type="primary" htmlType="submit" className="register-button" icon="form">Register</Button>
+            <Button type="primary" htmlType="submit" className="change-password-button" icon="save">Update Password</Button>
           </FormItem>
         </Form>
         { error && <Alert message={error} type="error" showIcon /> }
-        { success && <Alert message={success} type="success" showIcon />}
+        { success && <Alert message={success} description="Please Sign in again." type="success" showIcon />}
       </div>
     );
   }
 }
 
-const UserRegisterForm = Form.create()(RegisterForm);
-export default UserRegisterForm;
+const UserNewPasswordForm = Form.create()(NewPasswordForm);
+export default UserNewPasswordForm;

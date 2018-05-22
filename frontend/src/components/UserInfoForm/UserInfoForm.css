@@ -1,13 +1,13 @@
-.UserRegisterForm {
+.UserInfoForm {
   max-width: 450px;
   text-align: left;
   word-break:break-all;
 }
 
-.UserRegisterForm .register-form {
+.UserInfoForm .info-form {
   max-width: 450px;
 }
 
-.UserRegisterForm .register-button {
+.UserInfoForm .info-save-button {
   width: 100%;
 }
