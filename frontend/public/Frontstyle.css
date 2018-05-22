@@ -21,7 +21,21 @@
 	width:100%;
 	background-size:cover;
 }
-
+.fade-in{
+	animation:fadeIn 10s;
+}
+.fade-in1{
+	animation:fadeIn 20s;
+}
+@keyframes fadeIn{
+	from{
+		opacity:0;
+	}
+	
+	to{
+		opacity:1;
+	}
+}
 figure {
 	position: relative;
 	width: 100%;
