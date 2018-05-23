@@ -92,11 +92,6 @@ class InfoForm extends Component {
           </FormItem>
           <FormItem >
             {getFieldDecorator('email', {
-              rules: [{
-                type: 'email', message: 'The input is not valid E-mail!',
-              }, {
-                required: true, message: 'Please input your E-mail!',
-              }],
               initialValue: user.email,
             })(
               <Input 

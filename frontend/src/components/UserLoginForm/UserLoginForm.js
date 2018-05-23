@@ -72,13 +72,20 @@ class LoginForm extends Component {
   responseFacebook = (response) => {
     if (response.accessToken) {
       auth.facebookLogin(response.accessToken).then(success => {
-        this.setState({
-          error: null,
-          success: "Successfully login.", 
-        })
-        setTimeout(() => {
-          this.props.handleTokenChanged();
-        }, 1000); 
+        if (success.success) {
+          this.setState({
+            error: null,
+            success: "Successfully login.", 
+          })
+          setTimeout(() => {
+            this.props.handleTokenChanged();
+          }, 1000); 
+        } else {
+          this.setState({
+            error: "Unable login with Facebook.",
+            success: null, 
+          }); 
+        }
       })
     } else {
       this.setState({
@@ -128,13 +135,13 @@ class LoginForm extends Component {
             })(
               <Checkbox className="login-form-remember-me">Remember me</Checkbox>
             )}
-            <a className="login-form-forgot">Forgot password</a>
+            {/* <a className="login-form-forgot">Forgot password</a> */}
             <br/>
             <Button type="primary" htmlType="submit" className="login-form-button" icon="login">
               Log in
             </Button>
             <br/>
-            Or <a onClick={this.props.onRegisterClick}>register now!</a>
+            Or <a onClick={this.props.onRegisterClick} style={{color:"#42a5f5"}}>register now!</a>
             <br/>
             <b>Use another account:</b>
             <br/>

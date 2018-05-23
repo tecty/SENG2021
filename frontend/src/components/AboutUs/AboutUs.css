@@ -1,0 +1,86 @@
+.AboutUs {
+  /* align-items: center; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* display: inline-block; */
+  /* vertical-align: middle; */
+  /* top: 0; */
+  /* text-align: middle; */
+  /* max-width: 500px; */
+}
+
+.AboutUs-top {
+  background-image: url("./top.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 300px;
+}
+
+.AboutUs-list {
+  max-width: 65%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.AboutUs-header {
+  color: red;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 400px;
+  font-size: 18px;
+}
+
+/* .AboutUs table {
+  width: 2000;
+  border: 0;
+} 
+
+.AboutUs .AboutUs-logo {
+  width:80px;
+  height:70px;
+}
+
+.AboutUs .AboutUs-title {
+  width:1900px;
+  height:300px;
+  position:relative;
+  margin:0px;
+  padding:0px;
+  background-image:url(q&a.jpg);
+}
+
+.AboutUs .AboutUs-title h1 {
+  text-align:center;
+  font-family:Impact;
+  font-size:100px;
+  color:white;
+}
+
+.AboutUs .AboutUs-td {
+  height:500px;
+  width:300px;
+  vertical-align:top;
+}
+
+.AboutUs .AboutUs-td a{
+  font-size:30px;
+  font-family:Arial;
+  color:red;
+}
+
+.AboutUs textarea {
+  background:transparent;
+  border-style:none;
+  width:1600px;
+  height:680px;
+  font-family:Arial;
+  font-size:25px;
+}
+
+.AboutUs .AboutUs-footer {
+  color:red;
+  font-size:18pt;
+  font-family:Arial;
+} */

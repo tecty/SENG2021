@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-// import { List, Avatar, Tag } from 'antd';
 import { List, Tag } from 'antd';
-// import { List } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 import './EventsList.css'
 
@@ -26,7 +24,7 @@ export default class InfiniteListExample extends Component {
                 actions={[]}
               >
                 <List.Item.Meta
-                  title={<a role="button" style={{color:"black"}} onClick={this.handleMoreClick.bind(this, item)} >{item.name}</a>}
+                  title={<a role="button" className="EventsList-title" onClick={this.handleMoreClick.bind(this, item)} >{item.name}</a>}
                   description={
                     <div>
                       <div className="EventsList-tags">

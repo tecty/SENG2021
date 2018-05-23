@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import logo from './logo.png';
 import './App.css';
 import Map from './components/Map/Map';
 import AppMenu from './components/AppMenu/AppMenu';
@@ -8,6 +7,10 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import auth from './utils/auth';
 import url from './utils/url';
+import AboutUs from './components/AboutUs/AboutUs';
+import HomePage from './components/HomePage/HomePage';
+import FooterPage from './components/FooterPage/FooterPage';
+import HelpPage from './components/HelpPage/HelpPage';
 
 class App extends Component {
   static propTypes = {
@@ -16,8 +19,6 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    // const key = window.location.href.match(/token=([^&]*)/);
-    // const token = key ? key[1] : null;
 
     auth.getUserStatus().then(detail =>{
       this.setState({ 
@@ -25,10 +26,7 @@ class App extends Component {
         user: detail.user,
       });
     })
-    this.state = {
-  //     token: token,
-    }
-  //  // auth.getUserStatus(this.state.key[1]).then
+    this.state = {}
   }
 
   handleTokenChanged = () => {
@@ -37,7 +35,6 @@ class App extends Component {
 
   render() {
     const path = this.props.location.pathname.split('/');
-    // const token = (this.state.token) ? `?token=${this.state.token}`: "";
     const { authorized, user } = this.state;
     return (
       <div className="App">
@@ -49,20 +46,29 @@ class App extends Component {
           handleTokenChanged={this.handleTokenChanged}
           authorized={authorized}
           user={user}
-          // authorized={this.state.authorized}
         />
-        {/* <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title"> SiRound</h1>
-        </header> */}
-        {/* <LocationSearchInput /> */}
-        {/* <Map/> */}
         <Switch>
-          <Route exact path='/'/>
+          <Route exact path='/'>
+            <div>
+              <HomePage />
+              <FooterPage />
+            </div>
+          </Route>
           <Route path='/map'>
             <Map authorized={authorized} user={user}/>
           </Route>
-          <Route path='/about_us' />
+          <Route path='/about_us' >
+            <div>
+              <AboutUs />
+              <FooterPage />
+            </div>
+          </Route>
+          <Route page='/help' >
+            <div>
+              <HelpPage />
+              <FooterPage />
+            </div>
+          </Route>
         </Switch>
       </div>
     );

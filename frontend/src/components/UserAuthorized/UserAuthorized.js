@@ -4,6 +4,7 @@ import { Menu, Dropdown, Avatar, Icon, Modal } from 'antd';
 import auth from '../../utils/auth';
 import UserNewPasswordForm from '../UserNewPasswordForm/UserNewPasswordForm';
 import UserInfoForm from '../UserInfoForm/UserInfoForm';
+import Cookies from 'js-cookie';
 
 export default class UserAuthorized extends Component {
   constructor(props) {
@@ -53,6 +54,7 @@ export default class UserAuthorized extends Component {
   render() {
     const { user } = this.props;
     const { visible, user_info, change_password } = this.state;
+    const avatarColor = Cookies.get('avatarColor');
 
     const menu = (
       <Menu onClick={this.onAuthorizedMenuClick}>
@@ -68,7 +70,7 @@ export default class UserAuthorized extends Component {
       <div className="UserAuthorized">
         <Dropdown overlay={menu} trigger={['click']}>
           <a role="button">
-            <Avatar style={{ backgroundColor: '#87d068', verticalAlign: 'middle' }} size="large" >
+            <Avatar style={{ backgroundColor: avatarColor, verticalAlign: 'middle' }} size="large" >
               {user.username[0].toUpperCase()}
             </Avatar>
           </a>

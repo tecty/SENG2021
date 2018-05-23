@@ -1,0 +1,13 @@
+.HelpPage-top {
+  background-image: url("./top.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 300px;
+}
+
+.HelpPage-list {
+  max-width: 65%;
+  margin-left: auto;
+  margin-right: auto;
+}

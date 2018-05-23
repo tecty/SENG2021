@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^$', generic.TemplateView.as_view(template_name='index.html')),
     url(r'^map/$', generic.TemplateView.as_view(template_name='index.html')),
     url(r'^about_us/$', generic.TemplateView.as_view(template_name='index.html')),
+    url(r'^help/$', generic.TemplateView.as_view(template_name='index.html')),
     path('api/v1/', include(api_urlpatterns)),
     url(r'^docs/$', get_swagger_view(title='API Docs'), name='api_docs'),
     url(r'^', include('django.contrib.auth.urls')),

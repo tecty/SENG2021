@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import randomColor from 'randomcolor';
 
 const url = 'http://127.0.0.1:8000/api/v1/';
 
@@ -20,7 +21,11 @@ const auth = {
       return response.json();
     }, networkError => console.log(networkError.message)).then(jsonResponse => {
       if (jsonResponse == null) return null;
-      if (jsonResponse.key) Cookies.set('token', jsonResponse.key, { expires: 1 });
+      if (jsonResponse.key) {
+        Cookies.set('token', jsonResponse.key, { expires: 1 });
+        const color = randomColor();
+        Cookies.set('avatarColor', color, { expires: 1});
+      }
       return {
         username: jsonResponse.username,
         email: jsonResponse.email,
@@ -48,7 +53,11 @@ const auth = {
       return response.json();
     }, networkError => console.log(networkError.message)).then(jsonResponse => {
       if (jsonResponse == null) return {};
-      if (jsonResponse.key) Cookies.set('token', jsonResponse.key, { expires: 1 });
+      if (jsonResponse.key) {
+        Cookies.set('token', jsonResponse.key, { expires: 1 });
+        const color = randomColor();
+        Cookies.set('avatarColor', color, { expires: 1});
+      }
       return {
         username: jsonResponse.username,
         password: jsonResponse.password,
@@ -97,6 +106,7 @@ const auth = {
       if (jsonResponse == null) return {};
       if (jsonResponse.detail === "Successfully logged out.") {
         Cookies.remove('token');
+        Cookies.remove('avatarColor');
         return { success: true }
       }
       return { success: false }
