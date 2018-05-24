@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './UserLoginForm.css'
 import auth from '../../utils/auth';
-import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
-import { SocialIcon } from 'react-social-icons';
 import { Form, Icon, Input, Button, Checkbox, Alert } from 'antd';
 import Cookies from 'js-cookie';
-const FormItem = Form.Item;
+import FacebookLoginButton from '../FacebookLoginButton/FacebookLoginButton';
+import GithubLoginButton from '../GithubLoginButton/GithubLoginButton';
+import GoogleLoginButton from '../GoogleLoginButton/GoogleLoginButton';
+import InstagramLoginButton from '../InstagramLoginButton/InstagramLoginButton';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -14,6 +15,13 @@ class LoginForm extends Component {
       error: null,
       success: null,
     }
+  }
+
+  handleAlertChanged = (error, success) => {
+    this.setState({
+      error: error,
+      success: success,
+    })
   }
 
   handleSubmit = (e) => {
@@ -28,30 +36,18 @@ class LoginForm extends Component {
         auth.login(values.userName, values.password).then(detail => {
           console.log(detail);
           if (!detail) {
-            this.setState({
-              error: "Unknown error.",
-              success: null,
-            })
+            this.handleAlertChanged("Unknown error.", null)
             return
           }
           else if (detail.key) {
-            this.setState({
-              error: null,
-              success: "Successfully login.",
-            })
+            this.handleAlertChanged(null, "Successfully login.")
             setTimeout(() => {
               this.props.handleTokenChanged()
             }, 1000);
           } else if (detail.non_field_errors) {
-            this.setState({
-              error: detail.non_field_errors[0],
-              success: null,
-            })
+            this.handleAlertChanged(detail.non_field_errors[0], null)
           } else {
-            this.setState({
-              error: "Unknown error.",
-              success: null,
-            })
+            this.handleAlertChanged("Unknown error.", null)
           }
         })
       }
@@ -69,38 +65,13 @@ class LoginForm extends Component {
     Cookies.remove('password');
   }
 
-  responseFacebook = (response) => {
-    if (response.accessToken) {
-      auth.facebookLogin(response.accessToken).then(success => {
-        if (success.success) {
-          this.setState({
-            error: null,
-            success: "Successfully login.", 
-          })
-          setTimeout(() => {
-            this.props.handleTokenChanged();
-          }, 1000); 
-        } else {
-          this.setState({
-            error: "Unable login with Facebook.",
-            success: null, 
-          }); 
-        }
-      })
-    } else {
-      this.setState({
-        error: "Unable login with Facebook.",
-        success: null, 
-      }); 
-    }
-    console.log(response);
-  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const { error, success } = this.state;
     const username = Cookies.get('username') !== 'null' ? Cookies.get('username') : "";
     const password = Cookies.get('password') !== 'null' ? Cookies.get('password') : "";
+    const FormItem = Form.Item;
 
     return (
       <div className="UserLoginForm">
@@ -145,15 +116,18 @@ class LoginForm extends Component {
             <br/>
             <b>Use another account:</b>
             <br/>
-            <FacebookLogin
-              appId="193434881281521"
-              autoLoad={false}
-              fields="name,email,picture"
-              callback={this.responseFacebook}
-              render={renderProps => (
-                  <SocialIcon network="facebook" onClick={renderProps.onClick}/>
-              )}
-            />
+            <div className="third-party-login">
+            <FacebookLoginButton 
+              handleTokenChanged={this.props.handleTokenChanged} 
+              handleAlertChanged={this.handleAlertChanged}
+            /> &nbsp;
+            <GithubLoginButton /> &nbsp;
+            <GoogleLoginButton 
+              handleTokenChanged={this.props.handleTokenChanged} 
+              handleAlertChanged={this.handleAlertChanged}
+            /> &nbsp;
+            <InstagramLoginButton />
+            </div>
           </FormItem>
         </Form>
         { error && <Alert message={error} type="error" showIcon /> }

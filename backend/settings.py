@@ -52,8 +52,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.google',
 
-    'backend.social_auth'
+    'backend.social_auth',
+    'backend.post'
 ]
 
 MIDDLEWARE = [

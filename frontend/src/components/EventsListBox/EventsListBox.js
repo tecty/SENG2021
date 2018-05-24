@@ -3,6 +3,7 @@ import './EventsListBox.css';
 import EventsList from '../EventsList/EventsList';
 import EventDetail from '../EventDetail/EventDetail';
 import EventsListFilter from '../EventsListFilter/EventsListFilter';
+import UserPosts from '../UserPosts/UserPosts';
 
 export default class EventsListBox extends Component {
   constructor (props) {
@@ -12,15 +13,18 @@ export default class EventsListBox extends Component {
       places : this.props.places,
       filteredPlaces: this.props.places,
       filterValue: "",
+      posts: this.props.userposts,
+      filteredPosts: this.props.userposts,
+      filterPostValue: "",
     }
   }
 
-  handleFilteredPlacesChanged = (value) => {
+  handleFilteredPlacesChanged = (value, post_option) => {
+    const events = (post_option) ? this.state.posts : this.state.places;
     const filters = value.split(" ").filter((value) => value !== "");
     // console.log(filters);
-    const filteredPlaces = (filters.length === 0) ? 
-    this.state.places
-    : this.state.places.filter(place => {
+    const filteredPlaces = (filters.length === 0) ? events
+    : events.filter(place => {
       for (let i = 0; i < filters.length; i++) {
         if (filters[i][0] === '#') {
           let flag = false;
@@ -38,19 +42,56 @@ export default class EventsListBox extends Component {
       return true;
     })
     // console.log(filteredPlaces);
-    this.setState({
-      filteredPlaces: filteredPlaces,
-    })
+    if (post_option) {
+      this.setState({
+        filteredPosts: filteredPlaces
+      })
+    } else {
+      this.setState({
+        filteredPlaces: filteredPlaces,
+      })
+    }
   } 
 
-  handleFilterValueChanged = (value) => {
-    this.setState( {filterValue: value, })
-    this.handleFilteredPlacesChanged(value);
+  handleFilterValueChanged = (value, post_option) => {
+    if (post_option) {
+      this.setState({filterPostValue: value})
+    } else {
+      this.setState( {filterValue: value, })
+    }
+    this.handleFilteredPlacesChanged(value, post_option);
+  }
+
+  handleDeletePost = (id) => {
+    this.props.handleDeletePost(id)
+    this.setState({
+      filteredPosts: this.state.filteredPosts.filter(post => post.id !== id),
+      posts: this.state.posts.filter(post => post.id !== id)
+    })
   }
 
   render() {
-    const { showEventDetail, eventDetail, handleEventDetailClick, handleEventDetailBackClick } = this.props;
-    const { places, filteredPlaces, filterValue } = this.state;
+    const {
+      user,
+      showEventDetail, 
+      eventDetail,
+      handleEventDetailClick,
+      handleEventDetailBackClick,
+      showUserPosts,
+      handleShowUserPostsChanged,
+      author,
+      // handleUserPostsAuthorChanged
+    } = this.props;
+
+    const { 
+      places,
+      filteredPlaces,
+      filterValue,
+      posts,
+      filteredPosts,
+      filterPostValue
+    } = this.state;
+    
     return (
       <div className="EventsListBox">
         <EventsListFilter
@@ -58,16 +99,33 @@ export default class EventsListBox extends Component {
           handleValueChanged={this.handleFilterValueChanged}
           places={places}
         />
+        {!showEventDetail && !showUserPosts &&
         <EventsList
           listData={filteredPlaces}
           onEventDetailClick={handleEventDetailClick}
           handleFilterValueChanged={this.handleFilterValueChanged}
-        />
+          // handleUserPostsAuthorChanged={handleUserPostsAuthorChanged}
+          handleShowUserPostsChanged={handleShowUserPostsChanged}
+        />}
+        {showUserPosts &&
+          <UserPosts 
+            handleShowUserPostsChanged={handleShowUserPostsChanged}
+            onEventDetailClick={handleEventDetailClick}
+            user={user}
+            author={author}
+            filteredPosts={filteredPosts}
+            filterValue={filterPostValue}
+            handleValueChanged={this.handleFilterValueChanged}
+            posts={posts}
+            handleDeletePost={this.handleDeletePost}
+          />
+        }
         {showEventDetail &&
           <EventDetail 
             handleFilterValueChanged={this.handleFilterValueChanged}
             onBackButtonClick={handleEventDetailBackClick}
             event={eventDetail}
+            post_option={showUserPosts}
           />
         }
       </div>

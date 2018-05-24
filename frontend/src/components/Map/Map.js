@@ -13,6 +13,7 @@ import { MarkerClusterer } from 'react-google-maps/lib/components/addons/MarkerC
 import EventsListButton from '../EventsListButton/EventsListButton';
 import SearchBar from '../SearchBar/SearchBar';
 import EventsListBox from '../EventsListBox/EventsListBox';
+import postApi from '../../utils/postApi';
 
 const SiroundMap = withGoogleMap(props => (
   <GoogleMap
@@ -32,19 +33,29 @@ const SiroundMap = withGoogleMap(props => (
     }}
     onClick={props.onPinPositionClick}
   >
+    { !(props.pinMode || props.postMode) &&
     <MarkerClusterer
       averageCenter
       enableRetinaIcons
       gridSize={60}
+      // maxZoom={20}
+      onClick={props.onClusterClick}
     >
-      {props.places.length > 0 && !props.showEventDetail && props.places.map(place => (
+      {props.places.length > 0 && !props.showEventDetail && !props.showUserPosts && props.places.map(place => (
         <PlaceMarker
           key={`place${place.id}`}
           place={place}
           onClick={props.onPinClick}
         />))
       }
-    </MarkerClusterer>
+      {props.userposts.length > 0 && !props.showEventDetail && props.showUserPosts && props.userposts.map(place => (
+        <PlaceMarker
+          key={`place${place.id}`}
+          place={place}
+          onClick={props.onPinClick}
+        />))
+      }
+    </MarkerClusterer>}
     {props.showEventDetail && !(props.pinMode || props.postMode) &&
       <PlaceMarker
         key={`eventDetail${props.eventDetail.id}`}
@@ -88,8 +99,10 @@ export default class Map extends Component {
       eventDetail: {},
       searchInput: '',
       placesAutoLoaded: true,
+      // showUserPosts: false,
+      // userposts: [],
+      // userPostsAuthor: "",
     };
-
   }
 
   handleMapChange = () => {
@@ -126,7 +139,7 @@ export default class Map extends Component {
   fetchPlacesFromApi = () => {
     console.log(this.state.bounds);
     const bounds = this.state.bounds;
-    eventBrite.searchEventsByLocation([
+    const data = [
       {
         "Latitude": `${bounds.f.f}`,
         "Longitude": `${bounds.b.f}`
@@ -135,23 +148,29 @@ export default class Map extends Component {
         "Latitude": `${bounds.f.b}`,
         "Longitude": `${bounds.b.b}`
       }
-    ]).then(events => {
-      console.log(events);
-      
-      const posts = this.state.posts.filter(post => {
-        return (post.position.lat <= bounds.f.f && 
-        post.position.lat >= bounds.f.b &&
-        post.position.lng <= bounds.b.f &&
-        post.position.lng >= bounds.b.b)
-      })
-
-      this.setState({
-        places: posts.concat(events),
-        placesLoaded: true,
-        showEventDetail: false,
-        showList: true,
+    ]
+    // this.setState({showList: false})
+    this.props.handleShowListChanged(false)
+    postApi.getPostByBound(data).then(posts => {
+      // console.log(posts);
+      eventBrite.searchEventsByLocation(data).then(events => {
+        console.log(events);
+        // console.log(posts.concat(events))
+        
+        this.setState({
+          places: posts.concat(events),
+          // places: events,
+          post: [],
+          placesLoaded: true,
+          showEventDetail: false,
+          // showList: true,
+        })
+        this.props.handleShowListChanged(true)
       })
     })
+    console.log(this.state.places)
+
+
   }
 
   handlePlacesChanged = (places) => {
@@ -231,7 +250,6 @@ export default class Map extends Component {
     const post = {
       ...newPost,
       position: this.state.pinPosition,
-      id: this.state.places.length,
       author: this.props.user.username,
     }
     // console.log(post);
@@ -243,9 +261,10 @@ export default class Map extends Component {
         posts: [...this.state.posts, post],
         placesLoaded: true,
         showEventDetail: true,
-        showList: true,
         eventDetail: post,
       });
+      this.props.handleShowListChanged(true)
+      this.props.handleAddUserPost(post)
     }, 1000);
   }
 
@@ -274,9 +293,9 @@ export default class Map extends Component {
   handlePinClick = (place) => {
     this.setState({
       showEventDetail: true,
-      showList: true,
       eventDetail: place,
     })
+    this.props.handleShowListChanged(true)
   }
 
   handleEventDetailBackClick = () => {
@@ -286,9 +305,7 @@ export default class Map extends Component {
   }
 
   handleEventsListButtonClick = () => {
-    this.setState({
-      showList: !this.state.showList,
-    })
+    this.props.handleShowListChanged(!this.props.showList)
   }
 
   handleSearchInputChanged = searchInput => {
@@ -299,6 +316,21 @@ export default class Map extends Component {
 
   autoLoadedChanged = (state) => {
     this.setState({ placesAutoLoaded: state});
+  }
+
+  onClusterClick = () => {
+    this.handleMapChange();
+  }
+
+  handleShowUserPostsChanged = (state, name) => {
+    this.props.handleShowUserPostsChanged(state, name)
+  }
+  
+  handleDeletePost = (id) => {
+    this.setState({
+      places: this.state.places.filter(post => post.id !== id)
+    })
+    this.props.handleDeletePost(id);
   }
 
   render() {
@@ -313,10 +345,11 @@ export default class Map extends Component {
       placesLoaded, 
       showEventDetail, 
       eventDetail, 
-      showList,
       searchInput,
       placesAutoLoaded,
     } = this.state;
+
+    const { showUserPosts, userPostsAuthor, userposts, showList } = this.props;
 
     return (
       <div className="Map">
@@ -341,6 +374,9 @@ export default class Map extends Component {
           showEventDetail={showEventDetail}
           eventDetail={eventDetail}
           onPinClick={this.handlePinClick}
+          onClusterClick={this.onClusterClick}
+          userposts={userposts}
+          showUserPosts={showUserPosts}
         />
         {this.props.authorized && (!pinMode && !postMode) &&
           <NewPostButton onClick={this.handleNewPostButtonClick} />
@@ -356,6 +392,7 @@ export default class Map extends Component {
           loading={postSubmitting}
           onClose={this.handleCloseNewPostForm}
           onSubmit={this.handlePostSubmit}
+          location={pinPosition}
         />
         {this.mapFullyLoaded && !placesLoaded && !(pinMode || postMode) &&
           <AreaSearchButton 
@@ -375,6 +412,13 @@ export default class Map extends Component {
           handleEventDetailClick={this.handleEventDetailClick}
           handleEventDetailBackClick={this.handleEventDetailBackClick}
           handleEventsListButtonClick={this.handleEventsListButtonClick}
+          user={this.props.user}
+          author={userPostsAuthor}
+          showUserPosts={showUserPosts}
+          userposts={userposts}
+          handleShowUserPostsChanged={this.handleShowUserPostsChanged}
+          handleDeletePost={this.handleDeletePost}
+          // handleUserPostsAuthorChanged={this.handleUserPostsAuthorChanged}
         />}
         {showList && !(pinMode || postMode) &&
           <SearchBar 

@@ -81,6 +81,7 @@ const auth = {
       return response.json();
     }, networkError => console.log(networkError.message)).then(jsonResponse => {
       console.log(jsonResponse);
+      if (!jsonResponse) return {authorized: false}
       return {
         authorized: (jsonResponse.pk) ? true : false,
         user: (jsonResponse.pk) ? {
@@ -163,8 +164,8 @@ const auth = {
       return response.json();
     }, networkError => console.log(networkError.message)).then(jsonResponse => {
       console.log(jsonResponse);
+      if (!jsonResponse) return {success: false}
       const success = (jsonResponse.pk) ? true : false;
-      
       return {
         success: success,
         detail: jsonResponse.detail,
@@ -191,7 +192,37 @@ const auth = {
       return response.json();
     }, networkError => console.log(networkError.message)).then(jsonResponse => {
       if (jsonResponse == null) return {};
-      if (jsonResponse.key) Cookies.set('token', jsonResponse.key, { expires: 1 });
+      if (jsonResponse.key) {
+        Cookies.set('token', jsonResponse.key, { expires: 1 });
+        const color = randomColor();
+        Cookies.set('avatarColor', color, { expires: 1});
+      }
+      return {
+        success: jsonResponse.key ? true : false,
+      }
+    }) 
+  },
+
+  googleLogin(accessToken) {
+    return fetch(`${url}rest-auth/google/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        access_token: accessToken,
+        code: ""
+      })
+    }).then(response => {
+      return response.json();
+    }, networkError => console.log(networkError.message)).then(jsonResponse => {
+      if (jsonResponse == null) return {};
+      if (jsonResponse.key) {
+        Cookies.set('token', jsonResponse.key, { expires: 1 });
+        const color = randomColor();
+        Cookies.set('avatarColor', color, { expires: 1});
+      }
       return {
         success: jsonResponse.key ? true : false,
       }

@@ -11,6 +11,7 @@ import AboutUs from './components/AboutUs/AboutUs';
 import HomePage from './components/HomePage/HomePage';
 import FooterPage from './components/FooterPage/FooterPage';
 import HelpPage from './components/HelpPage/HelpPage';
+import postApi from './utils/postApi';
 
 class App extends Component {
   static propTypes = {
@@ -26,16 +27,59 @@ class App extends Component {
         user: detail.user,
       });
     })
-    this.state = {}
+    this.state = {
+      author: "",
+      showUserPosts: false,
+      userposts: [],
+      showList: false
+    }
   }
 
   handleTokenChanged = () => {
     window.location = `${url.get()}${this.props.location.pathname}`;
   }
 
+  handleShowListChanged = (state) => {
+    this.setState({showList: state})
+  }
+
+  handleShowUserPostsChanged = (state, name) => {
+    this.handleShowListChanged(false);
+    if (state) {
+      postApi.getPostByUsername(name).then(detail => {
+        // console.log(detail)
+        this.setState({
+          showUserPosts: state,
+          author: name,
+          userposts: detail
+        })
+      })
+    } else {
+      this.setState({
+        showUserPosts: state,
+        author: name
+      })
+    }
+    setTimeout(() => {
+      this.handleShowListChanged(true)
+    },100)
+  }
+
+  handleAddUserPost = (post) => {
+    this.setState({
+      userposts: [...this.state.userposts, post]
+    })
+  }
+
+  handleDeletePost = (id) => {
+    this.setState({
+      userposts: this.state.userposts.filter(post => post.id !== id),
+    })
+  }
+
   render() {
     const path = this.props.location.pathname.split('/');
-    const { authorized, user } = this.state;
+    const { authorized, user, author, showUserPosts, userposts, showList } = this.state;
     return (
       <div className="App">
         <AppMenu 
@@ -46,6 +90,7 @@ class App extends Component {
           handleTokenChanged={this.handleTokenChanged}
           authorized={authorized}
           user={user}
+          handleShowUserPostsChanged={this.handleShowUserPostsChanged}
         />
         <Switch>
           <Route exact path='/'>
@@ -55,7 +100,18 @@ class App extends Component {
             </div>
           </Route>
           <Route path='/map'>
-            <Map authorized={authorized} user={user}/>
+            <Map 
+              authorized={authorized} 
+              user={user} 
+              userPostsAuthor={author}
+              showUserPosts={showUserPosts}
+              handleShowUserPostsChanged={this.handleShowUserPostsChanged}
+              userposts={userposts}
+              showList={showList}
+              handleShowListChanged={this.handleShowListChanged}
+              handleDeletePost={this.handleDeletePost}
+              handleAddUserPost={this.handleAddUserPost}
+            />
           </Route>
           <Route path='/about_us' >
             <div>

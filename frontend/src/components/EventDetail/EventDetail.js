@@ -7,7 +7,7 @@ const { Meta } = Card;
 
 export default class EventDetail extends Component {
   onTagClick(tag) {
-    this.props.handleFilterValueChanged(`#${tag}`);
+    this.props.handleFilterValueChanged(`#${tag}`,this.props.post_option);
     this.props.onBackButtonClick();
   }
   render() {

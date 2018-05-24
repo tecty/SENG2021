@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { List, Tag } from 'antd';
+import { List, Tag, Button } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
-import './EventsList.css'
+import './UserPostsList.css'
 import noImage from './noimage.jpg';
+import postApi from '../../utils/postApi';
 
 export default class InfiniteListExample extends Component {
   handleMoreClick(eventDetatil) {
@@ -10,18 +11,18 @@ export default class InfiniteListExample extends Component {
   }
 
   onTagClick(tag) {
-    this.props.handleFilterValueChanged(`#${tag}`);
+    this.props.handleFilterValueChanged(`#${tag}`, true);
   }
 
-  onAuthorClick(author) {
-    // console.log(author)
-    // this.props.handleUserPostsAuthorChanged(author);
-    this.props.handleShowUserPostsChanged(true, author);
+  handleDeletePostById(id) {
+    postApi.deletePostById(id)
+    this.props.handleDeletePost(id)
   }
 
   render() {
+    const { isAuthor } = this.props;
     return (
-      <div className="EventsList">
+      <div className="UserPostsList">
         <InfiniteScroll loadMore={()=>{}}>
           <List
             dataSource={this.props.listData}
@@ -31,23 +32,21 @@ export default class InfiniteListExample extends Component {
                 actions={[]}
               >
                 <List.Item.Meta
-                  title={<a role="button" className="EventsList-title" onClick={this.handleMoreClick.bind(this, item)} >{item.name}</a>}
+                  title={<a role="button" className="UserPostsList-title" onClick={this.handleMoreClick.bind(this, item)} >{item.name}</a>}
                   description={
                     <div>
-                      <div className="EventsList-tags">
+                      <div className="UserPostsList-tags">
                         {item.tags.length > 0 && item.tags.map(tag => {
                           return (<Tag color="#2db7f5" key={`${item.id}${tag}`} onClick={this.onTagClick.bind(this, tag)}>#{tag}</Tag>)
                         })}
                       </div>
-                      <div>
-                        <a className="EventsList-author">Post by </a>
-                        {item.url && <a href={item.url} style={{color:"#42a5f5"}}>Eventbrite</a>}
-                        {item.author && <a className="EventsList-author" role="button" onClick={this.onAuthorClick.bind(this, item.author)} style={{color:"#42a5f5"}}>{item.author}</a>}
-                      </div>
+                      { isAuthor &&
+                        <div><br/><Button type="danger" onClick={this.handleDeletePostById.bind(this, item.id)}>Delete</Button></div>
+                      }
                     </div>
                   }
                   avatar={ 
-                    <div className="EventsList-picture">
+                    <div className="UserPostsList-picture">
                       <img src={ item.pictures.length > 0 ? item.pictures[0] : noImage} alt={`${item.id}_logo`} key={`${item.id}_logo`} />
                     </div>
                   }

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Modal, Button, Input, Tag, Icon, Tooltip } from 'antd';
+import { Modal, Button, Input, Tag, Icon, Tooltip, Alert } from 'antd';
 import './NewPostForm.css';
 import PicturesWall from '../PicturesWall/PicturesWall';
 import TextEditor from '../TextEditor/TextEditor';
+import postApi from '../../utils/postApi';
 
 
 export default class NewPostForm extends Component {
@@ -16,6 +17,8 @@ export default class NewPostForm extends Component {
       pictures: [],
       inputVisible: false,
       inputValue: '',
+      error: null,
+      success: null,
     }
   }
 
@@ -52,14 +55,42 @@ export default class NewPostForm extends Component {
     });
   }
 
+  handleAlertChanged(error, success) {
+    this.setState({
+      error: error,
+      success: success,
+    })
+  }
+
   handleSubmit = () => {
     const { name, description, tags, pictures } = this.state;
-    this.props.onSubmit({
-      name: name,
-      description: description,
-      tags: tags,
-      pictures: pictures,
-    })
+    const { location } = this.props;
+
+    if (name === "") {
+      this.handleAlertChanged("Title may not be blank.", null)
+    } else if (description === "") {
+      this.handleAlertChanged("Desicription may not be blank", null)
+    } else {
+      console.log(pictures)
+      postApi.newPost(name, description, location, tags, pictures).then(detail => {
+        if (detail.success) {
+          this.handleAlertChanged(null, "Successfully posted.")
+          this.props.onSubmit({
+            id: detail.id,
+            name: name,
+            description: description,
+            tags: tags,
+            pictures: pictures,
+          })
+          this.setState({
+            error: null,
+            success: null, 
+          })
+        } else {
+          this.handleAlertChanged("Unknown error.", null);
+        }
+      })
+    }
   }
 
   handleTitleInput = (e) => {
@@ -79,7 +110,7 @@ export default class NewPostForm extends Component {
   }
 
   render() {
-    const { tags, inputVisible, inputValue } = this.state;
+    const { tags, inputVisible, inputValue, error, success } = this.state;
     const { visible, loading, onClose } = this.props;
     return (
       <div>
@@ -139,6 +170,9 @@ export default class NewPostForm extends Component {
               </Tag>
             )}
           </div>
+          <br/>
+          { error && <Alert message={error} type="error" showIcon /> }
+          { success && <Alert message={success} type="success" showIcon />}
         </Modal>
       </div>
     );

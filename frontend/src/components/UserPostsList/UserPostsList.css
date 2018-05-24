@@ -1,6 +1,6 @@
-.EventsList {
+.UserPostsList {
   position: absolute;
-  top: 90px;
+  top: 180px;
   left: 0px;
   width: 350px;
   bottom: 0px;
@@ -19,21 +19,21 @@
   text-align: center;
 }
 
-.EventsList-picture {
+.UserPostsList-picture {
   max-width: 70px;
 }
-.EventsList-picture img{
+.UserPostsList-picture img{
   width: 100%;
 }
 
-.EventsList-author {
-  /* pointer-events: none;
+.UserPostsList-author {
+  pointer-events: none;
   cursor: default;
   text-decoration: none;
-  color: grey; */
+  color: grey;
 }
 
-.EventsList-title {
+.UserPostsList-title {
   font-family: Roboto;
   font-size: 15px;
 }
