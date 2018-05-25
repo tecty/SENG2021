@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './HomePage.css';
 import defaultImg from './background.jpeg';
+import postImg from './post.jpeg';
+import searchImg from './search.jpeg';
 import url from '../../utils/url';
 
 export default class HomePage extends Component {
@@ -75,23 +77,25 @@ export default class HomePage extends Component {
               <div className="row">
                 <div className="col-sm-4 blog-post">
                   <img src={defaultImg} alt={1}/>
-                  <a href="#!"><h2>Pin </h2></a>
-                  <p> Simply create a pin by drag and drop. </p>
-                  <a href="#!">Try It!</a>
+                  <h2>Pin </h2>
+                  <p> Pin anything that you want to pin, from your life to his/her life. Mark your life with pin.Where you been who you are. Capture your life now! </p>
+                  {/* <a href="#!">Try It!</a> */}
                 </div>
                 <div className="col-sm-4 blog-post">
-								<img src={defaultImg} alt={2}/>
-								<a href="#!"><h2>Post Detial</h2></a>
+								<img src={postImg} alt={2}/>
+								<h2>Post Detail </h2>
 								<p>
-									See what's going on on that location.
+                Discover the events that happens around you. From stories to photos. Vivid the events interesting your life.Your journey could start in a new way.
 								</p>
-								<a href="#!">Try It!</a>
+								{/* <a href="#!">Try It!</a> */}
 							</div>
 							<div className="col-sm-4 blog-post">
-								<img src={defaultImg} alt={3}/>
-								<a href="#!"><h2>Something else</h2></a>
-								<p> </p>
-								<a href="#!">Try It!</a>
+								<img src={searchImg} alt={3}/>
+								<h2>Search </h2>
+								<p> 
+                  Search nearby locations. Find your interests by searching with hash tag, topic and event name. Look up the latest events in your area. Don't hesitate, join us!
+                </p>
+								{/* <a href="#!">Try It!</a> */}
                 </div>
               </div>
             </section>

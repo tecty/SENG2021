@@ -62,10 +62,10 @@ export default class UserAuthorized extends Component {
     const menu = (
       <Menu onClick={this.onAuthorizedMenuClick}>
         <Menu.Item key="user_info"><Icon type="user" /> Sign in as <b>{user.username}</b></Menu.Item>
+        <Menu.Divider />
+        <Menu.Item key="posts"><Icon type="environment-o" /> My Pins</Menu.Item>
+        <Menu.Divider />
         <Menu.Item key="change_password"><Icon type="setting" /> Change password</Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="posts"><Icon type="global" /> My Pins</Menu.Item>
-        <Menu.Divider />
         <Menu.Item key="sign_out"><Icon type="logout" /> Sign out</Menu.Item>
       </Menu>
     );
