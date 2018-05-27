@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
-// import { List, Avatar, Tag } from 'antd';
 import { List, Tag } from 'antd';
-// import { List } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 import './EventsList.css'
+import noImage from './noimage.jpg';
 
 export default class InfiniteListExample extends Component {
   handleMoreClick(eventDetatil) {
     this.props.onEventDetailClick(eventDetatil);
   }
 
-  partalDescription(description) {
-    if (description == null) return;
-    const isLong = description.length > 30;
-    const desc = isLong ? `${description.slice(0, 30)} ... ` : `${description} `;
-    return (<a className="EventsList-description">{desc}</a>);
+  onTagClick(tag) {
+    this.props.handleFilterValueChanged(`#${tag}`);
+  }
+
+  onAuthorClick(author) {
+    // console.log(author)
+    // this.props.handleUserPostsAuthorChanged(author);
+    this.props.handleShowUserPostsChanged(true, author);
   }
 
   render() {
@@ -27,30 +29,28 @@ export default class InfiniteListExample extends Component {
               <List.Item
                 key={item.id}
                 actions={[]}
-                // onClick={this.props.onClick}
               >
                 <List.Item.Meta
-                  // avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                  // title={<a href="https://ant.design">{item.name}</a>}
-                  title={item.name}
+                  title={<a role="button" className="EventsList-title" onClick={this.handleMoreClick.bind(this, item)} >{item.name}</a>}
                   description={
-                    <div className="EventsList-desctiption">
-                      <div>
+                    <div>
+                      <div className="EventsList-tags">
                         {item.tags.length > 0 && item.tags.map(tag => {
-                          return (<Tag color="#2db7f5" key={`${item.id}${tag}`}>#{tag}</Tag>)
+                          return (<Tag color="#2db7f5" key={`${item.id}${tag}`} onClick={this.onTagClick.bind(this, tag)}>#{tag}</Tag>)
                         })}
                       </div>
                       <div>
-                        {this.partalDescription(item.description)}
-                        <a onClick={this.handleMoreClick.bind(this, item)}>more</a>
+                        <a className="EventsList-author">Post by </a>
+                        {item.url && <a href={item.url} style={{color:"#42a5f5"}}>Eventbrite</a>}
+                        {item.author && <a className="EventsList-author" role="button" onClick={this.onAuthorClick.bind(this, item.author)} style={{color:"#42a5f5"}}>{item.author}</a>}
                       </div>
                     </div>
                   }
-                  // avatar={ item.pictures.length <= 0 ? null :
-                  //   <div className="EventsList-picture">
-                  //     <img src={item.pictures[0]} alt={`${item.id}_logo`} key={`${item.id}_logo`} />
-                  //   </div>
-                  // }
+                  avatar={ 
+                    <div className="EventsList-picture">
+                      <img src={ item.pictures.length > 0 ? item.pictures[0] : noImage} alt={`${item.id}_logo`} key={`${item.id}_logo`} />
+                    </div>
+                  }
                 />
               </List.Item>
             )}

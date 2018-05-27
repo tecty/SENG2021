@@ -1,6 +1,6 @@
 .EventsList {
   position: absolute;
-  top: 40px;
+  top: 90px;
   left: 0px;
   width: 350px;
   bottom: 0px;
@@ -19,16 +19,21 @@
   text-align: center;
 }
 
-.EventsList-description {
-  pointer-events: none;
-  cursor: default;
-  text-decoration: none;
-  color: grey;
-}
-
 .EventsList-picture {
   max-width: 70px;
 }
 .EventsList-picture img{
   width: 100%;
+}
+
+.EventsList-author {
+  /* pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+  color: grey; */
+}
+
+.EventsList-title {
+  font-family: Roboto;
+  font-size: 15px;
 }

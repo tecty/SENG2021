@@ -3,19 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^1.0.0",
     "@material-ui/icons": "^1.0.0-beta.43",
     "@types/googlemaps": "^3.30.8",
     "@types/markerclustererplus": "^2.1.33",
     "@types/react": "^15.6.15",
     "ajv": "^6.4.0",
     "antd": "^3.4.3",
+    "draft-js": "^0.10.5",
+    "draftjs-to-html": "^0.8.4",
+    "eslint": "^4.19.1",
+    "font-awesome": "^4.7.0",
+    "immutable": "^3.8.2",
+    "jquery": "^3.3.1",
+    "js-cookie": "^2.2.0",
     "material-ui": "^1.0.0-beta.43",
+    "mdbreact": "^4.4.0",
     "prop-types": "^15.6.1",
-    "react": "^16.3.1",
-    "react-dom": "^16.3.1",
+    "randomcolor": "^0.5.3",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-draft-wysiwyg": "^1.12.13",
+    "react-facebook-login": "^4.0.1",
+    "react-google-login": "^3.2.1",
     "react-google-maps": "^9.4.5",
+    "react-icons": "^2.2.7",
+    "react-instagram-login": "^1.3.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "react-social-login": "^3.4.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -27,6 +43,7 @@
     "eslint-plugin-react": "^7.8.2",
     "react-html-parser": "^2.0.2",
     "react-infinite-scroller": "^1.1.4",
-    "react-places-autocomplete": "^7.1.1"
+    "react-places-autocomplete": "^7.1.1",
+    "react-social-icons": "^3.0.0"
   }
 }

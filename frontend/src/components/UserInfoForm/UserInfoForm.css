@@ -1,0 +1,13 @@
+.UserInfoForm {
+  max-width: 450px;
+  text-align: left;
+  word-break:break-all;
+}
+
+.UserInfoForm .info-form {
+  max-width: 450px;
+}
+
+.UserInfoForm .info-save-button {
+  width: 100%;
+}

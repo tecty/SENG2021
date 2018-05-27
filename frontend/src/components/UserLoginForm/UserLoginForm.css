@@ -1,19 +1,19 @@
-.UserLoginForm-modal {
-  text-align: center;
-  white-space: nowrap;
+.UserLoginForm {
+  max-width: 450px;
 }
 
-.UserLoginForm-modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  width: 0;
+.UserLoginForm .login-form {
+  max-width: 450px;
 }
 
-.UserLoginForm-modal .ant-modal {
-  display: inline-block;
-  vertical-align: middle;
-  top: 0;
-  text-align: left;
+.UserLoginForm .login-form-remember-me {
+  float: left;
+}
+
+.UserLoginForm .login-form-forgot {
+  float: right;
+}
+
+.UserLoginForm .login-form-button {
+  width: 100%;
 }

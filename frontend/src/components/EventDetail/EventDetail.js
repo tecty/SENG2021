@@ -6,6 +6,10 @@ import './EventDetail.css';
 const { Meta } = Card;
 
 export default class EventDetail extends Component {
+  onTagClick(tag) {
+    this.props.handleFilterValueChanged(`#${tag}`,this.props.post_option);
+    this.props.onBackButtonClick();
+  }
   render() {
     const { event, onBackButtonClick } = this.props;
     return (
@@ -40,17 +44,15 @@ export default class EventDetail extends Component {
             title={
               <div>
                 {event.tags.length > 0 && event.tags.map(tag => {
-                  return (<Tag color="#2db7f5" key={`${event.id}${tag}`}>#{tag}</Tag>)
+                  return (<Tag color="#2db7f5" key={`${event.id}${tag}`} onClick={this.onTagClick.bind(this, tag)}>#{tag}</Tag>)
                 })}
               </div>
             }
             description={
-              event.description_html == null ? event.description : 
               <div className="EventDetail-description">
-                {ReactHtmlParser(event.description_html)}
+                {ReactHtmlParser(event.description)}
               </div>
             }
-            // description={event.description}
           />
         </Card>
       </div>

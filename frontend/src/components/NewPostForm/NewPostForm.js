@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, Button, Input, Tag, Icon, Tooltip } from 'antd';
+import { Modal, Button, Input, Tag, Icon, Tooltip, Alert } from 'antd';
 import './NewPostForm.css';
 import PicturesWall from '../PicturesWall/PicturesWall';
+import TextEditor from '../TextEditor/TextEditor';
+import postApi from '../../utils/postApi';
+
 
 export default class NewPostForm extends Component {
   constructor(props) {
@@ -10,39 +13,35 @@ export default class NewPostForm extends Component {
     this.state = {
       name: "",
       description: "",
-      description_html: null,
       tags: [],
       pictures: [],
       inputVisible: false,
       inputValue: '',
+      error: null,
+      success: null,
     }
-    this.handleClose = this.handleClose.bind(this);
-    this.showInput = this.showInput.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleInputConfirm = this.handleInputConfirm.bind(this);
-    this.saveInputRef = this.saveInputRef.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleTitleInput = this.handleTitleInput.bind(this);
-    this.handleDescriptionInput = this.handleDescriptionInput.bind(this);
-    this.handlePicturesChanged = this.handlePicturesChanged.bind(this);
   }
 
-  handleClose(removedTag) {
+  handleClose = (removedTag) => {
     const tags = this.state.tags.filter(tag => tag !== removedTag);
     this.setState({
       tags: tags
     })
   }
 
-  showInput() {
+  showInput = () => {
     this.setState({ inputVisible: true }, () => this.input.focus());
   }
 
-  handleInputChange(e) {
+  handleInputChange = (e) => {
     this.setState({ inputValue: e.target.value });
   }
 
-  handleInputConfirm() {
+  handleDescriptionChange = (description) => {
+    this.setState({ description: description});
+  }
+
+  handleInputConfirm = () => {
     const state = this.state;
     const inputValue = state.inputValue;
     let tags = state.tags;
@@ -56,43 +55,63 @@ export default class NewPostForm extends Component {
     });
   }
 
-  handleSubmit() {
-    const { name, description, description_html, tags, pictures } = this.state;
-    this.props.onSubmit({
-      name: name,
-      description: description,
-      description_html: description_html,
-      tags: tags,
-      pictures: pictures,
+  handleAlertChanged(error, success) {
+    this.setState({
+      error: error,
+      success: success,
     })
   }
 
-  handleTitleInput(e) {
+  handleSubmit = () => {
+    const { name, description, tags, pictures } = this.state;
+    const { location } = this.props;
+
+    if (name === "") {
+      this.handleAlertChanged("Title may not be blank.", null)
+    } else if (description === "") {
+      this.handleAlertChanged("Desicription may not be blank", null)
+    } else {
+      console.log(pictures)
+      postApi.newPost(name, description, location, tags, pictures).then(detail => {
+        if (detail.success) {
+          this.handleAlertChanged(null, "Successfully posted.")
+          this.props.onSubmit({
+            id: detail.id,
+            name: name,
+            description: description,
+            tags: tags,
+            pictures: pictures,
+          })
+          this.setState({
+            error: null,
+            success: null, 
+          })
+        } else {
+          this.handleAlertChanged("Unknown error.", null);
+        }
+      })
+    }
+  }
+
+  handleTitleInput = (e) => {
     this.setState({
       name: e.target.value
     })
   }
 
-  handleDescriptionInput(e) {
-    this.setState({
-      description: e.target.value
-    })
-  }
-
-  saveInputRef(input) {
+  saveInputRef = (input) => {
     this.input = input
   }
 
-  handlePicturesChanged(pictures) {
+  handlePicturesChanged = (pictures) => {
     this.setState({
       pictures: pictures,
     });
   }
 
   render() {
-    const { tags, inputVisible, inputValue } = this.state;
+    const { tags, inputVisible, inputValue, error, success } = this.state;
     const { visible, loading, onClose } = this.props;
-    const { TextArea } = Input;
     return (
       <div>
         <Modal
@@ -100,7 +119,8 @@ export default class NewPostForm extends Component {
           visible={visible}
           title="New Post"
           onOk={this.handleSubmit}
-          onCancel={onClose}
+          // onCancel={onClose}
+          closable={false}
           footer={[
             <Button key="back" onClick={onClose}>Return</Button>,
             <Button key="submit" type="primary" loading={loading} onClick={this.handleSubmit}>
@@ -111,24 +131,20 @@ export default class NewPostForm extends Component {
           <Input
             placeholder="Title"
             onChange={this.handleTitleInput}
-          />
-          <br/>
-          <br/>
-          <TextArea
-            placeholder="Description"
-            rows={5}
-            onChange={this.handleDescriptionInput}
+            prefix={<Icon type="form" />}
           />
           <br/>
           <br/>
           <PicturesWall onPicturesChanged={this.handlePicturesChanged} />
+          <br/>
+          <TextEditor handleDescriptionChange={this.handleDescriptionChange}/>
           <br/>
           <div className="post-tags">
             {tags.length > 0 && tags.map((tag, index) => {
               const isLongTag = tag.length > 20;
               const tagElem = (
                 <Tag key={tag} closable={index >= 0} afterClose={() => this.handleClose(tag)}>
-                 {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+                 {isLongTag ? `#${tag.slice(0, 20)}...` : `#${tag}`}
                 </Tag>
               );
               return isLongTag ? <Tooltip title={tag} key={tag}>{tagElem}</Tooltip> : tagElem;
@@ -150,10 +166,13 @@ export default class NewPostForm extends Component {
                 onClick={this.showInput}
                 style={{ background: '#fff', borderStyle: 'dashed' }}
               >
-                <Icon type="plus" /> New Tag
+                <Icon type="tags-o" /> New Tag
               </Tag>
             )}
           </div>
+          <br/>
+          { error && <Alert message={error} type="error" showIcon /> }
+          { success && <Alert message={success} type="success" showIcon />}
         </Modal>
       </div>
     );

@@ -1,0 +1,39 @@
+.UserPostsList {
+  position: absolute;
+  top: 180px;
+  left: 0px;
+  width: 350px;
+  bottom: 0px;
+  z-index: 4;
+  background: whitesmoke;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  overflow: auto;
+  padding: 8px 24px;
+  /* height: 300px; */
+}
+.demo-loading-container {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+}
+
+.UserPostsList-picture {
+  max-width: 70px;
+}
+.UserPostsList-picture img{
+  width: 100%;
+}
+
+.UserPostsList-author {
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+  color: grey;
+}
+
+.UserPostsList-title {
+  font-family: Roboto;
+  font-size: 15px;
+}

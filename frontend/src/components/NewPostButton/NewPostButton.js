@@ -17,7 +17,7 @@ class NewPostButton extends Component {
     const { classes } = this.props;
     return (
       <div className="NewPostButton">
-        <Tooltip id="tooltip-fab" title="Add">
+        <Tooltip id="tooltip-fab" title="Add Pin">
           <Button 
             variant="fab"
             color="secondary"
