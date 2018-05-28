@@ -19,7 +19,7 @@ export default class HomePage extends Component {
               SiRound
             </div>
             <div className="secondary-slogan">
-              World is Connected than Ever Before. <br/><br/>
+              The World is More Connected than Ever Before. <br/><br/>
               <a href={`${link}\\map`} className="btn btn-o btn-lg btn-o-white">Pin Your Story</a>
             </div>
 				</section>
@@ -78,7 +78,7 @@ export default class HomePage extends Component {
                 <div className="col-sm-4 blog-post">
                   <img src={defaultImg} alt={1}/>
                   <h2>Pin </h2>
-                  <p> Pin anything that you want to pin, from your life to his/her life. Mark your life with pin.Where you been who you are. Capture your life now! </p>
+                  <p> Pin anything that you want to pin, from your life to his/her life. Mark your life with pin. Where you been who you are. Capture your life now! </p>
                   {/* <a href="#!">Try It!</a> */}
                 </div>
                 <div className="col-sm-4 blog-post">
