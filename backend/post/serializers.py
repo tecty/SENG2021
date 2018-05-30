@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Location, Tag,Photo
+from .models import Post, Location, Tag,Photo,Follow,PreferTag
 
 
 
@@ -97,3 +97,31 @@ class PostSerializer(serializers.ModelSerializer):
         # return the created post 
         this_post.save()
         return this_post
+
+# use model serializer is enough?
+class PreferTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PreferTag
+        fields =('user','tag') 
+    user = serializers.ReadOnlyField(source = 'user.username')
+    tag = TagSerializer(many = True)
+
+# home made class for serilization
+class FollowSerializer(serializers.Serializer):
+    class Meta:
+        model = Follow
+        fields = {'from_user','to_user'}
+
+    from_user = serializers.ReadOnlyField('from_user.username')
+    to_user = serializers.ReadOnlyField('to_user.username')
+
+    #  overwrite the create function to perform 
+    def create(self, validated_data):
+        # only need to give the user's id I want to follow to 
+        this_follow = Follow.objects.get_or_create(
+            to_user = User.objects.get(
+                pk = validated_data.pop('id')
+            )
+            ,validated_data**)
+        return this_follow
+        

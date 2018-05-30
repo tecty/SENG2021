@@ -20,13 +20,6 @@ class Location(models.Model):
     lat = models.DecimalField(max_digits=24, decimal_places= 20)
     lng = models.DecimalField(max_digits=24, decimal_places= 20)
 
-# class Category(models.Model):
-#     # name of the category
-#     name = models.CharField(max_length = 255)
-#     def __unicode__(self):
-#         return name
-
-
 class Photo(models.Model):
     name = models.CharField(max_length = 2047)
     def __unicode__(self):
@@ -49,54 +42,21 @@ class Post(models.Model):
     author = models.ForeignKey(User,on_delete=models.CASCADE)
     # the photo address use of this post
     photo = models.ManyToManyField(Photo, blank =True)
+    # the account who has liked this post
+    liked =  models.ManyToManyField(User, blank = True,related_name="liked")
 
+class Follow(models.Model):
+    # django must provide a relate name if two slot use same model for
+    # foreign key 
 
-"""
-{
-    "title": "asdf",
-    "detail": "wer",
-    "tag": [{"name":"sth"}],
-    "location": {
-        "name": "asdf",
-        "lat": 45,
-        "lng": 45
-    },
-    "photo": []
-}
-"""
+    # a table only for relationship of one user to another
+    from_user = models.ForeignKey(User,on_delete= models.CASCADE,
+                    related_name="from_user")
+    to_user = models.ForeignKey(User, on_delete = models.CASCADE,
+                    related_name="to_user")
 
-
-def create_post(title, detail, location , tags = None ):
-    """
-    create post by providing the its title details, location 
-    User may also want to provide some tags to this post
-    """
-    the_post = Post(
-        title = title,
-        detail = detail,
-        location = location,
-        create_time = timezone.now(),
-    )
-    the_post.save()
-
-    if tags:
-        # add associated tag in to this post
-        for t in tags:
-            the_post.tags = t 
-    
-    return the_post
-
-
-def create_location(name, lat, lng ):
-    the_location = Location(
-        name = name,
-        lat = lat, 
-        lng = lng
-    )
-    the_location.save()
-    return the_location
-
-def create_tag(name):
-    the_tag = Tag(name = name )
-    the_tag.save()
-    return the_tag
+class PreferTag(models.Model):
+    # this user prefer which tag
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    # what tag he prefer.
+    tag = models.ManyToManyField(Tag, blank = True)
