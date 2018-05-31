@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import { Modal, Button, Input, Tag, Icon, Tooltip, Alert } from 'antd';
-import './NewPostForm.css';
+import './UserPostForm.css';
 import PicturesWall from '../PicturesWall/PicturesWall';
 import TextEditor from '../TextEditor/TextEditor';
 import postApi from '../../utils/postApi';
 
 
-export default class NewPostForm extends Component {
+export default class UserPostForm extends Component {
   constructor(props) {
     super(props);
 
+    const {post} = props
     this.state = {
-      name: "",
-      description: "",
-      tags: [],
-      pictures: [],
+      name: post.name,
+      description: post.description,
+      tags: post.tags,
+      pictures: post.pictures,
       inputVisible: false,
       inputValue: '',
       error: null,
@@ -72,7 +73,8 @@ export default class NewPostForm extends Component {
       this.handleAlertChanged("Desicription may not be blank", null)
     } else {
       console.log(pictures)
-      postApi.newPost(name, description, location, tags, pictures).then(detail => {
+      const id = this.props.post.id
+      postApi.editPostById(id, name, description, location, tags, pictures).then(detail => {
         if (detail.success) {
           this.handleAlertChanged(null, "Successfully posted.")
           this.props.onSubmit({
@@ -110,12 +112,21 @@ export default class NewPostForm extends Component {
   }
 
   render() {
-    const { tags, inputVisible, inputValue, error, success } = this.state;
+    const { 
+      name,
+      description,
+      tags,
+      pictures,
+      inputVisible, 
+      inputValue, 
+      error, 
+      success,
+    } = this.state;
     const { visible, loading, onClose, onBack } = this.props;
     return (
       <div>
         <Modal
-          wrapClassName="NewPostForm-modal"
+          wrapClassName="UserPostForm-modal"
           visible={visible}
           title="New Post"
           onOk={this.handleSubmit}
@@ -133,12 +144,19 @@ export default class NewPostForm extends Component {
             placeholder="Title"
             onChange={this.handleTitleInput}
             prefix={<Icon type="form" />}
+            defaultValue={name}
           />
           <br/>
           <br/>
-          <PicturesWall onPicturesChanged={this.handlePicturesChanged} />
+          <PicturesWall 
+            onPicturesChanged={this.handlePicturesChanged} 
+            defaultValue={pictures}
+          />
           <br/>
-          <TextEditor handleDescriptionChange={this.handleDescriptionChange}/>
+          <TextEditor 
+            handleDescriptionChange={this.handleDescriptionChange}
+            defaultValue={description}
+          />
           <br/>
           <div className="post-tags">
             {tags.length > 0 && tags.map((tag, index) => {

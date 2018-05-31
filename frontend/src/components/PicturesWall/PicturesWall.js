@@ -2,11 +2,24 @@ import React, { Component } from 'react';
 import { Upload, Icon, Modal } from 'antd';
 
 export default class PicturesWall extends Component {
-  state = {
-    previewVisible: false,
-    previewImage: '',
-    fileList: [],
-  };
+  constructor(props) {
+    super(props);
+
+    let count = -1
+    this.state = {
+      previewVisible: false,
+      previewImage: '',
+      fileList: !props.defaultValue ? [] :
+      props.defaultValue.map(url => {
+        return {
+          name: `${count}.png`,
+          uid: count--,
+          status: 'done',
+          url: url,
+        }
+      }),
+    };
+  }
 
   handleCancel = () => this.setState({ previewVisible: false })
 
@@ -32,7 +45,7 @@ export default class PicturesWall extends Component {
     const uploadButton = (
       <div>
         <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
+        <div className="ant-upload-text">Upload cover</div>
       </div>
     );
     return (
@@ -46,7 +59,6 @@ export default class PicturesWall extends Component {
           onChange={this.handleChange}
         >
           {fileList.length >= 3 ? null : uploadButton}
-          cover picture
         </Upload>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './TextEditor.css';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, convertFromHTML, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
@@ -11,7 +11,8 @@ export default class TextEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      editorState: EditorState.createEmpty(),
+      editorState: !props.defaultValue ? EditorState.createEmpty() :
+      EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(props.defaultValue))),
     };
   }
 

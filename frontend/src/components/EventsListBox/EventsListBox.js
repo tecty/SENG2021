@@ -80,6 +80,7 @@ export default class EventsListBox extends Component {
       showUserPosts,
       handleShowUserPostsChanged,
       author,
+      handleEditPostButtonClick,
       // handleUserPostsAuthorChanged
     } = this.props;
 
@@ -118,6 +119,7 @@ export default class EventsListBox extends Component {
             handleValueChanged={this.handleFilterValueChanged}
             posts={posts}
             handleDeletePost={this.handleDeletePost}
+            handleEditPostButtonClick={handleEditPostButtonClick}
           />
         }
         {showEventDetail &&

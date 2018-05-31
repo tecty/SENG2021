@@ -1,0 +1,25 @@
+.UserPostForm-modal {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.UserPostForm-modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
+}
+
+.UserPostForm-modal .ant-modal {
+  display: inline-block;
+  vertical-align: middle;
+  top: 0;
+  text-align: left;
+}
+
+.post-tags {
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+}

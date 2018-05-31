@@ -67,7 +67,13 @@ class App extends Component {
 
   handleAddUserPost = (post) => {
     this.setState({
-      userposts: [...this.state.userposts, post]
+      userposts: [post, ...this.state.userposts]
+    })
+  }
+
+  handleEditUserPost = (post) => {
+    this.setState({
+      userposts: [post, ...this.state.userposts.filter(place => place.id !== post.id)]
     })
   }
 
@@ -111,6 +117,7 @@ class App extends Component {
               handleShowListChanged={this.handleShowListChanged}
               handleDeletePost={this.handleDeletePost}
               handleAddUserPost={this.handleAddUserPost}
+              handleEditUserPost={this.handleEditUserPost}
             />
           </Route>
           <Route path='/about_us' >

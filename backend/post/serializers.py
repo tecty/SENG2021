@@ -97,3 +97,30 @@ class PostSerializer(serializers.ModelSerializer):
         # return the created post 
         this_post.save()
         return this_post
+    
+    def update(self, instance, validated_data):
+        location_data = validated_data.pop('location')
+        instance.location = Location.objects.get_or_create(**location_data)[0]
+        instance.title = validated_data.get('title', instance.title)
+        instance.detail = validated_data.get('detail', instance.detail)
+        tags_data = validated_data.pop('tag')
+        # instance.tag = instance.tag.all()[0:0]
+        # tags = (instance.tag).all()
+        # tags = list(tags)
+        instance.tag.all().delete()
+        # print(instance.tag.all())
+        # print(tags_data)
+        photos_data = validated_data.pop('photo')
+        instance.photo.all().delete()
+        # photos = (instance.photo).all()
+        # photos = list(photos)
+        instance.save()
+        for tag_data in tags_data:
+            this_tag = Tag.objects.get_or_create(name = tag_data.get('name'))
+            instance.tag.add(this_tag[0])
+        for photo_data in photos_data:
+            instance.photo.create(name=photo_data.get('name'))
+        instance.save()
+        return instance
+
+        
