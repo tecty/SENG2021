@@ -123,3 +123,5 @@ chrome-user-data
 .vscode
 *.swp
 *.swo
+
+db.sqlite3
