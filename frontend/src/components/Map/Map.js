@@ -14,6 +14,7 @@ import EventsListButton from '../EventsListButton/EventsListButton';
 import SearchBar from '../SearchBar/SearchBar';
 import EventsListBox from '../EventsListBox/EventsListBox';
 import postApi from '../../utils/postApi';
+import UserPostForm from '../UserPostForm/UserPostForm';
 
 const SiroundMap = withGoogleMap(props => (
   <GoogleMap
@@ -86,8 +87,8 @@ export default class Map extends Component {
       posts:[],
       bounds: null,
       center: {
-        lat: -33.9182861,
-        lng: 151.2307079,
+        lat: -33.8725991,
+        lng: 151.2074612,
       },
       pinPosition: null,
       pinMode: false,
@@ -99,9 +100,8 @@ export default class Map extends Component {
       eventDetail: {},
       searchInput: '',
       placesAutoLoaded: true,
-      // showUserPosts: false,
-      // userposts: [],
-      // userPostsAuthor: "",
+      editMode: false,
+      editPost: null,
     };
   }
 
@@ -230,6 +230,15 @@ export default class Map extends Component {
     });
   }
 
+  handleEditPostButtonClick = (post) => {
+    this.setState({
+      pinMode: true,
+      pinPosition: post.position,
+      editMode: true,
+      editPost: post,
+    })
+  }
+
   handlePinConfirmButtonClick = () => {
     this.setState({
       pinMode: false,
@@ -253,6 +262,8 @@ export default class Map extends Component {
       author: this.props.user.username,
     }
     // console.log(post);
+    this.props.handleAddUserPost(post)
+    this.props.handleShowListChanged(false)
     setTimeout(() =>{
       this.setState({
         postSubmitting: false,
@@ -264,7 +275,33 @@ export default class Map extends Component {
         eventDetail: post,
       });
       this.props.handleShowListChanged(true)
-      this.props.handleAddUserPost(post)
+    }, 1000);
+  }
+  
+  handleEditPostSubmit = (editPost) => {
+    this.setState({
+      postSubmitting: true 
+    });
+    const post = {
+      ...editPost,
+      position: this.state.pinPosition,
+      author: this.props.user.username,
+    }
+    // console.log(post);
+    this.props.handleEditUserPost(post)
+    this.props.handleShowListChanged(false)
+    setTimeout(() =>{
+      this.setState({
+        postSubmitting: false,
+        postMode: false,
+        places: [post, ...this.state.places.filter(place => place.id !== post.id)],
+        posts: [post, ...this.state.posts.filter(place => place.id !== post.id)],
+        placesLoaded: true,
+        showEventDetail: true,
+        eventDetail: post,
+      });
+      this.handleCloseEditPostForm()
+      this.props.handleShowListChanged(true)
     }, 1000);
   }
 
@@ -272,6 +309,14 @@ export default class Map extends Component {
     this.setState({
       pinMode: false,
       postMode: false
+    })
+  }
+
+  handleCloseEditPostForm = () => {
+    this.setState({
+      pinMode: false,
+      postMode: false,
+      editMode: false,
     })
   }
 
@@ -333,6 +378,13 @@ export default class Map extends Component {
     this.props.handleDeletePost(id);
   }
 
+  handlePostBackClick = () => {
+    this.setState({
+      pinMode: true,
+      postMode: false
+    })
+  }
+
   render() {
     const {
       zoom,
@@ -347,13 +399,14 @@ export default class Map extends Component {
       eventDetail, 
       searchInput,
       placesAutoLoaded,
+      editMode,
+      editPost,
     } = this.state;
 
     const { showUserPosts, userPostsAuthor, userposts, showList } = this.props;
 
     return (
       <div className="Map">
-        {/* {console.log(this.props.authorized)} */}
         <SiroundMap
           onMapMounted={this.handleMapMounted}
           handleMapChange={this.handleMapChange}
@@ -363,8 +416,6 @@ export default class Map extends Component {
           containerElement={< div className = "Map-containerElement" />}
           mapElement={< div className = "Map-mapElement" />}
           places={(postMode || pinMode) ? [] : places}
-          // onSearchBoxMounted={this.handleSearchBoxMounted}
-          // onPlacesChanged={this.handlePlacesChanged}
           pinPosition={pinPosition}
           pinMode={pinMode}
           postMode={postMode}
@@ -387,13 +438,24 @@ export default class Map extends Component {
             <ConfirmButton onClick={this.handlePinConfirmButtonClick} />
           </div>)
         }
-        <NewPostForm
+        {!(postMode || pinMode) || editMode? null: <NewPostForm
           visible={postMode}
           loading={postSubmitting}
           onClose={this.handleCloseNewPostForm}
           onSubmit={this.handlePostSubmit}
           location={pinPosition}
-        />
+          onBack={this.handlePostBackClick}
+        />}
+        {!((pinMode || postMode) && editMode)?null:
+        <UserPostForm
+          visible={postMode}
+          loading={postSubmitting}
+          onClose={this.handleCloseEditPostForm}
+          onSubmit={this.handleEditPostSubmit}
+          location={pinPosition}
+          post={editPost}
+          onBack={this.handlePostBackClick} 
+        />}
         {this.mapFullyLoaded && !placesLoaded && !(pinMode || postMode) &&
           <AreaSearchButton 
             onClick={this.fetchPlacesFromApi}
@@ -418,7 +480,7 @@ export default class Map extends Component {
           userposts={userposts}
           handleShowUserPostsChanged={this.handleShowUserPostsChanged}
           handleDeletePost={this.handleDeletePost}
-          // handleUserPostsAuthorChanged={this.handleUserPostsAuthorChanged}
+          handleEditPostButtonClick={this.handleEditPostButtonClick}
         />}
         {showList && !(pinMode || postMode) &&
           <SearchBar 

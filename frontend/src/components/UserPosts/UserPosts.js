@@ -19,7 +19,8 @@ export default class UserPosts extends Component {
       posts,
       filteredPosts,
       filterValue,
-      handleValueChanged
+      handleValueChanged,
+      handleEditPostButtonClick,
     } = this.props;
 
     return (
@@ -44,6 +45,7 @@ export default class UserPosts extends Component {
           isAuthor={user.username === author}
           handleDeletePost={handleDeletePost}
           handleFilterValueChanged={handleValueChanged}
+          handleEditPostButtonClick={handleEditPostButtonClick}
         />
       </div>
     );

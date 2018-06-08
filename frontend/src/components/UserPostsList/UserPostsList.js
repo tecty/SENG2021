@@ -19,6 +19,10 @@ export default class InfiniteListExample extends Component {
     this.props.handleDeletePost(id)
   }
 
+  onEditPostClick(position){
+    this.props.handleEditPostButtonClick(position)
+  }
+
   render() {
     const { isAuthor } = this.props;
     return (
@@ -41,7 +45,8 @@ export default class InfiniteListExample extends Component {
                         })}
                       </div>
                       { isAuthor &&
-                        <div><br/><Button type="danger" onClick={this.handleDeletePostById.bind(this, item.id)}>Delete</Button></div>
+                        <div><br/><Button onClick={this.onEditPostClick.bind(this, item)}>Edit</Button> &nbsp;
+                        <Button type="danger" onClick={this.handleDeletePostById.bind(this, item.id)}>Delete</Button></div>
                       }
                     </div>
                   }

@@ -125,6 +125,45 @@ const postApi = {
       },
     })
   },
+
+  editPostById(id, title, desctription, location, tags, photos) {
+    const token = Cookies.get('token');
+    const tags_data = tags.map(tag => {
+      return {name: tag}
+    })
+    const photos_data = photos.map(photo => {
+      return {name: photo}
+    })
+    const lat = location.lat;
+    const lng = location.lng;
+    return fetch( `${url}post/${id}/`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Token ${token}`
+      },
+      body: JSON.stringify({
+        title: title,
+        detail: desctription,
+        location: {
+          lat: lat,
+          lng: lng 
+        },
+        tag: tags_data,
+        photo: photos_data
+      })
+    }).then(response => {
+      return response.json();
+    }, networkError => console.log(networkError.message)).then(jsonResponse => {
+      console.log(jsonResponse)
+      const success = (jsonResponse.id) ? true : false;
+      return {
+        success: success,
+        id: jsonResponse.id
+      } 
+    })
+  },
 }
 
 export default postApi;

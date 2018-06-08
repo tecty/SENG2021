@@ -67,6 +67,7 @@ URL | Detail
 https://localhost:3000/ | Home
 https://localhost:3000/map | Map
 https://localhost:3000/about_us | About us
+https://localhost:3000/help | Help
 
 ### Backend
 
